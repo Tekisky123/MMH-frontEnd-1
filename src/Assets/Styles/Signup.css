@@ -8,13 +8,13 @@
   }
   
   .section {
-    background-image: url(../../Images//background-1.jpg);
+    background-image: url(../Images//background-1.jpg);
     border: 2px solid blue;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    /* background-color: #5759bbcc; */
+    background-color: #5759bbcc;
     background-position: center;
     background-size: cover;
   }
