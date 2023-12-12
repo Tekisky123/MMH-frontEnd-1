@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom"
-import "../../Assets/Styles/RegistrationStyles.css/Login.css"
+import "../../Assets/Styles/Signup.css"
 
 const Signup = () => {
 
