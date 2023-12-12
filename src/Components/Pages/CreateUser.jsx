@@ -1,5 +1,5 @@
 // Import necessary dependencies from React and third-party libraries
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import "../../Assets/Styles/RegistrationStyles/Signup.css"; // Import the CSS file for styling
 import { useState } from "react"; // Import the useState hook for managing state
 
@@ -28,10 +28,10 @@ const Signup = () => {
   return (
     <div className="Main-container">
       <section className="section">
-        <div className="form-box-main">
+        <div className="form-box-user">
           <div className="form-value">
             <form action="" onSubmit={FormSubmit}>
-              <h2 className="heading">Create Account</h2>
+              <h2 className="heading">Create User</h2>
               {/* Input fields for first name and last name */}
               <div className="names">
                 <div className="inputbox name">
@@ -81,27 +81,14 @@ const Signup = () => {
                 >
                   <option>Please Select Role</option>
                   <option value="Admin">Admin</option>
-                  <option value="Super Admin">Super Admin</option>
+                  <option value="SuperAdmin">Super Admin</option>
                   <option value="Operator">Operator</option>
-
                 </select>
               </div>
-              {/* Checkbox for "Remember Me" and link for "Forget Password" */}
-              <div className="forget">
-                <label>
-                  <input type="checkbox" /> Remember Me{" "}
-                  <Link href="#">Forget Password</Link>
-                </label>
-              </div>
+             
               {/* Button to submit the registration form */}
-              <button className="create btn-login" >Create Account</button>
-              {/* Link to the login page for users with existing accounts */}
-              <div className="register">
-                <p>
-                  
-                  <Link to={"/"}>Already have an account </Link>
-                </p>
-              </div>
+              <button className="create btn-login" >Create User</button>
+             
             </form>
           </div>
         </div>
