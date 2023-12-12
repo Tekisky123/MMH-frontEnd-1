@@ -13,8 +13,8 @@ const Login = () => {
             <h2>Login</h2>
             <div className="inputbox">
               <ion-icon name="mail-outline"></ion-icon>
-              <input type="email" required />
-              <label>Email</label>
+              <input type="number" required />
+              <label>Number</label>
             </div>
             <div className="inputbox">
               <ion-icon name="lock-closed-outline"></ion-icon>
