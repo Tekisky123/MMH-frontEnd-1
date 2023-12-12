@@ -1,67 +1,48 @@
-/* styles.css */
-.Main-container {
+.section {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid red;
-  height: 100vh;
-}
-section {
-  display: flex;
+  background-image: url(../../Images//background-1.jpg);
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  
-
-  /* background: #5758BB; 
-  background: -webkit-linear-gradient(
-    to right,
-    #e67e22 ,
-    #5758BB,
-    #009432
-  ); 
-  background: linear-gradient(
-    to right,
-    #e67e22 ,
-    #5758BB,
-    #009432
-  );  */
-   background-color:#5759bbcc ; 
-
+  /* background-color: #5759bbcc; */
   background-position: center;
   background-size: cover;
 }
+
 .form-box {
   position: relative;
   width: 400px;
   height: 450px;
-  background-color:#5758BB ;
+  background-color: rgba(255, 255, 255, 0.384) !important;
   border: 1px solid black;
-  border-radius: 20px;
+  border-radius: 10px;
   backdrop-filter: blur(15px);
   display: flex;
+  margin-top: 50px;
   justify-content: center;
   align-items: center;
-  box-shadow: 2px 2px 2px black;
+  box-shadow: 2px 2px 20px black;
 }
-h2 {
+.heading {
   font-size: 2em;
-  color: #fff;
+  color: black !important;
   text-align: center;
 }
-.inputbox {
+.input-box {
   position: relative;
   margin: 30px 0;
   width: 310px;
-  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid black !important;
+
 }
-.inputbox label {
+.input-box label {
   position: absolute;
+  overflow: hidden;
   top: 50%;
   left: 5px;
   transform: translateY(-50%);
-  color: #fff;
+  color: black !important;
   font-size: 1em;
   pointer-events: none;
   transition: 0.5s;
@@ -70,7 +51,7 @@ input:focus ~ label,
 input:valid ~ label {
   top: -5px;
 }
-.inputbox input {
+.input-box input {
   width: 100%;
   height: 50px;
   background: transparent;
@@ -78,19 +59,13 @@ input:valid ~ label {
   outline: none;
   font-size: 1em;
   padding: 0 35px 0 5px;
-  color: #fff;
+  color: black !important;
 }
-.inputbox ion-icon {
-  position: absolute;
-  right: 8px;
-  color: #fff;
-  font-size: 1.2em;
-  top: 20px;
-}
+
 .forget {
   margin: -15px 0 15px;
   font-size: 0.9em;
-  color: #fff;
+  color: black !important;
   display: flex;
   justify-content: space-between;
 }
@@ -99,34 +74,72 @@ input:valid ~ label {
   margin-right: 3px;
 }
 .forget label a {
-  color: #fff;
-  text-decoration: none;
+  color: blue !important;
+  text-decoration: underline;
 }
 .forget label a:hover {
   text-decoration: underline;
 }
-button {
+.btn-login {
   width: 100%;
   height: 40px;
   border-radius: 10px;
-  background: #fff;
+  border-radius: 10px !important;
   border: none;
   outline: none;
   cursor: pointer;
   font-size: 1em;
   font-weight: 600;
 }
+.btn-login:hover {
+  border: 1px solid black;
+  box-shadow: 1px 1px 2px black;
+}
 .register {
   font-size: 0.9em;
-  color: #fff;
+  color: black !important;
   text-align: center;
   margin: 25px 0 10px;
 }
 .register p a {
   text-decoration: none;
-  color: #fff;
+  color: blue !important;
   font-weight: 600;
 }
 .register p a:hover {
   text-decoration: underline;
+}
+
+.logo {
+  filter: drop-shadow(10px 10px 10px white);
+  position: absolute;
+  top: 8px;
+  left: 335px;
+  z-index: 99;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Responsive styles */
+
+@media (max-width: 768px) {
+  .form-box {
+    width: 80%; /* Adjust the width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .form-box {
+    width: 90%; /* Adjust the width for even smaller screens */
+  }
+
+  .logo {
+    left: 50%; /* Center the logo on smaller screens */
+    top: -5px;
+    width: 60%;
+    transform: translateX(-50%);
+  }
 }
