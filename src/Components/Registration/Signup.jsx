@@ -27,7 +27,7 @@ const Signup = () => {
                 <Link href="#">Forget Password</Link>
               </label>
             </div>
-            <button>Log in</button>
+            <button>Sign up</button>
             <div className="register">
               <p>
                 Don't have an account <Link href="#">Register</Link>
