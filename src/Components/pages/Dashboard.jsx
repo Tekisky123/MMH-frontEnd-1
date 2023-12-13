@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import "../../Assets/Styles/dashboard.css"
+import PatientDetails from './patientInquiry/PatientDetails';
 
 const Dashboard = () => {
 
@@ -18,56 +19,7 @@ const Dashboard = () => {
       </div>
       <div className={`tab-contents ${activeTab === 'patientInquiry' ? 'active-tab' : ''}`} id="patientInquiry">
         
-      <form className="form-div">
-        <h2>Please fill out all information, so that we may better server you.</h2>
-
-        <div className="form-div">
-          <label for="full_name">Patient Full Name</label>
-          <input type="text" className="form-input" id="full_name" placeholder="First Name" required autofocus autocomplete="on"/>
-          <span className="help-block"></span>
-        </div> 
-
-
-        <div className="form-div">
-          <label for="phone_number">Patient Phone Number</label>
-          <input type="tel" className="form-input" id="phone_number" placeholder="+1-416-967-1111"/>
-          <span className="help-block"></span>
-        </div>
-
-        <div className="form-div">
-          <label for="gender">Patient Gender</label>
-          <select id="gender" name="gender" required className='form-input'>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-          <span className="help-block"></span>
-        </div>
-
-
-        <div className="form-div">
-          <label for="age">Age</label>
-          <input type="number" className="form-input" id="age" placeholder="Age" min="1" max="110" required/>
-          <span className="help-block"></span>
-        </div>  
-
-        <div className="form-div">
-          <label for="state">State</label>
-          <select id="state" name="state" required className='form-input'>
-          <option value="Male">Male</option>
-
-        </select>
-          <span className="help-block"></span>
-        </div>
-
-          <div className="form-div">
-          <label for="Address">Patient Full Address</label>
-          <input type="text" className="form-input" id="Address" placeholder="Address" required  />
-          <span className="help-block"></span>
-        </div> 
-
-        <button className="full-width-btn" type="submit">Confirm Appointment</button>
-      </form>
+  <PatientDetails/>
       </div>
 
       <div className={`tab-contents ${activeTab === 'experience' ? 'active-tab' : ''}`} id="experience">
