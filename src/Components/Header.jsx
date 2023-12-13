@@ -46,7 +46,7 @@ const Header = () => {
         <li className={activeTab === "register-patient" ? "active" : ""}>
           <Link
             onClick={() => handleTabClick("register-patient")}
-            href="#register-patient"
+            to="/register"
           >
             Registered Patients
           </Link>

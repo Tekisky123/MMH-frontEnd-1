@@ -5,6 +5,7 @@ import Signup from "./Components/Registration/Signup"
 import Dashboard from './Components/Pages/Dashboard';
 import Header from './Components/Header';
 import Home from './Components/Pages/Home';
+import RegisteredPatients from './Components/Pages/RegisteredPatients';
 function App() {
   const location = useLocation()
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/home" element={<Home/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/register" element={<RegisteredPatients/>} />
       </Routes>
     </div>
   );

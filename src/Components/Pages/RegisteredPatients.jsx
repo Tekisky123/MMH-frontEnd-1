@@ -4,7 +4,7 @@ import "../../Assets/Styles/RegisteredPatients.css";
 import check from "../../Assets/Images/check.png";
 import error from "../../Assets/Images/error.png";
 
-const RegisterPatient = ({ patient }) => {
+const RegisteredPatients = ({ patient }) => {
   const [file, setFile] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -40,10 +40,10 @@ const RegisterPatient = ({ patient }) => {
   return (
     <div className="patient-card">
       <div className="patient-data">
-        <h6>ID: {patient.id}</h6>
-        <h6>Name: {patient.name}</h6>
-        <h6>Gender: {patient.gender}</h6>
-        <h6>Age: {patient.age}</h6>
+        <h6>ID: </h6>
+        <h6>Name: </h6>
+        <h6>Gender: </h6>
+        <h6>Age: </h6>
         {/* Add other details as needed */}
       </div>
       <div className="data-btn">
@@ -94,15 +94,15 @@ const RegisterPatient = ({ patient }) => {
             <tbody>
               <tr>
                 <td>ID</td>
-                <td>{patient.id}</td>
+                <td></td>
               </tr>
               <tr>
                 <td>Name</td>
-                <td>{patient.name}</td>
+                <td></td>
               </tr>
               <tr>
                 <td>Gender</td>
-                <td>{patient.gender}</td>
+                <td></td>
               </tr>
               {/* <tr>
                 <td>Age</td>
@@ -110,7 +110,7 @@ const RegisterPatient = ({ patient }) => {
               </tr> */}
               <tr>
                 <td>Age</td>
-                <td>{patient.age}</td>
+                <td></td>
               </tr>
               <tr>
                 <td>Document</td>
@@ -147,4 +147,4 @@ const RegisterPatient = ({ patient }) => {
   );
 };
 
-export default RegisterPatient;
+export default RegisteredPatients;
