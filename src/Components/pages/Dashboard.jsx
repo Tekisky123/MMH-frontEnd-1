@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../Assets/Styles/Dashboard.css";
 import Home from "./Home";
 import CreateUser from "./CreateUser";
-import RegisterPatient from "./RegisterPatient";
+import RegisterPatient from "./RegisteredPatients";
 
 const Dashboard = () => {
   const patientData = {

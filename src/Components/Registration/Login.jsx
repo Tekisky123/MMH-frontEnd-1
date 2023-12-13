@@ -1,6 +1,6 @@
 // Import necessary dependencies from React and third-party libraries
 import { Link, useNavigate } from "react-router-dom";
-import "../../Assets/Styles/RegistrationStyles/Login.css"; // Import the CSS file for styling
+import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
 import logo from "../../Assets/Images/Logo.png"; // Import the logo image
 import { useState } from "react"; // Import the useState hook for managing state
 import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
