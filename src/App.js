@@ -3,6 +3,7 @@ import './App.css';
 import Login from './Components/Registration/Login';
 import Signup from "./Components/Registration/Signup"
 import Dashboard from './Components/pages/Dashboard';
+import RegisteredPatient from './Components/pages/RegisteredPatient';
 function App() {
   return (
     <div className="App">
@@ -10,6 +11,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/registeredpatient" element={<RegisteredPatient/>} />
        
       </Routes>
     </div>
