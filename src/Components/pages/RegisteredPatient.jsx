@@ -85,10 +85,6 @@ const RegisteredPatient = () => {
                   <td>{item.patientDetails.maritalstatus}</td>
                   <td>
                     {item.patientDetails.address},
-                    {item.patientDetails.pin},
-                    {item.patientDetails.talukha},
-                    {item.patientDetails.district},
-                    {item.patientDetails.state},
                   </td>
 
                   <td>
