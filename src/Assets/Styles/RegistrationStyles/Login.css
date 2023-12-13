@@ -1,11 +1,19 @@
 .section {
   display: flex;
+<<<<<<<< HEAD:src/Assets/Styles/Login.css
+  background-image: url(../Images/background-1.jpg);
+========
   /* background-image: url(../Images/background-1.jpg); */
+>>>>>>>> 4f97ef10baf844584fc9c9d93036dd9986ecd400:src/Assets/Styles/RegistrationStyles/Login.css
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
+<<<<<<<< HEAD:src/Assets/Styles/Login.css
+  /* background-color: #5759bbcc; */
+========
   background-color: #5759bbcc;
+>>>>>>>> 4f97ef10baf844584fc9c9d93036dd9986ecd400:src/Assets/Styles/RegistrationStyles/Login.css
   background-position: center;
   background-size: cover;
 }
@@ -111,7 +119,11 @@ input:valid ~ label {
 }
 
 .logo {
+<<<<<<<< HEAD:src/Assets/Styles/Login.css
+  filter: drop-shadow(10px 10px 10px white);
+========
   filter: drop-shadow(5px 10px 10px white);
+>>>>>>>> 4f97ef10baf844584fc9c9d93036dd9986ecd400:src/Assets/Styles/RegistrationStyles/Login.css
   position: absolute;
   top: 8px;
   left: 335px;
