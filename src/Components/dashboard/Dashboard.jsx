@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../../Assets/Styles/Dashboard.css";
-import Home from "./Home";
-import CreateUser from "./CreateUser";
-import RegisterPatient from "./RegisterPatient";
+import Home from "../pages/Home";
+import CreateUser from "../pages/CreateUser";
+import RegisterPatient from "../pages/RegisterPatient";
 
 const Dashboard = () => {
   const patientData = {
@@ -10,7 +10,7 @@ const Dashboard = () => {
     name: "John Doe",
     gender:"male",
     age:20
-    // other properties
+
   };
 
   const [activeTab, setActiveTab] = useState("home");
