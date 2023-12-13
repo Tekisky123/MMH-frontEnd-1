@@ -1,6 +1,6 @@
 // Import necessary dependencies from React and third-party libraries
 // import { Link } from "react-router-dom";
-import "../../Assets/Styles/RegistrationStyles/Signup.css"; // Import the CSS file for styling
+import "../../Assets/Styles/Signup.css"; // Import the CSS file for styling
 import { useState } from "react"; // Import the useState hook for managing state
 
 // Functional component for the Signup page
