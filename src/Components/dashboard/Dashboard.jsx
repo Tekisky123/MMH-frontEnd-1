@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../../Assets/Styles/Dashboard.css";
-import Home from "../pages/Home";
+// import Home from "../pages";
 import CreateUser from "../pages/CreateUser";
-import RegisterPatient from "../pages/RegisterPatient";
+// import RegisterPatient from "../pages/RegisterPatient";
 
 const Dashboard = () => {
   const patientData = {
@@ -157,7 +157,7 @@ const Dashboard = () => {
           className={`tab-contents ${activeTab === "home" ? "active-tab" : ""}`}
           id="home"
         >
-          <Home />
+          {/* <Home /> */}
         </div>
         <div
           className={`tab-contents ${
@@ -181,7 +181,7 @@ const Dashboard = () => {
           }`}
           id="Register-Patient"
         >
-          <RegisterPatient patient={patientData} />
+          {/* <RegisterPatient patient={patientData} /> */}
         </div>
         <div
           className={`tab-contents ${activeTab === "User" ? "active-tab" : ""}`}
