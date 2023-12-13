@@ -4,18 +4,26 @@
   }
   
   .tab-links {
-    margin-right: 50px;
+    margin-right: 100px;
     font-size: 18px;
     font-weight: 500;
     cursor: pointer;
     position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid rgb(153, 153, 153);
+
+  }
+  .tab-links:active{
+    background-color: #4caf50;
+    border: 2px solid;
   }
   
   .tab-links::after {
     content: "";
     width: 0;
-    height: 3px;
-    background-color: #ff004f;
+    height: 5px;
+    background-color: #4caf50;
     position: absolute;
     left: 0;
     bottom: -8px;
@@ -23,7 +31,8 @@
   }
   
   .tab-links.active-link::after {
-    width: 50%;
+    width: 100%;
+    
   }
   
   .tab-contents {

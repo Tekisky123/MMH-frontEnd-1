@@ -90,11 +90,11 @@ const Signup = () => {
               <div className="forget">
                 <label>
                   <input type="checkbox" /> Remember Me{" "}
-                  <Link href="#">Forget Password</Link>
+                  <Link>Forget Password</Link>
                 </label>
               </div>
               {/* Button to submit the registration form */}
-              <button className="create btn-login" >Create Account</button>
+              <button className="create btn-login" type="submit">Create Account</button>
               {/* Link to the login page for users with existing accounts */}
               <div className="register">
                 <p>
