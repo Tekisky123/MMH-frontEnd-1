@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import axios from 'axios';
-import "../../Assets/Styles/RegisterPatient.css";
+import "../../Assets/Styles/RegisteredPatients.css";
 import check from "../../Assets/Images/check.png";
 import error from "../../Assets/Images/error.png";
 
