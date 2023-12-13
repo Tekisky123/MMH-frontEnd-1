@@ -1,0 +1,164 @@
+/* main  */
+
+:root{
+    --primary-color:rgb(150, 57, 114);
+    --danger-color:rgb(87, 72, 72);
+    --main-padding:1rem 3rem;
+      
+}
+
+
+
+.HomeMain{
+    background-color: burlywood;
+    
+}
+
+.HomeMain h3{
+     font-family:Verdana, Geneva, Tahoma, sans-serif;
+     font-style: italic;
+     font-weight:800;
+     font-size: 1.3rem;
+     color:var(--primary-color);
+     text-align: center;
+     
+}
+.HomeMain p{
+    font-family:cursive;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--danger-color);
+    text-align: center;
+}
+
+/* 1 section First  */
+
+.HomeSectionFirst{
+    padding:var(--main-padding);
+}
+
+.HomeSectionFirst h1{
+    text-align: center;
+    font-weight: bolder;
+    font-style: italic;
+    font-size: 2rem;
+    color:var(--primary-color);
+}
+
+
+/* 2 section Second  */
+
+.HomeSectionSecond{
+    padding:var(--main-padding);
+}
+
+
+
+
+/* 3 section Third  */
+
+.HomeSectionThird{
+    padding:var(--main-padding);
+}
+
+.HomeSectionThird h3{
+    padding: .5rem;
+}
+
+
+.HomeSectionThird ul li{
+    list-style:square;
+    font-family:cursive;
+    font-weight: bold;
+    font-size: 1rem;
+     color: var(--danger-color);
+}
+
+/* footer  */
+footer{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 3rem;
+    background-color:rgb(187, 178, 178);
+}
+
+
+footer p{
+    padding-top: 1rem;
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: bolder;
+    font-style: italic;
+    color:var(--primary-color);
+}
+
+/* Responsive styles */
+
+/* mediaQuery 768px */
+
+@media (max-width: 768px){
+    .HomeMain p{
+        font-size: .8rem;  
+    }
+    .HomeMain h3{
+        font-size: 1rem;   
+   }
+   .HomeSectionFirst{
+    padding: 1 2rem;
+   }
+   .HomeSectionFirst h1{
+    font-size: 1.2rem;
+   }
+   .HomeSectionSecond{
+    padding: 0 2rem;
+   }
+   .HomeSectionThird{
+    padding: 0.5 2rem;
+   }
+   .HomeSectionThird ul li{
+    font-size: .8rem; 
+}
+   footer{
+    padding: 0 1.2rem;
+   }
+   footer p{
+    font-size: .7rem;
+   }
+
+}
+
+/* mediaQuery 480px */
+
+@media (max-width: 480px){
+    .HomeMain p{
+        font-size: 0.6rem; 
+    }
+    .HomeMain h3{
+        font-size: 0.8rem;   
+   }
+    .HomeSectionFirst{
+        padding: 1rem 2rem;
+       }
+       .HomeSectionFirst h1{
+        font-size: 1rem;
+       }
+       .HomeSectionSecond{
+        padding: 0 2rem;
+       }
+       .HomeSectionThird{
+        padding: .5rem 2rem;
+       }
+       .HomeSectionThird ul li{
+        font-size: .6rem; 
+    }
+       footer{
+        padding: 0 1rem;
+       }
+       footer p{
+        font-size: .5rem;
+       }
+    
+
+}
