@@ -1,0 +1,63 @@
+/* Your styles go here */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .nav-list {
+    list-style: none;
+    font-size: 20px;
+    display: flex;
+    margin: 20px 150px;
+  }
+  
+  .nav-list li {
+    margin-right: 100px;
+  }
+  
+  .nav-list a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+  }
+  
+  .nav-list a:hover {
+    color:#4caf50;
+  }
+  .nav-list:active{
+    text-decoration: underline;
+  }
+  
+  .burger-menu {
+    display: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+
+  
+  @media screen and (max-width: 768px) {
+    .nav-list {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+    }
+  
+    .nav-list.open {
+      display: flex;
+    }
+  
+    .burger-menu {
+      display: block;
+    }
+  }
+  
