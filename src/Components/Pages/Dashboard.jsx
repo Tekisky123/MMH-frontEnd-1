@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import "../../Assets/Styles/Dashboard.css"
-import Home from './Home';
+import Home from './HomePage/Home';
 import CreateUser from './CreateUser';
 
 const Dashboard = () => {

@@ -3,7 +3,7 @@ import './App.css';
 import Login from './Components/Registration/Login';
 import Signup from "./Components/Registration/Signup"
 import Dashboard from './Components/Pages/Dashboard';
-import Home from './Components/Pages/Home';
+import Home from './Components/Pages/HomePage/Home';
 function App() {
   return (
     <div className="App">
