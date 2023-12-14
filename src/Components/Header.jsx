@@ -19,7 +19,6 @@ const Header = () => {
     setActiveTab(tab);
     setIsOpen(false); // Close the mobile menu after clicking a tab
   };
-
   return (
     <nav className={`navbar ${isOpen ? "open" : ""}`}>
       <div className="logo"></div>

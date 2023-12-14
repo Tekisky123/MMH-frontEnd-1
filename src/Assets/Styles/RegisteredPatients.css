@@ -3,280 +3,73 @@
 /* Common styles */
 .patient-card {
   border-radius: 8px;
-  margin: 20px;
+  margin: 20px 0px;
   padding: 30px;
-  width: 500px;
-  height: 280px;
+  width: 80%; /* Use full width on smaller screens */ /* Limit max width for larger screens */
   box-shadow: 1px 1px 8px black;
   background-color: #fff;
 }
 
-.patient-data h5{
-    /* border: 2px solid red; */
-    width: 60%;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-  .data-btn{
-    /* border: 2px solid black; */
-    height: 50px;
-    position: absolute;
-    left: 160px;
-    top: 480px;
-  }
-  
-  .patient-card  {
-    /* Add styles for the left side of the card */
-    border: 2px solid black;
-  }
-  
-  .patient-card .btn-register {
-    background-color: #4caf50;
-    border-radius: 10px;
-    color: white;
-    
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  .documents{
-    /* border: 2px solid red; */
-    margin-right: 200px ;
-    width: 280px;
-  }
-  .btn-register-more{
-    background-color: #4caf50;
-    border-radius: 10px;
-    color: white;
-    border: none;
-    width: 100px;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    position: absolute;
-    top: -150px;
-    right: 10px;
-    cursor: pointer;
-  }
-  .btn-register-status{
-    background-color: #4caf50;
-    border-radius: 10px;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    position: absolute;
-    top: -150px;
-    right: -100px;
-    cursor: pointer;
-  }
-  
-  .patient-card input {
-    margin-top: 10px; /* Adjusted for spacing */
-  }
-  
-  .patient-card .patient-details-sidebar {
-    position: fixed;
-    right: -300px; /* Initial position off-screen */
-    top: 0;
-    width: 1200px;
-    height: 100%;
-    overflow: auto;
-    background-color: #f2f2f2;
-    padding: 20px;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* Adjusted for right side */
-    transition: right 0.3s ease; /* Smooth transition effect */
-  }
-  
-  .patient-card .close-icon {
-    position: absolute;
-    top: 10px;
-    position: sticky;
-    left: 1200px;
-    font-size: 20px;
-    cursor: pointer;
-  }
-
-  .patient-card table {
-    width: 96%;
-    
-    border-collapse: collapse;
-    margin-top: 80px;
-    font-size: 16px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  .table-heading{
-    position: relative;
-    width: 300px;
-    /* border: 2px solid red; */
-    top: 50px;
-    left: 450px;
-    margin-top: 50px;
-  }
-  .file-upload-or-not {
-    border: 2px solid red;
-    margin-top: 50px;
-  }
-  
-  .patient-card th, .patient-card td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-
-  }
-  
-  .patient-card th {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  /* Hover effect */
-  .patient-card tbody tr:hover {
-    background-color: #f5f5f5;
-    transition: background-color 0.3s ease;
-  }
-
-  .patient-card .file-status {
-    display: flex;
-    align-items: center;
-  }
-  
-  .patient-card .file-status .file-box {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .patient-card .file-status .file-box.uploaded {
-    background-color: #4caf50;
-    border-color: #4caf50;
-  }
-  
-  .patient-card .file-status .file-box.not-uploaded {
-    background-color: #ff0000;
-    border-color: #ff0000;
-  }
-  
-  .patient-card .file-status .file-text {
-    color: #555;
-  }
-  
-  .patient-card .file-actions {
-    margin-top: 10px;
-  }
-  
-  .patient-card .file-actions button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  
-  .patient-card .file-actions input[type="file"] {
-    display: none;
-  }
-  
-  .patient-card .file-actions label {
-    background-color: #4caf50;
-    color: white;
-    padding: 8px 16px;
-    cursor: pointer;
-  }
-  .file-upload-logo{
-    position: relative;
-    left: 280px;
-    top: -3px;
-  }
-  .file-not-found{
-    color: red;
-    text-decoration: underline;
-  }
-  .file-upload{
-    color:#4caf50;
-    text-decoration: underline;
-  }
-  
-  .patient-card .file-actions label:hover {
-    background-color: #45a049;
-  }
-
-
- /* Add these styles to your existing CSS file */
-
-/* Styles for right-side status sidebar */
-.patient-status-sidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100%;
-  padding: 20px;
-  width: 600px; /* Adjust the width as needed */
-  background-color: #fff; /* Set the background color */
-  box-shadow: -5px 0 5px rgba(0, 0, 0, 0.2); /* Add a shadow to create separation from the main content */
-  overflow-y: auto; /* Enable vertical scrolling if the content is too long */
-  z-index: 1000; /* Set a higher z-index to ensure it appears above other elements */
-  transition: transform 0.3s ease-in-out; /* Add transition effect for smooth animation */
-}
-
-/* Styles for close icon in right-side status sidebar */
-.patient-status-sidebar .close-icon {
-  cursor: pointer;
-  font-size: 20px;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-}
-
-/* Styles for right-side status sidebar content */
-.patient-status-sidebar h2 {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.patient-status-sidebar table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.patient-status-sidebar th, .patient-status-sidebar td {
-  border: 1px solid #ddd;
+.patient-data h5 {
+  width: 100%; /* Full width for smaller screens */
   padding: 10px;
-  text-align: left;
+  border: 1px solid #ddd;
 }
 
-/* Add additional styles as needed */
+.data-btn {
+  height: 50px;
+  position: relative; /* Adjusted position for smaller screens */
+  margin-top: 10px;
+  text-align: center; /* Center the buttons */
+}
 
+.btn-register-more,
+.btn-register-status {
+  background-color: #4caf50;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 0; /* Adjusted margin for smaller screens */
+  cursor: pointer;
+}
 
-/* Add additional styles as needed */
+.documents {
+  margin-right: 0; /* Adjusted margin for smaller screens */
+  width: 100%; /* Full width for smaller screens */
+}
 
-  /* Responsive adjustments */
-  @media screen and (min-width: 768px) {
-    .patient-card {
-      flex-direction: row; /* Adjusted for larger screens */
-    }
-  
-    .patient-card .patient-details-sidebar {
-      left: 0; /* Bring sidebar back to the screen for larger screens */
-    }
+.maincontainer{
+  display: flex;
+  justify-content: center;
+  flex-wrap:wrap;
+}
+
+.close-icon{
+  cursor: pointer;
+  font-size: 30px;
+}
+
+/* Add responsive adjustments for larger screens */
+@media screen and (min-width: 768px) {
+  .patient-card {
+    flex-direction: row; /* Adjusted for larger screens */
   }
-  
+
+  .patient-card .patient-details-sidebar {
+    left: 0; /* Bring sidebar back to the screen for larger screens */
+  }
+}
+
+/* Add additional styles for responsiveness as needed */
+
+@media only screen and (max-width: 900px) {
+  .patient-card {
+    min-width: 100%;
+  }
+}

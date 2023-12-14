@@ -2,7 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Login from "./Components/Registration/Login";
 import Signup from "./Components/Registration/Signup";
-import Dashboard from "./Components/Pages/Dashboard";
+import Dashboard from "./Components/dashboard/Dashboard";
 import Header from "./Components/Header";
 import Home from "./Components/Pages/Home";
 import RegisteredPatients from "./Components/Pages/RegisteredPatients";

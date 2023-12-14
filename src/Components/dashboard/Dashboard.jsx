@@ -1,5 +1,4 @@
-import "../../Assets/Styles/Dashboard.css";
-
+import "../../Assets/Styles/dashboard.css";
 
 const Dashboard = () => {
  
