@@ -4,6 +4,7 @@ import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
 import logo from "../../Assets/Images/Logo.png"; // Import the logo image
 import { useState } from "react"; // Import the useState hook for managing state
 import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
+import axios from "axios"; // Import Axios for API requests
 
 // Functional component for the Login page
 const Login = () => {
@@ -12,30 +13,39 @@ const Login = () => {
 
   // Functions to show toast notifications for login success and failure
   const notifyError = () => toast.error("Invalid Number or Password");
-  const notifySuccess = () => toast.success("Successfully login");
+  const notifySuccess = () => toast.success("Successfully logged in");
 
   // State variables to store mobile number and password
-  const [MobileNumber, setMobileNumber] = useState();
-  const [Password, setPassword] = useState();
-
-  // Retrieve stored mobile number and password from local storage
-  const MobileNumberData = localStorage.getItem("mobile-number");
-  const PasswordData = localStorage.getItem("password");
+  const [MobileNumber, setMobileNumber] = useState("");
+  const [Password, setPassword] = useState("");
 
   // Function to handle form submission
-  const SubmitData = (e) => {
+  const SubmitData = async (e) => {
     e.preventDefault();
 
-    // Check if entered mobile number and password match stored values
-    if (MobileNumber === MobileNumberData || Password === PasswordData) {
-      console.log("success");
-      notifySuccess(); // Show success toast notification
-      // Redirect to the dashboard after a delay
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 2000);
-    } else {
-      // Show error toast notification for invalid credentials
+    try {
+      // Make an API call to your login endpoint with user credentials
+      const response = await axios.post(" http://13.126.14.109:4000/user/login", {
+        mobile: MobileNumber,
+        password: Password,
+      });
+
+      // Assuming your API returns a success status
+      if (response.status === 200) {
+        console.log("success");
+        notifySuccess(); // Show success toast notification
+        // Redirect to the dashboard after a delay
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      } else {
+        // Show error toast notification for invalid credentials
+        notifyError();
+        console.log("error hai bhai");
+      }
+    } catch (error) {
+      // Handle API call errors (e.g., network issues, server errors)
+      console.error("API call error:", error);
       notifyError();
     }
   };
@@ -43,7 +53,7 @@ const Login = () => {
   // JSX rendering for the Login component
   return (
     <div className="Main-container">
-        <ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -54,7 +64,8 @@ const Login = () => {
         draggable
         pauseOnHover
         theme="colored"
-         /> {/* Container for displaying toast notifications */}
+      />{" "}
+      {/* Container for displaying toast notifications */}
       <section className="section">
         <div className="logo">
           <img src={logo} className="logo" alt="" /> {/* Display the logo */}
@@ -86,11 +97,13 @@ const Login = () => {
               <div className="forget">
                 <label>
                   <input type="checkbox" /> Remember Me{" "}
-                  <Link href="#">Forget Password</Link>
+                  <Link to="#">Forget Password</Link>
                 </label>
               </div>
               {/* Submit button for the login form */}
-              <button type="submit" className="btn-login">Log in</button>
+              <button type="submit" className="btn-login">
+                Log in
+              </button>
               {/* Link to the registration page */}
               <div className="register">
                 <p>
