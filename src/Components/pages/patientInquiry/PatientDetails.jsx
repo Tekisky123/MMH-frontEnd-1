@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PatientForm from './PatientForm'
-import "../../../Assets/Styles/patientDetails.css"
+import "../../../Assets/Styles/PatientDetails.css"
 import CareTaker from './CareTaker';
 import DiseaseDetails from './DiseaseDetails';
 

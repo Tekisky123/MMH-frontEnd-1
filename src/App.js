@@ -5,8 +5,10 @@ import Signup from "./Components/Registration/Signup"
 import Dashboard from "./Components/dashboard/Dashboard"
 // import Dashboard from './Components/Pages/Dashboard';
 import Header from './Components/Header';
-import Home from './Components/Pages/Home';
-import RegisteredPatients from './Components/Pages/RegisteredPatients';
+import Home from './Components/pages/Home';
+import RegisteredPatients from './Components/pages/RegisteredPatients';
+import PatientDetails from './Components/pages/patientInquiry/PatientDetails';
+import NewPatientDetails from './Components/pages/newPatient/NewPatientDetails';
 function App() {
   const location = useLocation()
 
@@ -26,6 +28,8 @@ function App() {
         <Route path="/home" element={<Home/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/register" element={<RegisteredPatients/>} />
+        {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
+        <Route path="/addPatient" element={<NewPatientDetails/>} />
       </Routes>
     </div>
   );

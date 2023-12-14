@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../Assets/Styles/Header.css";
-import Home from "./Pages/Home";
-import Dashboard from "./Pages/Dashboard";
+import Home from "./pages/Home";
+import Dashboard from "../Components/dashboard/Dashboard";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +38,7 @@ const Header = () => {
         <li className={activeTab === "new-patient" ? "active" : ""}>
           <Link
             onClick={() => handleTabClick("new-patient")}
-            href="#new-patient"
+            to="/addPatient"
           >
             New Patient
           </Link>

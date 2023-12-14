@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react'
+ // accordian 1 code start
+import "../../../Assets/Styles/Dashboard.css"
+import PatientForm from '../patientInquiry/PatientForm';
+import CareTaker from '../patientInquiry/CareTaker';
+import DiseaseDetails from '../patientInquiry/DiseaseDetails';
+// import "../../../Assets/Styles/NewPatientDetails.css"
 
-import ReactDOM from "react-dom"
-import { useForm } from "react-hook-form"
-
-// import { useState } from "react";
-// import React from 'react'  
-
-
-const PatientForm = () => {
-
+const NewPatientDetails = () => {
 
   const countries=[  
     {  
@@ -910,129 +908,96 @@ const PatientForm = () => {
     }
  ]
 
- const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
-//   } = useForm<Inputs>()
+  const [country, setCountry] = useState([]);
 
-  const onSubmit= (data) =>{ 
-
-   data.state=country
-   
-   console.log(data)
-}
-console.log(register)
+   // accordian 1 code end
+  return (<>
+<div className='main-Div'>
   
+</div>
+{/* <PatientForm/> */}
 
-  const [country, setCountry] = useState('');
+  {/* <div className="accordion">
+      <article>
+        <input id="article1" type="radio" name="articles" defaultChecked />
+        <label htmlFor="article1">
+          <h2>Title 1</h2>
+        </label>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur veritatis fugiat possimus hic doloremque sint reiciendis? Quasi beatae explicabo qui quod atque a iste. Explicabo inventore quo expedita tempore amet!
+        </div>
+      </article>
+
+      <article>
+        <input id="article2" type="radio" name="articles" />
+        <label htmlFor="article2">
+          <h2>Title 2</h2>
+        </label>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur veritatis fugiat possimus hic doloremque sint reiciendis? Quasi beatae explicabo qui quod atque a iste. Explicabo inventore quo expedita tempore amet!
+        </div>
+      </article>
+
+      <article>
+        <input id="article3" type="radio" name="articles" />
+        <label htmlFor="article3">
+          <h2>Title 3</h2>
+        </label>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur veritatis fugiat possimus hic doloremque sint reiciendis? Quasi beatae explicabo qui quod atque a iste. Explicabo inventore quo expedita tempore amet!
+        </div>
+      </article>
+
+      <article>
+        <input id="article4" type="radio" name="articles" />
+        <label htmlFor="article4">
+          <h2>Title 4</h2>
+        </label>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur veritatis fugiat possimus hic doloremque sint reiciendis? Quasi beatae explicabo qui quod atque a iste. Explicabo inventore quo expedita tempore amet!
+        </div>
+      </article>
+    </div> */}
 
 
-    
-  return (
-    <div className='mainForm'>
-            <form onSubmit={handleSubmit(onSubmit)} className="form-div">
-        <h2>Please fill out all information, so that we may better server you.</h2>
+    <div style={{margin:"4rem 2rem"}}>
+    <div className="acc-kontainer">
+        <div>
+          <input type="radio" name="acc" id="acc1" defaultChecked />
+          <label htmlFor="acc1"><i className="fa-solid fa-user"></i> Patient Details</label>
+          <div className="acc-body">
+            <PatientForm/>
+          </div>
 
-        <div className="form-div">
-          <span for="full_name">Patient Full Name</span>
-          <input type="text" className="form-input"  placeholder="First Name" {...register('full_name',{required:true})}/>
-          <span className="help-block"></span>
-        </div> 
-
-
-        <div className="form-div">
-          <span for="phone_number">Patient Phone Number</span>
-          <input type="tel" className="form-input" {...register('phone_number',{required:true})} placeholder="+1-416-967-1111"/>
-          <span className="help-block"></span>
+        </div>
+        <div>
+          <input type="radio" name="acc" id="acc2" />
+          <label htmlFor="acc2"><i className="fa fa-heart"></i> Patient DEtails</label>
+          <div className="acc-body">
+         {/*  */}
+          </div>
+        </div>
+        <div>
+          <input type="radio" name="acc" id="acc3" />
+          <label htmlFor="acc3"><i className="fa fa-music"></i> Care Taker</label>
+          <div className="acc-body">
+            {/*  */}
+            <CareTaker/>
+          </div>
         </div>
 
-        <div className="form-div">
-          <span for="aadhar_number">Aadhar Number</span>
-          <input type="tel" className="form-input" {...register('aadhar_number',{required:true})} placeholder="5416-5967-1111"/>
-          <span className="help-block"></span>
+        <div>
+          <input type="radio" name="acc" id="acc4" />
+          <label htmlFor="acc4"><i className="fa fa-music"></i> Disease Details</label>
+          <div className="acc-body">
+            {/*  */}
+            <DiseaseDetails/>
+          </div>
         </div>
-
-        <div className="form-div">
-          <span for="gender">Patient Gender</span>
-          <select name="gender" {...register('gender',{required:true})} className='form-input'>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-          <span className="help-block"></span>
-        </div>
-
-
-        <div className="form-div">
-          <span for="age">Age</span>
-          <input type="number" className="form-input" {...register('age',{required:true})} placeholder="Age" min="1" max="110" />
-          <span className="help-block"></span>
-        </div>  
-
-        <div className="form-div">
-          <span for="marital-status">Marital Status</span>
-          <select name="marital" {...register('marital',{required:true})} className='form-input'>
-          <option value="Male">marriede</option>
-          <option value="Female">single</option>
-        </select>
-          <span className="help-block"></span>
-        </div>
-
-        <div className="form-div">
-          <span for="state">State</span>
-          <select        
-           value={country}
-        onChange={(e) => {
-          setCountry([e.target.value]);
-        }}
-       name="state"  className='form-input'>
-             {countries.map((item, index) => {
-          return (
-            <option key={index} value={index}>
-              {item.state}
-            </option>
-          );
-        })}
-        </select>
-   
-          <span className="help-block"></span>
-        </div>
-
-        <div className="form-div">
-          <span for="district">District</span>
-          <select {...register('district')}  name="district"  {...register('district',{required:true})}  className='form-input'>
-        {countries[country] &&
-          countries[country].districts.map((item, index) => {
-            return <option value={item}>{item}</option>;
-          })}
-      </select>
-          <span className="help-block"></span>
-        </div>
-
-        <div className="form-div">
-          <span for="Taluka">Taluka</span>
-          <input type="text" className="form-input" placeholder="Taluka" {...register('Taluka',{required:true})}/>
-          <span className="help-block"></span>
-        </div>
-
-        <div className="form-div">
-          <span for="Pincode">Pincode</span>
-          <input type="tel" className="form-input" placeholder="Pincode" {...register('Pincode',{required:true})}/>
-          <span className="help-block"></span>
-        </div>
-
-          <div className="form-div">
-          <span for="Address">Patient Full Address</span>
-          <input type="text" className="form-input" placeholder="Full Address" {...register('Address',{required:true})}  />
-          <span className="help-block"></span>
-        </div> 
-
-        <button className="full-width-btn form-input" type="submit">Next</button>
-      </form>
+      </div>
     </div>
-  )
+
+     </>)
 }
 
-export default PatientForm
+export default NewPatientDetails
