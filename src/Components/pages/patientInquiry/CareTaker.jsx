@@ -15,13 +15,13 @@ const CareTaker = () => {
 
     <div className="form-div">
       <span for="phone_number1">Phone Number 1</span>
-      <input type="tel" className="form-input" id="phone_number1" placeholder="+1-416-967-1111"/>
+      <input type="number" className="form-input" id="phone_number1" placeholder="+1-416-967-1111"/>
       <span className="help-block"></span>
     </div>
 
     <div className="form-div">
       <span for="phone_number2">Phone Number 2</span>
-      <input type="tel" className="form-input" id="phone_number2" placeholder="+1-416-967-1111"/>
+      <input type="number" className="form-input" id="phone_number2" placeholder="+1-416-967-1111"/>
       <span className="help-block"></span>
     </div>
 
