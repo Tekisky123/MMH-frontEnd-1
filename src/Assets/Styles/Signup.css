@@ -1,4 +1,3 @@
-
 .Main-container {
   display: flex;
   justify-content: center;
@@ -8,16 +7,26 @@
 }
 
 .section {
-  /* background-image: url(../../Images//background-1.jpg); */
-  /* border: 2px solid blue; */
+  background-image: url(../Images//background-1.jpg);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* background-color: #5759bbcc; */
+  background-color: #5759bbcc;
   background-position: center;
   background-size: cover;
 }
+/* .section {
+   background-image: url(../../Images//background-1.jpg);
+   border: 2px solid blue; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #5759bbcc; 
+  background-position: center;
+  background-size: cover;
+} */
 
 .form-box-main {
   position: relative;
