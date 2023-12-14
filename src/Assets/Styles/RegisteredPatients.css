@@ -5,6 +5,7 @@
   border-radius: 8px;
   margin: 20px;
   padding: 30px;
+  width: 500px;
   height: 280px;
   box-shadow: 1px 1px 8px black;
   background-color: #fff;
@@ -20,8 +21,8 @@
     /* border: 2px solid black; */
     height: 50px;
     position: absolute;
-    right: 150px;
-    top: 280px;
+    left: 160px;
+    top: 480px;
   }
   
   .patient-card  {
@@ -53,6 +54,7 @@
     border-radius: 10px;
     color: white;
     border: none;
+    width: 100px;
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
@@ -64,6 +66,22 @@
     right: 10px;
     cursor: pointer;
   }
+  .btn-register-status{
+    background-color: #4caf50;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    position: absolute;
+    top: -150px;
+    right: -100px;
+    cursor: pointer;
+  }
   
   .patient-card input {
     margin-top: 10px; /* Adjusted for spacing */
@@ -73,8 +91,9 @@
     position: fixed;
     right: -300px; /* Initial position off-screen */
     top: 0;
-    width: 600px;
+    width: 1200px;
     height: 100%;
+    overflow: auto;
     background-color: #f2f2f2;
     padding: 20px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* Adjusted for right side */
@@ -84,26 +103,41 @@
   .patient-card .close-icon {
     position: absolute;
     top: 10px;
-    right: 10px;
+    position: sticky;
+    left: 1200px;
     font-size: 20px;
     cursor: pointer;
   }
 
   .patient-card table {
-    width: 100%;
+    width: 96%;
+    
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 80px;
     font-size: 16px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     background-color: #fff;
   }
+  .table-heading{
+    position: relative;
+    width: 300px;
+    /* border: 2px solid red; */
+    top: 50px;
+    left: 450px;
+    margin-top: 50px;
+  }
+  .file-upload-or-not {
+    border: 2px solid red;
+    margin-top: 50px;
+  }
   
   .patient-card th, .patient-card td {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: left;
+
   }
   
   .patient-card th {
@@ -184,6 +218,57 @@
   .patient-card .file-actions label:hover {
     background-color: #45a049;
   }
+
+
+ /* Add these styles to your existing CSS file */
+
+/* Styles for right-side status sidebar */
+.patient-status-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  padding: 20px;
+  width: 600px; /* Adjust the width as needed */
+  background-color: #fff; /* Set the background color */
+  box-shadow: -5px 0 5px rgba(0, 0, 0, 0.2); /* Add a shadow to create separation from the main content */
+  overflow-y: auto; /* Enable vertical scrolling if the content is too long */
+  z-index: 1000; /* Set a higher z-index to ensure it appears above other elements */
+  transition: transform 0.3s ease-in-out; /* Add transition effect for smooth animation */
+}
+
+/* Styles for close icon in right-side status sidebar */
+.patient-status-sidebar .close-icon {
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+/* Styles for right-side status sidebar content */
+.patient-status-sidebar h2 {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.patient-status-sidebar table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.patient-status-sidebar th, .patient-status-sidebar td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Add additional styles as needed */
+
+
+/* Add additional styles as needed */
+
   /* Responsive adjustments */
   @media screen and (min-width: 768px) {
     .patient-card {
