@@ -56,3 +56,9 @@
     background-color: #0077a3;
   }
   
+
+  .error-message{
+    color: red;
+    font-size: 13px;
+    font-weight: bold;
+  }
