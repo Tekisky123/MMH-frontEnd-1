@@ -259,19 +259,19 @@ const RegisteredPatients = () => {
                   <tbody>
                     <tr>
                       <td>ID</td>
-                      <td></td>
+                      <td>{item.patientDetails._id}</td>
                     </tr>
                     <tr>
                       <td>Name</td>
-                      <td></td>
+                      <td>{item.patientDetails.name}</td>
                     </tr>
                     <tr>
                       <td>Gender</td>
-                      <td></td>
+                      <td>{item.patientDetails.sex}</td>
                     </tr>
                     <tr>
                       <td>Age</td>
-                      <td></td>
+                      <td>{item.patientDetails.age}</td>
                     </tr>
                     <tr>
                       <td>Document</td>

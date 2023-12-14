@@ -55,6 +55,10 @@
   font-size: 30px;
 }
 
+.patient-details-sidebar {
+  
+}
+
 /* Add responsive adjustments for larger screens */
 @media screen and (min-width: 768px) {
   .patient-card {
