@@ -1,7 +1,7 @@
 
 .section {
   display: flex;
-  background-image: url(../Images/background-1.jpg);
+  /* background-image: url(../Images/background-1.jpg); */
   justify-content: center;
   align-items: center;
   min-height: 100vh;

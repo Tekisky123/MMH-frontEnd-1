@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
  // accordian 1 code start
-import "../../../Assets/Styles/Dashboard.css"
+import "../../../Assets/Styles/dashboard.css"
 import PatientForm from '../patientInquiry/PatientForm';
 import CareTaker from '../patientInquiry/CareTaker';
 import DiseaseDetails from '../patientInquiry/DiseaseDetails';

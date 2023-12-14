@@ -105,6 +105,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
-
-
+export default Login; // Export the Login component as the default export
