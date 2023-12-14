@@ -171,13 +171,13 @@
   box-sizing: border-box;
 }
 
-.main-Div {
+/* .main-Div {
   font-family: 'Open Sans', sans-serif;
   background-color: #333;
   color: #fff;
   text-align: center;
   padding: 3em 1em;
-}
+} */
 
 .accordion {
   max-width: 420px;
