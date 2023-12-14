@@ -57,13 +57,13 @@ const Header = () => {
 
         {/* Navigation tab for "New Patient" */}
         <li
-          className={activeTab === "new-patient" ? "active" : ""}
+          className={activeTab === "addPatient" ? "active" : ""}
           style={{
-            color: activeTab === "new-patient" ? "black" : "inherit",
-            textDecoration: activeTab === "new-patient" ? "underline" : "none",
+            color: activeTab === "addPatient" ? "black" : "inherit",
+            textDecoration: activeTab === "addPatient" ? "underline" : "none",
           }}
         >
-          <Link onClick={() => handleTabClick("new-patient")} to="/new-patient">
+          <Link onClick={() => handleTabClick("addPatient")} to="/addPatient">
             New Patient
           </Link>
         </li>
@@ -77,6 +77,7 @@ const Header = () => {
           }}
         >
           <Link
+          
             onClick={() => handleTabClick("registered-patients")}
             to="/registered-patients"
           >
