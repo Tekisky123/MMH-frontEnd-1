@@ -972,7 +972,7 @@ const NewPatientDetails = () => {
         </div>
         <div>
           <input type="radio" name="acc" id="acc2" />
-          <label htmlFor="acc2"><i className="fa fa-heart"></i> Patient DEtails</label>
+          <label htmlFor="acc2"><i className="fa fa-heart"></i> Patient Details</label>
           <div className="acc-body">
          {/*  */}
           </div>
