@@ -57,7 +57,7 @@ const DiseaseDetails = () => {
 
     <div className="form-div">
       <span for="phone_number">Phone Number </span>
-      <input type="tel" className="form-input" id="phone_number" placeholder="+1-416-967-1111"/>
+      <input type="number" className="form-input" id="phone_number" placeholder="+1-416-967-1111"/>
       <span className="help-block"></span>
     </div>
 
