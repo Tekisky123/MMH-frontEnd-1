@@ -736,7 +736,7 @@ const PatientForm = () => {
        ]
     },
     {  
-       "state":"Telangana",
+       "state":"numberangana",
        "districts":[  
           "Adilabad",
           "Bhadradri Kothagudem",
@@ -944,13 +944,13 @@ console.log(register)
 
         <div className="form-div">
           <span for="phone_number">Patient Phone Number</span>
-          <input type="tel" className="form-input" {...register('phone_number',{required:true})} placeholder="+1-416-967-1111"/>
+          <input type="number" className="form-input" {...register('phone_number',{required:true})} placeholder="+1-416-967-1111"/>
           <span className="help-block"></span>
         </div>
 
         <div className="form-div">
           <span for="aadhar_number">Aadhar Number</span>
-          <input type="tel" className="form-input" {...register('aadhar_number',{required:true})} placeholder="5416-5967-1111"/>
+          <input type="number" className="form-input" {...register('aadhar_number',{required:true})} placeholder="5416-5967-1111"/>
           <span className="help-block"></span>
         </div>
 
@@ -1019,7 +1019,7 @@ console.log(register)
 
         <div className="form-div">
           <span for="Pincode">Pincode</span>
-          <input type="tel" className="form-input" placeholder="Pincode" {...register('Pincode',{required:true})}/>
+          <input type="number" className="form-input" placeholder="Pincode" {...register('Pincode',{required:true})}/>
           <span className="help-block"></span>
         </div>
 
