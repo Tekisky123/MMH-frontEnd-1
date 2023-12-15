@@ -4,15 +4,15 @@ import Login from "./Components/Registration/Login";
 import Signup from "./Components/Registration/Signup";
 import Dashboard from "./Components/dashboard/Dashboard";
 import Header from "./Components/Header";
-import Home from "./Components/pages/Home";
-import RegisteredPatients from "./Components/pages/RegisteredPatients";
-import PageNotFound from "./Components/pages/PageNotFound";
-import User from "./Components/pages/User";
-import CreateUser from "./Components/pages/CreateUser";
+import Home from "./Components/Pages/Home";
+import RegisteredPatients from "./Components/Pages/RegisteredPatients";
+import PageNotFound from "./Components/Pages/PageNotFound";
+import User from "./Components/Pages/User";
+import CreateUser from "./Components/Pages/CreateUser";
 import "./App.css";
 
 // import PatientDetails from './Components/pages/patientInquiry/PatientDetails';
-import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
+import NewPatientDetails from "./Components/Pages/newPatient/NewPatientDetails";
 function App() {
   const location = useLocation();
 
