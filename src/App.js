@@ -13,34 +13,34 @@ import "./App.css";
 
 // import PatientDetails from './Components/pages/patientInquiry/PatientDetails';
 import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
+import Yojna from "./Components/pages/Yojna";
+import EditUser from "./Components/pages/EditUser";
 function App() {
   const location = useLocation();
 
   const currentRoute = location.pathname;
 
-  console.log(location);
-  console.log(currentRoute);
+  // console.log(location);
+  // console.log(currentRoute);
 
   const routesToHideHeader = ["/", "/signup", "*"]; // Add the routes where you want to hide the header
 
   return (
     <div className="App">
       {!routesToHideHeader.includes(currentRoute) && <Header />}
+      
       <Routes>
         <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/yojna" element={<Yojna />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createuser" element={<CreateUser />} />
         <Route path="/user" element={<User />} />
         <Route path="/registered-patients" element={<RegisteredPatients />} />
-        {/* <Route path="/signup" element={<Signup/>} /> */}
-        {/* <Route path="/home" element={<Home/>} /> */}
-        {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
-        {/* <Route path="/register" element={<RegisteredPatients/>} /> */}
-        {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
         <Route path="/addPatient" element={<NewPatientDetails />} />
+        <Route path="/edituser" element={<EditUser />} />
       </Routes>
     </div>
   );

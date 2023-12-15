@@ -18,6 +18,7 @@ const Login = () => {
   // State variables to store mobile number and password
   const [MobileNumber, setMobileNumber] = useState("");
   const [Password, setPassword] = useState("");
+  const [userType, setuserType] = useState("");
 
   // Function to handle form submission
   const SubmitData = async (e) => {
@@ -25,18 +26,27 @@ const Login = () => {
 
     try {
       // Make an API call to your login endpoint with user credentials
-      const response = await axios.post(" http://13.126.14.109:4000/user/login", {
-        mobile: MobileNumber,
-        password: Password,
-      });
+      const response = await axios.post(
+        " http://13.126.14.109:4000/user/login",
+        {
+          mobile: MobileNumber,
+          password: Password,
+          userType: userType,
+        }
+      );
 
       // Assuming your API returns a success status
       if (response.status === 200) {
         console.log("success");
+        if (userType === "Operator") {
+          window.location.href = "/operatorheader";
+        } else {
+          window.location.href = "/home";
+        }
         notifySuccess(); // Show success toast notification
         // Redirect to the dashboard after a delay
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/home");
         }, 2000);
       } else {
         // Show error toast notification for invalid credentials

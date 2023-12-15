@@ -1,9 +1,9 @@
 import {  NavLink } from "react-router-dom";
-import "../Assets/Styles/Header.css";
+import "../../Assets/Styles/Header.css";
 // import axios from "axios";
 // import { useEffect, useState } from "react";
 
-const Header = () => {
+const OperatorHeader = () => {
   // const [typeData,setTypeData ] = useState()
   // useEffect(() => {
   //   console.log("hello");
@@ -76,30 +76,7 @@ const Header = () => {
               }}
               to="/registered-patients">Registered Patients</NavLink>
           </li>
-          <li>
-            <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
-              to="/user"
-            >
-              User
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
-              to="/dashboard"
-            >
-              DashBoard
-            </NavLink>
-          </li>
+         
          
         </ul>
         <h1 className="logo">
@@ -110,4 +87,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default OperatorHeader;
