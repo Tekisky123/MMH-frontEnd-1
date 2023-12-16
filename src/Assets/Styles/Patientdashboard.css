@@ -172,6 +172,10 @@ input[type="radio"] {
     width: 80%;
     margin: auto;
   }
+  #mainForm{
+    width: 80%;
+    margin: auto;
+  }
   .form-div{
       display: flex;
       flex-direction: column;
