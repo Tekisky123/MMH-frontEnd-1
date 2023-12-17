@@ -58,6 +58,7 @@ function App() {
         <Route path="/yojna" element={<Yojna />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createuser" element={<CreateUser />} />
+        <Route path="/createuser/:editid" element={<CreateUser />} />
         <Route path="/user" element={<User />} />
         <Route path="/registered-patients" element={<RegisteredPatients />} />
        

@@ -69,7 +69,7 @@ const User = () => {
                 {/* Button for editing user data */}
                 <Link
                     className="btn btn-warning me-3 "
-                    to={`/edituser/${user._id}`}
+                    to={`/createuser/${user._id}`}
                   >
                     Edit
                   </Link>

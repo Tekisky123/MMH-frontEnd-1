@@ -3,7 +3,8 @@ import { useData } from "./DataContext";
 import ReactDOM from "react-dom";
 // import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
-import "../../../Assets/Styles/NewPatient.css";
+import "../../../Assets/Styles/Patientdashboard.css";
+import "../../../Assets/Styles/NewPatient.css"
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const AddPatientDetails = () => {
   //   const updateData = useData();
   const [familyMembers, setFamilyMembers] = useState([]);
-  const [status, setStatus] = useState(0);
+  const [status, setStatus] = useState(1);
   console.log("status", status);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
