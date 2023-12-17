@@ -60,5 +60,7 @@
   .error-message{
     color: red;
     font-size: 13px;
-    font-weight: bold;
+    position: relative;
+    bottom: 3px;
+    left: 3px;
   }

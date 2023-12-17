@@ -172,6 +172,10 @@ input[type="radio"] {
     width: 80%;
     margin: auto;
   }
+  #mainForm{
+    width: 80%;
+    margin: auto;
+  }
   .form-div{
       display: flex;
       flex-direction: column;
@@ -372,8 +376,35 @@ input[type="radio"] {
   border-radius: 5px;
   border: 2px solid lightgrey;
 }
+.family-input {    
+  padding: 5px;
+  width: 100%;
+  margin: 5px;
+  border-radius: 5px;
+  border: 2px solid lightgrey;
+}
 .full-width-btn{
   background-color: green;
   color: white;
   margin-top: 20px;
+}
+.deleteBtn{
+  background-color: red;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  /* margin-top: 31px; */
+  vertical-align: bottom;
+}
+.addFamilyBtn{
+  background-color: green;
+  color: white;
+  border: none;
+  /* width: 100%; */
+  padding: 5px;
+  border-radius: 5px;
+  /* margin-top: 31px; */
+  vertical-align: bottom;
 }

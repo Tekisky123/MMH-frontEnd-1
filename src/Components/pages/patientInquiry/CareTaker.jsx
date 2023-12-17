@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form"
-import ReactDOM from "react-dom"
+import { useForm } from "react-hook-form";
+import ReactDOM from "react-dom";
+import { useData } from '../newPatient/DataContext';
 
 const CareTaker = () => {
 
+  const { updateData } = useData();
+  const { data } = useData();
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
-//   } = useForm<Inputs>()
 
-  const onSubmit= (data) =>{ 
+
+  const onSubmit= (careData) =>{ 
    
-   console.log(data)
+    const newData = {  ...data,CareDetails: careData };
+    updateData(newData);
+
+   console.log(careData)
 }
   
   return (

@@ -15,8 +15,8 @@ import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
 import Yojna from "./Components/pages/Yojna";
 import EditUser from "./Components/pages/EditUser";
 import OperatorHeader from "./Components/Registration/OperatorHeader";
+import AddPatientDetails from "./Components/pages/newPatient/AddPatientDetails";
 
-// Main App component
 function App() {
   // Get the current location using the useLocation hook
   const location = useLocation();
@@ -58,8 +58,15 @@ function App() {
         <Route path="/createuser" element={<CreateUser />} />
         <Route path="/user" element={<User />} />
         <Route path="/registered-patients" element={<RegisteredPatients />} />
-        <Route path="/addPatient" element={<NewPatientDetails />} />
+       
         <Route path="/edituser" element={<EditUser />} />
+        {/* <Route path="/signup" element={<Signup/>} /> */}
+        {/* <Route path="/home" element={<Home/>} /> */}
+        {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
+        {/* <Route path="/register" element={<RegisteredPatients/>} /> */}
+        {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
+        {/* <Route path="/addPatient" element={<NewPatientDetails />} /> */}
+        <Route path="/addPatient" element={<AddPatientDetails />} />
       </Routes>
     </div>
   );
