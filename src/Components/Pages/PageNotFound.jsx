@@ -1,7 +1,12 @@
 import React from "react";
 import "../../Assets/Styles/PageNotFound.css"
+import { useNavigate } from "react-router";
+
 
 const PageNotFound = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div className="flex-container">
       <div className="text-center">
@@ -17,7 +22,7 @@ const PageNotFound = () => {
           </span>
         </h1>
         <h3 className="fadeIn">PAGE NOT FOUND</h3>
-        <button type="button" name="button">
+        <button type="button" name="button" onClick={()=>navigate("/home")}>
           Return To Home
         </button>
       </div>

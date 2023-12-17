@@ -11,7 +11,7 @@ import PageNotFound from "./Components/pages/PageNotFound";
 import User from "./Components/pages/User";
 import CreateUser from "./Components/pages/CreateUser";
 import "./App.css";
-import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
+// import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
 import Yojna from "./Components/pages/Yojna";
 import EditUser from "./Components/pages/EditUser";
 import OperatorHeader from "./Components/Registration/OperatorHeader";
