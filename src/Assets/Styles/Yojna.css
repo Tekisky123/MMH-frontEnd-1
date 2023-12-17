@@ -1,0 +1,106 @@
+
+  .app {
+    display: flex;
+    justify-content: space-between;
+    
+    /* background-image: url(../../Assets//Images//indian\ flag.png);
+    background-size: contain;
+    background-repeat: no-repeat; */
+  }
+  
+  .card {
+    width: 400px; /* Increase the width of the card */
+    margin: 10px;
+    padding: 10px;
+    
+  }
+  
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap to the next line */
+    justify-content: space-evenly;
+    gap: 90px;
+    background-color: rgba(184, 181, 181, 0.522);
+    width: 100%;
+    height: 100%;
+  }
+  .details{
+    max-width: 500px;
+    padding: 50px;
+    margin-bottom: 80px;
+    color: black;
+  }
+  .aside-bar {
+    width: 300px;
+    
+    background-color: #a4c639;
+    color: #fff;
+    padding: 20px;
+    margin-top: 80px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    right: -300px; /* Start off-screen to the right */
+    height: 100%;
+    overflow-y: auto;
+    transition: right 0.3s ease-in-out;
+  }
+  .aside-bar img{
+    width: 650px;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card h6 {
+    margin: 10px;
+    position: relative;
+    top: 25px;
+  }
+  
+  .card button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 50px;
+    background-color: #a4c639;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .aside-bar {
+    width: 1000px;
+    background-color: #bcd46cee;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .aside-bar h2 {
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .app {
+      flex-direction: column;
+    }
+  
+    .cards-container {
+      flex-direction: column;
+    }
+  }
+  

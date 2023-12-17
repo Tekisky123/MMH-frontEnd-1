@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../../Assets/Styles/RegisteredPatients.css";
 import check from "../../Assets/Images/check.png";
 import error from "../../Assets/Images/error.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png"
+import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png";
+import UploadDocuments from "../UploadDocuments";
+import ViewMMH from "../ViewMMH";
+import { Document, Page, pdfjs } from "react-pdf";
+import { jsPDF } from "jspdf";
+import generatePDF from 'react-to-pdf';
+import html2pdf from "html2pdf.js";
 
 const RegisteredPatients = () => {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [document, setDocument] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   // const [showDetails, setShowDetails] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
   const [data, setData] = useState([]);
   const [activePatientId, setActivePatientId] = useState(false);
   const [activeStatusId, setActiveStatusId] = useState(false);
-  const [bgColor, setBgColor] = useState("");
-  // const [border, setBorder] = useState("");
+  const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
+  const [refToDownload, setRefToDownload] = useState(null);
+  
 
+  const pdfRefs = data.map(() => React.createRef());
   const baseURL = "http://13.126.14.109:4000/patient/getpatient";
 
   useEffect(() => {
@@ -36,19 +46,23 @@ const RegisteredPatients = () => {
     setActivePatientId(data[index].patientDetails._id);
     setActiveStatusId(null);
     setActiveCardIndex(index);
-    let grey = '#E7E7E7 ';
-    setBgColor(grey);
-    let border = "5px solid green"
-    // setBorder(border)
-    
+    setActiveDocumentId(null);
   };
 
   const handleShowStatus = (index) => {
-    console.log("Show Status clicked");
     setShowStatus(!showStatus);
     // setShowDetails(false);
     setActivePatientId(null);
     setActiveStatusId(data[index]._id);
+    setActiveDocumentId(null);
+    setActiveCardIndex(index);
+  };
+  const handleShowDocument = (index) => {
+    setShowStatus(!showStatus);
+    // setShowDetails(false);
+    setActivePatientId(null);
+    setActiveStatusId(null);
+    setActiveDocumentId(data[index]._id);
     setActiveCardIndex(index);
   };
 
@@ -57,8 +71,41 @@ const RegisteredPatients = () => {
     setShowStatus(false);
     setActivePatientId(false);
     setActiveStatusId(false);
+    setActiveDocumentId(false);
     setActiveCardIndex("");
   };
+
+  const handleCancelFile = (index) => {
+    const updatedFiles = [...files];
+    updatedFiles.splice(index, 1);
+    setFiles(updatedFiles);
+  };
+
+
+  const handleDownloadPDF = (index) => {
+    const elementRef = pdfRefs[index].current;
+
+    if (elementRef) {
+      const options = {
+        margin: 10,
+        filename: "patient_details.pdf",
+        image: { type: "pdf", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
+
+      html2pdf().from(elementRef).set(options).outputPdf((pdf) => {
+        const blob = new Blob([pdf], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "patient_details.pdf";
+        link.click();
+      });
+    } else {
+      console.error("Unable to get the target element.");
+    }
+  };
+
 
   return (
     <>
@@ -66,59 +113,109 @@ const RegisteredPatients = () => {
         {data.map((item, index) => {
           const isDetailsActive = activePatientId === item.patientDetails._id;
           const isStatusActive = activeStatusId === item._id;
+          const isDocumentActive = activeDocumentId === item._id;
           const isCardActive = activeCardIndex === index;
           const cardBackgroundColor = isCardActive ? "#E7E7E7" : "";
-          const cardBorder = isCardActive ? "5px solid green" : "";
-          
+          const cardBorder = isCardActive ? "3px solid #a4c639" : "";
+
           return (
-            <div className="patient-card" style={{background: cardBackgroundColor , border: cardBorder}} key={index}>
+            <div
+              className="patient-card"
+              style={{ background: cardBackgroundColor, border: cardBorder }}
+              key={index}
+              ref={pdfRefs[index]}
+            >
               <div className="patient-data">
-                <h6 className="card-patient-data">ID: {item.patientDetails._id}</h6>
-                <h6 className="card-patient-data">Name: {item.patientDetails.name} </h6>
-                <h6 className="card-patient-data">Gender: {item.patientDetails.sex} </h6>
-                <h6 className="card-patient-data">Age: {item.patientDetails.age} </h6>
+                <div class="table-wrapper">
+                  <table className="patient-table" style={{ border: "none" }}>
+                    <tbody>
+                      <tr>
+                        <td style={{ border: "none" }}>ID:</td>
+                        <td style={{ border: "none" }}>
+                          {item._id}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={{ border: "none" }}>Name:</td>
+                        <td style={{ border: "none" }}>
+                          {item.patientDetails.name}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={{ border: "none" }}>Gender:</td>
+                        <td style={{ border: "none" }}>
+                          {item.patientDetails.sex}
+                        </td>
+                      </tr>
+                      <tr className="patient-table-row">
+                        <td style={{ border: "none" }}>Age:</td>
+                        <td style={{ border: "none" }}>
+                          {item.patientDetails.age}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={{ border: "none" }}>Aadhar No:</td>
+                        <td style={{ border: "none" }}>
+                          {item.patientDetails.aadhar}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
                 <p>
-                  {file ? (
+                  {files.length > 0 ? (
                     <div className="file-upload-or-not">
                       <img
                         src={check}
-                        alt="File Uploaded"
+                        alt="Files Uploaded"
                         className="file-upload-logo"
                       />
-                      <span className="card-file-upload">Documents uploaded</span>
+                      <span className="card-file-upload">
+                        {files.length}{" "}
+                        {files.length === 1 ? "Document" : "Documents"} uploaded
+                      </span>
                     </div>
                   ) : (
                     <div>
-
-                    <div className="file-upload-or-not">
-                      <img
-                        src={error}
-                        alt="File Not Uploaded"
-                        className="file-upload-logo"
+                      <div className="file-upload-or-not">
+                        <img
+                          src={error}
+                          alt="Files Not Uploaded"
+                          className="file-upload-logo"
                         />
-                      <span className="card-file-not-found">Documents not uploaded</span>
-                      
-                    </div>
-                    <div className="data-btn">
-                        <button
-                          className="btn-register-more"
-                          onClick={() =>
-                            handleShowDetails(index)
-                          }
-                        >
-                          More Info
-                        </button>
-                        <button
-                          className="btn-register-status"
-                          onClick={() => handleShowStatus(index)}
-                        >
-                          Status
-                        </button>
+                        <span className="card-file-not-found">
+                          Documents not uploaded
+                        </span>
                       </div>
-                        </div>
+                    </div>
                   )}
                 </p>
+                <div className="data-btn">
+                  <button
+                    className="btn-register-more"
+                    onClick={() => handleShowDetails(index)}
+                  >
+                    More Info
+                  </button>
+                  <button
+                    className="btn-register-status"
+                    onClick={() => handleShowStatus(index)}
+                  >
+                    Status
+                  </button>
+                  <button
+                    className="btn-register-status"
+                    onClick={() => handleShowDocument(index)}
+                  >
+                    Upload Documents
+                  </button>
+                  <button
+                    className="btn-download-pdf"
+                    onClick={() => handleDownloadPDF(index)}                  >
+                    Download PDF
+                  </button>
+                </div>
               </div>
 
               {isDetailsActive && (
@@ -126,7 +223,12 @@ const RegisteredPatients = () => {
                   <span className="close-icon" onClick={handleSidebarClose}>
                     ❌
                   </span>
-                  <h2 className="table-heading">Patient Details <Link className="btn-register-edit"><img src={editlogo} alt="form edit" /></Link></h2>
+                  <h2 className="table-heading">
+                    Patient Details{" "}
+                    {/* <Link className="btn-register-edit">
+                      <img src={editlogo} alt="form edit" />
+                    </Link> */}
+                  </h2>
                   <table>
                     <thead>
                       <tr>
@@ -240,8 +342,16 @@ const RegisteredPatients = () => {
                         <td>{item.diseaseDetail.diagnoseBy}</td>
                       </tr>
                       <tr>
-                        <td>Investigation Done</td>
+                        <td>Investigation Done 1</td>
                         <td>{item.diseaseDetail.investigationDone1}</td>
+                      </tr>
+                      <tr>
+                        <td>Investigation Done 2</td>
+                        <td>{item.diseaseDetail.investigationDone2}</td>
+                      </tr>
+                      <tr>
+                        <td>Investigation Done 3</td>
+                        <td>{item.diseaseDetail.investigationDone3}</td>
                       </tr>
                       <tr>
                         <td>Current Hospital Name</td>
@@ -333,36 +443,7 @@ const RegisteredPatients = () => {
                         <td>Hospital </td>
                         <td>Sample Hospital </td>
                       </tr>
-                      {/* <tr>
-                        <td>Status</td>
-                        <td>{item.diseaseDetail.diagnoseBy}</td>
-                      </tr> */}
-                      {/* <tr>
-                        <td>Investigation Done</td>
-                        <td>{item.diseaseDetail.investigationDone1}</td>
-                      </tr>
-                      <tr>
-                        <td>Current Hospital Name</td>
-                        <td>{item.diseaseDetail.currentHospitalName}</td>
-                      </tr>
-                      <tr>
-                        <td>Address</td>
-                        <td>{item.diseaseDetail.currentHospitalAddress}</td>
-                      </tr>
-                      <tr>
-                        <td>Contact No.</td>
-                        <td>{item.diseaseDetail.currentHospitalContactNo}</td>
-                      </tr>
-                      <tr>
-                        <td>Current Treatment Details </td>
-                        <td>{item.diseaseDetail.currentTreatmentDetail} </td>
-                      </tr>
-                      <tr>
-                        <td>Doctor’s advice for further process</td>
-                        <td>
-                          {item.diseaseDetail.doctorAdviceForFurtherProcess}{" "}
-                        </td>
-                      </tr> */}
+                      <ViewMMH />
                     </tbody>
                   </table>
                 </div>
@@ -373,7 +454,7 @@ const RegisteredPatients = () => {
                   <span className="close-icon" onClick={handleSidebarClose}>
                     ❌
                   </span>
-                  <h2>Document</h2>
+                  <h2>Status</h2>
                   <table>
                     <thead>
                       <tr>
@@ -398,37 +479,38 @@ const RegisteredPatients = () => {
                         <td>Age</td>
                         <td>{item.patientDetails.age}</td>
                       </tr>
-                      <tr>
-                        <td>Document</td>
+                      {/* <tr>
+                        <td>Documents</td>
                         <td>
-                          {file ? (
-                            <>
+                          {files.map((file, idx) => (
+                            <div key={idx}>
                               <img
                                 src={check}
                                 alt="File Uploaded"
                                 className="file-upload-logo"
                               />
-                              <span className="file-upload">File uploaded</span>
-                            </>
-                          ) : (
-                            <>
-                              <img
-                                src={error}
-                                alt="File Not Uploaded"
-                                className="file-upload-logo"
-                              />
-                              <span className="file-not-found">
-                                File not uploaded
+                              <span className="file-upload">
+                                File {idx + 1} uploaded{" "}
+                                <button onClick={() => handleCancelFile(idx)}>
+                                  Cancel
+                                </button>
                               </span>
-                            </>
-                          )}
+                            </div>
+                          ))}
+                          <input
+                            type="file"
+                            onChange={(e) =>
+                              setFiles([...files, e.target.files[0]])
+                            }
+                            multiple
+                          />
                         </td>
-                      </tr>
-                      {/* Add other rows for additional details */}
+                      </tr> */}
                     </tbody>
                   </table>
                 </div>
               )}
+              {isDocumentActive && <UploadDocuments />}
             </div>
           );
         })}
