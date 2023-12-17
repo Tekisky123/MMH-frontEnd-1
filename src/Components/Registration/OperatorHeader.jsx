@@ -20,11 +20,14 @@ const OperatorHeader = () => {
           <li>
             <NavLink
               // Apply styles based on isActive state
-              style={({ isActive }) =>
-                isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {}
-              }
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
               to="/home"
             >
               Home
@@ -32,11 +35,14 @@ const OperatorHeader = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) =>
-                isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {}
-              }
+             style={({ isActive }) => ({
+              color: isActive ? "#a4c639" : "",
+              backgroundColor: isActive ? "white" : "",
+              textDecoration: isActive ? "" : "",
+              // border: isActive ? "1px solid black" : "",
+              padding: isActive ? "8px" : "", // Add padding style here
+              borderRadius: isActive ? "10px" : "", // Add border radius style here
+            })}
               to="/yojna"
             >
               Yojna Details
@@ -44,11 +50,14 @@ const OperatorHeader = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) =>
-                isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {}
-              }
+             style={({ isActive }) => ({
+              color: isActive ? "#a4c639" : "",
+              backgroundColor: isActive ? "white" : "",
+              textDecoration: isActive ? "" : "",
+              // border: isActive ? "1px solid black" : "",
+              padding: isActive ? "8px" : "", // Add padding style here
+              borderRadius: isActive ? "10px" : "", // Add border radius style here
+            })}
               to="/addPatient"
             >
               New Patient
@@ -56,11 +65,14 @@ const OperatorHeader = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) =>
-                isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {}
-              }
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
               to="/registered-patients"
             >
               Registered Patients

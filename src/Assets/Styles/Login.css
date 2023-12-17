@@ -157,3 +157,40 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: translateX(-50%);
   }
 }
+
+/* Add these styles to your existing CSS file or create a new one */
+
+.custom-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  background-color:#e6d799;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid black;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-overlay {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+/* Add more styles as needed */
+

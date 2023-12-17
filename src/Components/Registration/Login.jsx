@@ -5,9 +5,20 @@ import logo from "../../Assets/Images/logo-main.png"; // Import the logo image
 import { useState } from "react"; // Import the useState hook for managing state
 import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
 import axios from "axios"; // Import Axios for API requests
+// import { Modal } from "bootstrap";
+import Modal from "react-modal";
 
 // Functional component for the Login page
 const Login = ({ setUserType }) => {
+  const [showContactAdminModal, setShowContactAdminModal] = useState(false);
+  const openContactAdminModal = () => {
+    setShowContactAdminModal(true);
+  };
+
+  // Function to handle closing the contact admin modal
+  const closeContactAdminModal = () => {
+    setShowContactAdminModal(false);
+  };
   // Initialize the navigation hook from React Router
   const navigate = useNavigate();
 
@@ -116,8 +127,29 @@ const Login = ({ setUserType }) => {
               {/* Link to the registration page */}
               <div className="register">
                 <p>
-                  Don't have an account <Link >Contact Admins</Link>
+                  Don't have an account{" "}
+                  <Link onClick={openContactAdminModal}>Contact Admins</Link>
                 </p>
+                {/* Contact Admin Modal */}
+                <Modal
+                  isOpen={showContactAdminModal}
+                  onRequestClose={closeContactAdminModal}
+                  contentLabel="Contact Admin Modal"
+                  ariaHideApp={false}
+                  className="custom-modal" // Apply custom-modal class for styling
+                  overlayClassName="custom-overlay" // Apply custom-overlay class for styling
+                >
+                  <div className="modal-content">
+                    <h2>Contact Admins</h2>
+                    <p>
+                      Admin Name: <span> Admin Name</span>
+                    </p>
+                    <p>
+                      Mobile Number: <span> Admin's Mobile Number</span>
+                    </p>
+                    <button  className="btn-login" onClick={closeContactAdminModal}> Close</button>
+                  </div>
+                </Modal>
               </div>
             </form>
           </div>

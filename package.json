@@ -14,6 +14,7 @@
     "react-form-hook": "^0.0.1",
     "react-hook-form": "^7.49.2",
     "react-material-ui-form-validator": "^3.0.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.3",
