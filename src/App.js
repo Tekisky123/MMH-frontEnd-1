@@ -16,6 +16,7 @@ import Yojna from "./Components/pages/Yojna";
 import EditUser from "./Components/pages/EditUser";
 import OperatorHeader from "./Components/Registration/OperatorHeader";
 import AddPatientDetails from "./Components/pages/newPatient/AddPatientDetails";
+import Loader from "./common/Loader";
 
 function App() {
   // Get the current location using the useLocation hook
@@ -43,6 +44,7 @@ function App() {
   // JSX rendering for the App component
   return (
     <div className="App">
+      <Loader>
       {/* Display the header based on the current route and user type */}
       {!routesToHideHeader.includes(currentRoute) &&
         (storedUserType === "Operator" ? <OperatorHeader /> : <Header />)}
@@ -68,6 +70,7 @@ function App() {
         {/* <Route path="/addPatient" element={<NewPatientDetails />} /> */}
         <Route path="/addPatient" element={<AddPatientDetails />} />
       </Routes>
+      </Loader>
     </div>
   );
 }

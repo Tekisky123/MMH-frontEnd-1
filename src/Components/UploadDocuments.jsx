@@ -96,7 +96,7 @@ const UploadDocuments = () => {
                   <td className="form-div">
                     <select
                   
-                      className="form-input"
+                      className="form-input1"
                       name="type"
                       value={doc.type}
                       onChange={(e) => handleDocumentChange(index, e)}

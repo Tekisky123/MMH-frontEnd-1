@@ -1,4 +1,82 @@
+.app {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  
+}
 
+.card {
+  width: 100%; /* Adjusted width for responsiveness */
+  max-width: 410px; /* Set maximum width for larger screens */
+  padding: 10px;
+  margin: 20px 0;
+}
+.cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow cards to wrap to the next line */
+  gap: 100px; /* Reduced the gap for better spacing */
+  /* background-color: rgba(184, 181, 181, 0.522); */
+}
+
+.details {
+  max-width: 100%; /* Adjusted max-width for responsiveness */
+  padding: 20px; /* Reduced padding for smaller screens */
+  margin-bottom: 40px; /* Reduced margin for better spacing */
+  color: black;
+}
+
+.aside-bar {
+  width: 100%; /* Adjusted width for responsiveness */
+  max-width: 300px; /* Set maximum width for larger screens */
+  background-color: #bcd46cee;
+  color: #fff;
+  padding: 20px;
+  margin-top: 20px; /* Reduced margin for better spacing */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  right: -100%; /* Start off-screen to the right */
+  height: 100%;
+  overflow-y: auto;
+  transition: right 0.3s ease-in-out;
+}
+
+.aside-bar img {
+  width: 100%; /* Make sure the image is responsive */
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  top: 10px;
+  right: 10px;
+}
+
+.card img {
+  width: 100%;
+  height: auto; /* Allow the image to adjust its height */
+  object-fit: cover;
+}
+
+.card h6 {
+  margin: 10px;
+}
+
+.card button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px; /* Reduced margin for better spacing */
+  background-color: #a4c639;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
   .app {
     display: flex;
     justify-content: space-between;
@@ -7,14 +85,7 @@
     background-size: contain;
     background-repeat: no-repeat; */
   }
-  
-  .card {
-    width: 400px; /* Increase the width of the card */
-    margin: 10px;
-    padding: 10px;
-    
-  }
-  
+
   .cards-container {
     display: flex;
     flex-wrap: wrap; /* Allow cards to wrap to the next line */
@@ -24,83 +95,13 @@
     width: 100%;
     height: 100%;
   }
-  .details{
-    max-width: 500px;
-    padding: 50px;
-    margin-bottom: 80px;
-    color: black;
+  .close-btn{
+    top: 30px;
+    left: 300px;
   }
+
   .aside-bar {
-    width: 300px;
-    
-    background-color: #a4c639;
-    color: #fff;
-    padding: 20px;
-    margin-top: 80px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    top: 0;
-    right: -300px; /* Start off-screen to the right */
-    height: 100%;
-    overflow-y: auto;
-    transition: right 0.3s ease-in-out;
+    max-width: 100%;
+    right: 0; /* Display the sidebar on smaller screens */
   }
-  .aside-bar img{
-    width: 650px;
-  }
-  
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: #fff;
-    cursor: pointer;
-    position: relative;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .card h6 {
-    margin: 10px;
-    position: relative;
-    top: 25px;
-  }
-  
-  .card button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 50px;
-    background-color: #a4c639;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .aside-bar {
-    width: 1000px;
-    background-color: #bcd46cee;
-    color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .aside-bar h2 {
-    margin-bottom: 10px;
-  }
-  
-  @media (max-width: 768px) {
-    .app {
-      flex-direction: column;
-    }
-  
-    .cards-container {
-      flex-direction: column;
-    }
-  }
-  
+}

@@ -1,90 +1,186 @@
-// Import necessary dependencies from React and third-party libraries
-// import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
-import "../../Assets/Styles/Signup.css"; // Import the CSS file for styling
-import { useEffect, useState } from "react"; // Import the useState hook for managing state
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
+import "../../Assets/Styles/Signup.css";
 
-// Functional component for the Signup page
 const CreateUser = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm();
-
   const { _id } = useParams();
   console.log(_id);
 
-  // const baseURL = "http://13.126.14.109:4000/user/getuser";
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    mobile: "",
+    userType: "Please Select Role",
+  });
 
-  const onsubmit = (data) => {
-    console.log(data );
-    console.log("simple ");
-    axios.post("http://13.126.14.109:4000/user/register", data).then((response) => {
-      console.log(response.data);
-    })
-    navigate("/user")
-    reset();
+  const [errors, setErrors] = useState({});
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
-  // JSX rendering for the Signup component
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // Validate first name
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+      isValid = false;
+    }
+
+    // Validate last name
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+      isValid = false;
+    }
+
+    // Validate email
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    }
+
+    // Validate password
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    }
+
+    // Validate mobile
+    if (!formData.mobile.trim()) {
+      newErrors.mobile = "Mobile number is required";
+      isValid = false;
+    }
+
+    // Validate userType (dropdown)
+    if (formData.userType === "Please Select Role") {
+      newErrors.userType = "Please select a role";
+      isValid = false;
+    }
+
+    // Add more specific validation if needed
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const onsubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      axios
+        .post("http://13.126.14.109:4000/user/register", formData)
+        .then((response) => {
+          console.log(response.data);
+          setShowSuccessAnimation(true);
+
+          setTimeout(() => {
+            setShowSuccessAnimation(false);
+            navigate("/user");
+            // Optionally, reset form state here if needed
+          }, 2000);
+        });
+    }
+  };
+
   return (
     <div className="Main-container">
       <section className="section">
         <div className="form-box-user">
           <div className="form-value">
-            <form action="" onSubmit={handleSubmit(onsubmit)}>
+            <form onSubmit={onsubmit}>
               <h2 className="heading">Create User</h2>
-              {/* Input fields for first name and last name */}
               <div className="names">
                 <div className="inputbox name">
                   <input
                     type="text"
                     required
-                    {...register("firstName", { required: true })}
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                   />
-                  <label>First Name</label>
+                  <label>
+                    First Name <span className="error-message">⁕</span>
+                  </label>
+                  {errors.firstName && (
+                    <span className="error">{errors.firstName}</span>
+                  )}
                 </div>
                 <div className="inputbox name">
                   <input
                     type="text"
                     required
-                    {...register("lastName", { required: true })}
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
                   />
-                  <label>Last Name</label>
+                  <label>
+                    Last Name <span className="error-message">⁕</span>
+                  </label>
+                  {errors.lastName && (
+                    <span className="error">{errors.lastName}</span>
+                  )}
                 </div>
               </div>
-              {/* Input fields for email, password, and mobile */}
               <div className="inputbox second-section">
                 <input
                   type="email"
                   required
-                  {...register("email", { required: true })}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
-                <label>Email</label>
+                <label>
+                  Email <span className="error-message">⁕</span>
+                </label>
+                {errors.email && <span className="error">{errors.email}</span>}
               </div>
               <div className="inputbox second-section">
                 <input
                   type="password"
                   required
-                  {...register("password", { required: true })}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
-                <label>Password</label>
+                <label>
+                  Password <span className="error-message">⁕</span>
+                </label>
+                {errors.password && (
+                  <span className="error">{errors.password}</span>
+                )}
               </div>
               <div className="inputbox second-section">
                 <input
                   type="number"
                   required
-                  {...register("mobile", { required: true })}
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
                 />
-                <label>Mobile Number</label>
+                <label>
+                  Mobile Number <span className="error-message">⁕</span>
+                </label>
+                {errors.mobile && (
+                  <span className="error">{errors.mobile}</span>
+                )}
               </div>
-              {/* Dropdown for selecting user role */}
               <div className="role-type">
+                <label htmlFor="">
+                  User Type <span className="error-message">⁕</span>
+                </label>
                 <select
-                  {...register("userType", { required: true })}
-                  className="role-type"
+                  name="userType"
+                  value={formData.userType}
+                  onChange={handleChange}
                 >
                   <option>Please Select Role</option>
                   <option value="Admin">Admin</option>
@@ -92,20 +188,48 @@ const CreateUser = () => {
                   <option value="Operator">Operator</option>
                 </select>
               </div>
-              {/* Button to submit the registration form */}
-              <button
-                className="create btn-login"
-                type="submit"
-                // onClick={() => navigate("/user")}
-              >
+              <button className="create btn-login" type="submit">
                 Create User
               </button>
+              {/* Success Animation */}
+             
             </form>
           </div>
         </div>
+        <div
+                className={` ${
+                  showSuccessAnimation ? "blur-background" : ""
+                }`}
+              >
+                {showSuccessAnimation && (
+                  <div className="success-animation">
+                    <svg
+                      className="checkmark"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 52 52"
+                    >
+                      <circle
+                        className="checkmark__circle"
+                        cx="26"
+                        cy="26"
+                        r="25"
+                        fill="none"
+                      />
+                      <path
+                        className="checkmark__check"
+                        fill="none"
+                        d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                      />
+                    </svg>
+                  </div>
+                )}
+
+                {/* Your existing content goes here */}
+              </div>
       </section>
+      
     </div>
   );
 };
 
-export default CreateUser; // Export the Signup component as the default export
+export default CreateUser;

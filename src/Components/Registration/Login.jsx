@@ -57,11 +57,12 @@ const Login = ({ setUserType }) => {
         // Redirect to the dashboard after a delay
         setTimeout(() => {
           navigate("/home");
-        }, 2000);
+        }, 1000);
       } else {
         // Show error toast notification for invalid credentials
         notifyError();
         console.log("Error occurred");
+        console.log(notifyError);
       }
     } catch (error) {
       // Handle API call errors (e.g., network issues, server errors)
