@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const AddPatientDetails = () => {
   //   const updateData = useData();
   const [familyMembers, setFamilyMembers] = useState([]);
-  const [status, setStatus] = useState(0);
+  const [status, setStatus] = useState(1);
   console.log("status", status);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

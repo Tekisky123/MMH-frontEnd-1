@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 // Functional component for the Signup page
 const CreateUser = () => {
   const navigate = useNavigate();
+  const editid =useParams()
   const { register, handleSubmit, reset } = useForm();
 
   const { _id } = useParams();
@@ -17,12 +18,34 @@ const CreateUser = () => {
 
   // const baseURL = "http://13.126.14.109:4000/user/getuser";
 
+  // useEffect(() => {
+  //   getEditUserDetails()
+  // }, [])
+  
+
+  const getEditUserDetails=(editid)=>{
+    axios.get("http://13.126.14.109:4000/user/getuser/"+editid).then((response) => {
+      console.log(response.data);
+    })
+  }
+
   const onsubmit = (data) => {
     console.log(data );
     console.log("simple ");
-    axios.post("http://13.126.14.109:4000/user/register", data).then((response) => {
+    // if(editid){
+    //   axios.put(`http://13.126.14.109:4000/user/updateuser/${editid}`, data).then((response) => {
+    //   console.log(response.data);
+    // })
+    // }else{
+    //   axios.post("http://13.126.14.109:4000/user/register", data).then((response) => {
+    //   console.log(response.data);
+    // })
+    // }
+
+      axios.post("http://13.126.14.109:4000/user/register", data).then((response) => {
       console.log(response.data);
     })
+
     navigate("/user")
     reset();
 
