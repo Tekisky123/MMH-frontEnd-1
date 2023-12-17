@@ -10,7 +10,7 @@ const Loader = ({ children }) => {
     // Simulate a delay for demonstration purposes
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 800);
+    }, 200);
 
     return () => clearTimeout(timeout);
   }, []);
