@@ -1,13 +1,13 @@
-// Import necessary dependencies from React and third-party libraries
+// Import necessary dependencies
 import { Link, useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
-import logo from "../../Assets/Images/Logo.png"; // Import the logo image
+import logo from "../../Assets/Images/logo-main.png"; // Import the logo image
 import { useState } from "react"; // Import the useState hook for managing state
 import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
 import axios from "axios"; // Import Axios for API requests
 
 // Functional component for the Login page
-const Login = () => {
+const Login = ({ setUserType }) => {
   // Initialize the navigation hook from React Router
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ const Login = () => {
   const notifyError = () => toast.error("Invalid Number or Password");
   const notifySuccess = () => toast.success("Successfully logged in");
 
-  // State variables to store mobile number and password
+  // State variables to store mobile number, password, and user type
   const [MobileNumber, setMobileNumber] = useState("");
   const [Password, setPassword] = useState("");
   const [userType, setuserType] = useState("");
@@ -25,9 +25,9 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Make an API call to your login endpoint with user credentials
+      // Make an API call to the login endpoint with user credentials
       const response = await axios.post(
-        " http://13.126.14.109:4000/user/login",
+        "http://13.126.14.109:4000/user/login",
         {
           mobile: MobileNumber,
           password: Password,
@@ -35,15 +35,14 @@ const Login = () => {
         }
       );
 
-      // Assuming your API returns a success status
+      console.log(response.data.data.userType);
+
       if (response.status === 200) {
-        console.log("success");
-        if (userType === "Operator") {
-          window.location.href = "/operatorheader";
-        } else {
-          window.location.href = "/home";
-        }
+        // Save user type in local storage and update in the parent component
+        localStorage.setItem("userType", response.data.data.userType);
+        setUserType(response.data.data.userType);
         notifySuccess(); // Show success toast notification
+
         // Redirect to the dashboard after a delay
         setTimeout(() => {
           navigate("/home");
@@ -51,7 +50,7 @@ const Login = () => {
       } else {
         // Show error toast notification for invalid credentials
         notifyError();
-        console.log("error hai bhai");
+        console.log("Error occurred");
       }
     } catch (error) {
       // Handle API call errors (e.g., network issues, server errors)
@@ -117,7 +116,7 @@ const Login = () => {
               {/* Link to the registration page */}
               <div className="register">
                 <p>
-                  Don't have an account <Link to={"/Signup"}>Register</Link>
+                  Don't have an account <Link >Contact Admins</Link>
                 </p>
               </div>
             </form>

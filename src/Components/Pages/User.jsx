@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "../../Assets/Styles/User.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// User component to display and manage user data
 const User = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
 
+  // Fetch user data on component mount and whenever data changes
   useEffect(() => {
     getData();
   }, [data]);
 
+  // Delete user data by ID
   const DeleteData = async (id) => {
     await axios.get(`http://13.126.14.109:4000/user/deleteuser/${id}`);
     getData();
   };
 
+  // Fetch user data from the API
   const getData = async () => {
     try {
       setLoader(true);
@@ -29,16 +33,19 @@ const User = () => {
     }
   };
 
+  // React Router hook for navigation
   const navigate = useNavigate();
 
   return (
     <div className="user-table-container">
+      {/* Button to navigate to the Create User page */}
       <button
         className="add-user-button"
         onClick={() => navigate("/createuser")}
       >
         Add User
       </button>
+      {/* Table to display user data */}
       <table className="user-table">
         <thead>
           <tr>
@@ -59,7 +66,13 @@ const User = () => {
               <td>{user.mobile}</td>
               <td>{user.userType}</td>
               <td>
-                <button className="edit-button">Edit</button>
+                {/* Button for editing user data */}
+                <Link
+                    className="btn btn-warning me-3 "
+                    to={`/edituser/${user._id}`}
+                  >
+                    Edit
+                  </Link>
                 <button
                   className="delete-button"
                   onClick={() => DeleteData(user._id)}

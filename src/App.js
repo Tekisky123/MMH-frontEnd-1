@@ -1,3 +1,4 @@
+// Import necessary dependencies from React and third-party libraries
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Login from "./Components/Registration/Login";
@@ -10,28 +11,46 @@ import PageNotFound from "./Components/pages/PageNotFound";
 import User from "./Components/pages/User";
 import CreateUser from "./Components/pages/CreateUser";
 import "./App.css";
-
-// import PatientDetails from './Components/pages/patientInquiry/PatientDetails';
 import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
 import Yojna from "./Components/pages/Yojna";
 import EditUser from "./Components/pages/EditUser";
-function App() {
-  const location = useLocation();
+import OperatorHeader from "./Components/Registration/OperatorHeader";
 
+// Main App component
+function App() {
+  // Get the current location using the useLocation hook
+  const location = useLocation();
   const currentRoute = location.pathname;
 
-  // console.log(location);
-  // console.log(currentRoute);
+  // Function to set the user type in local storage
+  const handleSetUserType = (userType) => {
+    console.log("User Type in App.js:", userType);
+    localStorage.setItem("userType", userType);
+  };
 
-  const routesToHideHeader = ["/", "/signup", "*"]; // Add the routes where you want to hide the header
+  // Define routes where the header should be hidden
+  const routesToHideHeader = ["/", "/signup", "*"];
 
+  // Retrieve the stored user type from local storage
+  const storedUserType = localStorage.getItem("userType");
+
+  // Log the stored user type if available
+  if (storedUserType) {
+    console.log("User Type retrieved from local storage:", storedUserType);
+    // Perform any additional actions with the stored user type if needed
+  }
+
+  // JSX rendering for the App component
   return (
     <div className="App">
-      {!routesToHideHeader.includes(currentRoute) && <Header />}
-      
+      {/* Display the header based on the current route and user type */}
+      {!routesToHideHeader.includes(currentRoute) &&
+        (storedUserType === "Operator" ? <OperatorHeader /> : <Header />)}
+
+      {/* Define routes for the application */}
       <Routes>
         <Route path="*" element={<PageNotFound />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login setUserType={handleSetUserType} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/yojna" element={<Yojna />} />
@@ -46,4 +65,5 @@ function App() {
   );
 }
 
+// Export the App component as the default export
 export default App;

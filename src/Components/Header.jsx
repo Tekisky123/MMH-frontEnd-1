@@ -1,44 +1,30 @@
-import {  NavLink } from "react-router-dom";
+// Import NavLink from react-router-dom and styles from the Header.css file
+import { NavLink } from "react-router-dom";
 import "../Assets/Styles/Header.css";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
 
+// Header component for navigation
 const Header = () => {
-  // const [typeData,setTypeData ] = useState()
-  // useEffect(() => {
-  //   console.log("hello");
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.post("http://13.126.14.109:4000/user/login");
-  //       console.log("hi", response.data.userType);
-  //       setTypeData(response.data.userType);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       // Handle the error, show a message to the user, or retry the request.
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, []);
-  
- 
   return (
+    // Navigation bar with links to different pages
     <nav className="navbar">
       <div className="navbar-container container">
         <input type="checkbox" name="" id="" />
+        {/* Hamburger menu lines for mobile view */}
         <div className="hamburger-lines">
           <span className="line line1"></span>
           <span className="line line2"></span>
           <span className="line line3"></span>
         </div>
+        {/* Menu items with NavLink for each page */}
         <ul className="menu-items">
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
+              // Apply styles based on isActive state
+              style={({ isActive }) =>
+                isActive
                   ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+                  : {}
+              }
               to="/home"
             >
               Home
@@ -46,11 +32,11 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
+              style={({ isActive }) =>
+                isActive
                   ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+                  : {}
+              }
               to="/yojna"
             >
               Yojna Details
@@ -58,31 +44,35 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
+              style={({ isActive }) =>
+                isActive
                   ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+                  : {}
+              }
               to="/addPatient"
             >
               New Patient
             </NavLink>
           </li>
           <li>
-            <NavLink style={({ isActive }) => {
-                return isActive
+            <NavLink
+              style={({ isActive }) =>
+                isActive
                   ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
-              to="/registered-patients">Registered Patients</NavLink>
+                  : {}
+              }
+              to="/registered-patients"
+            >
+              Registered Patients
+            </NavLink>
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
+              style={({ isActive }) =>
+                isActive
                   ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+                  : {}
+              }
               to="/user"
             >
               User
@@ -90,24 +80,22 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
+              style={({ isActive }) =>
+                isActive
                   ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+                  : {}
+              }
               to="/dashboard"
             >
               DashBoard
             </NavLink>
           </li>
-         
         </ul>
-        <h1 className="logo">
-          {/* <img src={logo} alt="" /> */}
-        </h1>
+        <h1 className="logo">{/* Logo image can be added here */}</h1>
       </div>
     </nav>
   );
 };
 
+// Export the Header component as the default export
 export default Header;
