@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 
 const AddPatientDetails = () => {
   //   const updateData = useData();
-
-  const [status, setStatus] = useState(1);
-const navigate = useNavigate()
+  const [familyMembers, setFamilyMembers] = useState([]);
+  console.log("familyMembers",familyMembers)
+  const [status, setStatus] = useState(0);
+  console.log("status", status);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
     phoneNumber: "",
@@ -55,10 +57,18 @@ const navigate = useNavigate()
     taluka: "",
     pincode: "",
     fullAddress: "",
+
+    familyMemberName: "",
+    familyMemberRelation: "",
+    familyMemberAge: "",
+    occupation: "",
+    monthlyIncome: "",
+
     careTakerName: "",
     careTakerNum1: "",
     careTakerNum2: "",
     particulars: "",
+
     diseaseName: "",
     diagnoseDate: "",
     diagnoseBy: "",
@@ -74,18 +84,34 @@ const navigate = useNavigate()
   console.log("formData", formData);
 
   const handleInputChange = (event) => {
-    // const { name, value } = event.target;
-    // setFormData({
-    //   ...formData,
-    //   [name]: value,
-    // });
-    // setErrors({
-    //   ...formData,
-    //   [name]: "",
-    // });
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+  const handleFamilyMemInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const newFamilyMembers = [...familyMembers];
+    newFamilyMembers[index][name] = value;
+    setFamilyMembers(newFamilyMembers);
+  };
+
+  const handleAddMember = () => {
+    setFamilyMembers([
+      ...familyMembers,
+      {
+        familyMemberName: "",
+        familyMemberRelation: "",
+        familyMemberAge: "",
+        occupation: "",
+        monthlyIncome: "",
+      },
+    ]);
+  };
+
+  const handleDeleteMember = (index) => {
+    const newFamilyMembers = [...familyMembers];
+    newFamilyMembers.splice(index, 1);
+    setFamilyMembers(newFamilyMembers);
   };
 
   const handleNext1 = (e) => {
@@ -108,29 +134,50 @@ const navigate = useNavigate()
       if (!formData[field]) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          [field]: "This field is required",
+          [field]: " ",
         }));
         hasError = true;
       }
     });
     console.log("hasError", hasError);
 
-    // if (!hasError) {
-    //   setStatus(status + 1);
-    // }
     if (!hasError) {
-      const allFieldsFilled = requiredFields.every(
-        (field) => !!formData[field]
-      );
-      if (allFieldsFilled) {
-        setStatus(status + 1);
-      } else {
-        // Handle the case where all fields are not filled
-        alert("Please fill out all fields before proceeding to the next step.");
-      }
+      setStatus(status + 1);
     }
   };
   const handleNext2 = (e) => {
+    e.preventDefault();
+    var requiredFields = [
+      "familyMemberName",
+      "familyMemberRelation",
+      "familyMemberAge",
+      "occupation",
+      "monthlyIncome",
+    ];
+
+    let hasError = false;
+
+    console.log(hasError);
+
+    familyMembers.forEach((member, index) => {
+    requiredFields.forEach((field) => {
+      if (!member[field]) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [`${field}_${index}`]: " required",
+        }));
+        hasError = true;
+      }
+    });
+  });
+
+    console.log("hasError", hasError);
+
+    if (!hasError) {
+      setStatus(status + 1);
+    }
+  };
+  const handleNext3 = (e) => {
     e.preventDefault();
     var requiredFields = [
       "careTakerName",
@@ -145,7 +192,7 @@ const navigate = useNavigate()
       if (!formData[field]) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          [field]: "This field is required",
+          [field]: " ",
         }));
         hasError = true;
       }
@@ -155,7 +202,7 @@ const navigate = useNavigate()
       setStatus(status + 1);
     }
   };
-  const handleNext3 = (e) => {
+  const handleNext4 = (e) => {
     e.preventDefault();
     var requiredFields = [
       "diseaseName",
@@ -177,7 +224,7 @@ const navigate = useNavigate()
       if (!formData[field]) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          [field]: "This field is required",
+          [field]: " ",
         }));
         hasError = true;
       }
@@ -1072,59 +1119,67 @@ const navigate = useNavigate()
     // e.preventDefault();
 
     try {
+      const patientDetails = {
+        name: formData.full_name,
+        aadhar: formData.aadharNumber,
+        mobile: formData.phoneNumber,
+        sex: formData.gender,
+        age: formData.age,
+        address: formData.fullAddress,
+        pin: formData.pincode,
+        talukha: formData.taluka,
+        district: formData.district,
+        state: formData.state,
+        maritalstatus: formData.maritalStatus,
+      };
+      const familyDetails = familyMembers.map((member, index) => ({
+  id: index + 1,
+  name: member.familyMemberName,
+  relation: member.familyMemberRelation,
+  age: member.familyMemberAge,
+  occupation: member.occupation,
+  monthlyIncome: member.monthlyIncome,
+}));
 
-      const patientDetails={
-        "name": "Fahad Khan",
-        "aadhar": "12345643532",
-        "mobile": "4325635",
-        "sex": "Male",
-        "age": 30,
-        "address": "123 Main St",
-        "pin": "560001",
-        "talukha": "Sample Talukha",
-        "district": "Sample District",
-        "state": "Sample State",
-        "maritalstatus": "Single"
-      }
-    const familyDetails=[]
+      const careTakerDetails = {
+        name: formData.careTakerName,
+        mobile1: formData.careTakerNum1,
+        mobile2: formData.careTakerNum2,
+        particulars: formData.particulars,
+      };
 
-    const careTakerDetails={
-      "name": "Care Taker",
-      "mobile1": "9876543211",
-      "mobile2": "9876543212",
-      "particulars": "Sample Particulars"
-    }
-
-    const diseaseDetails={
-      "name": "Sample Disease",
-      "diagnoseDate": "2023-01-01",
-      "diagnoseBy": "Dr. Smith",
-      "investigationDone1": "Blood Test",
-      "investigationDone2": "X-Ray",
-      "investigationDone3": "MRI",
-      "currentHospitalName": "Sample Hospital",
-      "currentHospitalAddress": "456 Medical St",
-      "currentHospitalContactNo": "9876543213",
-      "currentTreatmentDetail": "Medication",
-      "doctorAdviceForFurtherProcess": "Follow-up in 2 weeks"
-    }
-  
+      const diseaseDetails = {
+        name: formData.diseaseName,
+        diagnoseDate: formData.diagnoseDate,
+        diagnoseBy: formData.diagnoseBy,
+        investigationDone1: formData.investigation1,
+        investigationDone2: formData.investigation2,
+        investigationDone3: formData.investigation3,
+        currentHospitalName: formData.currentHospitalName,
+        currentHospitalAddress: formData.currentHospitalAddress,
+        currentHospitalContactNo: formData.hospitalNumber,
+        currentTreatmentDetail: formData.currentTreatmentDetails,
+        doctorAdviceForFurtherProcess: formData.doctorAdvice,
+      };
 
       const payload = {
-        "patientDetails":patientDetails,
-        "familyDetail":familyDetails,
-        "careTaker":careTakerDetails,
-        "disease":"Sample Disease",
-        "diseaseDetail":diseaseDetails,
+        patientDetails: patientDetails,
+        familyDetail: familyDetails,
+        careTaker: careTakerDetails,
+        disease: "Sample Disease",
+        diseaseDetail: diseaseDetails,
       };
       const url = "http://13.126.14.109:4000/patient/create";
       const response = await axios.post(url, payload);
 
-      if (response && response.status === 200 || response.data.success===true) {
+      if (
+        (response && response.status === 200) ||
+        response.data.success === true
+      ) {
         toast.success("Patient Created Successfully");
 
         setTimeout(() => {
-            navigate("/registered-patients");
+          navigate("/registered-patients");
         }, 3000);
       } else {
         toast.error("Error While Creating Patient...");
@@ -1135,10 +1190,10 @@ const navigate = useNavigate()
     }
   };
 
-
   const renderProgressBar = () => {
     const steps = [
-      "Patient details",
+      "Patient Details",
+      "Family Details",
       "Care Taker Details",
       "Disease Details",
     ];
@@ -1148,7 +1203,8 @@ const navigate = useNavigate()
           <div
             key={index}
             className={`step ${
-              status === index + 1
+              // status === index + 1
+              status === index
                 ? "active"
                 : status > index + 1
                 ? "completed"
@@ -1164,7 +1220,7 @@ const navigate = useNavigate()
 
   return (
     <div>
-       <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -1180,18 +1236,20 @@ const navigate = useNavigate()
         className="stepper-container"
         style={{ width: "80%", margin: "4rem auto" }}
       >
-
         {renderProgressBar()}
         <form onSubmit={handleSubmit} className="form-div">
-          {status === 1 ? (
+          {status === 0 ? (
             <>
-              <h2>
+              {/* <h2>
                 Please fill out all information, so that we may better server
                 you.
-              </h2>
+              </h2> */}
 
               <div className="form-div">
-                <span for="full_name">Patient Full Name</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="full_name">Patient Full Name</span>
+                  <span className="error-message">⁕</span>
+                </div>
 
                 <input
                   type="text"
@@ -1205,7 +1263,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="phone_number">Patient Phone Number</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="phone_number">Patient Phone Number</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1218,7 +1279,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="aadhar_number">Aadhar Number</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="aadhar_number">Aadhar Number</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1232,6 +1296,7 @@ const navigate = useNavigate()
 
               <div className="form-div">
                 <span for="gender">Patient Gender</span>
+
                 <select
                   name="gender"
                   className="form-input"
@@ -1246,7 +1311,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="age">Age</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="age">Age</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1311,7 +1379,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
+              <div style={{ display: "flex", margin: "0px" }}>
                 <span for="Taluka">Taluka</span>
+                <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1324,7 +1395,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Pincode">Pincode</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Pincode">Pincode</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1337,7 +1411,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Address">Patient Full Address</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Address">Patient Full Address</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1357,12 +1434,137 @@ const navigate = useNavigate()
                 Next
               </button>
             </>
+          ) : status === 1 ? (
+            <>
+              {familyMembers.map((member, index) => (
+                <>
+                  <div key={index}>
+                    <div class="family-container">
+                      <div class="family-item">
+                        <div style={{ display: "flex", margin: "0px" }}>
+                          <span for="full_name">Full Name</span>
+                          <span className="error-message">⁕</span>
+                        </div>
+                        <input
+                          type="text"
+                          className="family-input"
+                          placeholder="First Name"
+                          name="familyMemberName"
+                          value={member.familyMemberName}
+                          onChange={(e) => handleFamilyMemInputChange(index, e)}
+                        />
+                        <div className="error-message">
+                          {errors.familyMemberName}
+                        </div>
+                      </div>
+                      <div class="family-item">
+                        <div style={{ display: "flex", margin: "0px" }}>
+                          <span for="full_name">Relation</span>
+                          <span className="error-message">⁕</span>
+                        </div>
+                        <input
+                          type="text"
+                          className="family-input"
+                          placeholder="Relation"
+                          name="familyMemberRelation"
+                          value={member.familyMemberRelation}
+                          onChange={(e) => handleFamilyMemInputChange(index, e)}
+                        />
+                        <div className="error-message">
+                          {errors.familyMemberRelation}
+                        </div>
+                      </div>
+                      <div class="family-item">
+                        <div style={{ display: "flex", margin: "0px" }}>
+                          <span for="full_name">Age</span>
+                          <span className="error-message">⁕</span>
+                        </div>
+                        <input
+                          type="number"
+                          className="family-input"
+                          placeholder="Age"
+                          name="familyMemberAge"
+                          value={member.familyMemberAge}
+                          onChange={(e) => handleFamilyMemInputChange(index, e)}
+                        />
+                        <div className="error-message">
+                          {errors.familyMemberAge}
+                        </div>
+                      </div>
+                      <div class="family-item">
+                        <div style={{ display: "flex", margin: "0px" }}>
+                          <span for="full_name">Occupation</span>
+                          <span className="error-message">⁕</span>
+                        </div>
+                        <input
+                          type="number"
+                          className="family-input"
+                          placeholder="Occupation"
+                          name="occupation"
+                          value={member.occupation}
+                          onChange={(e) => handleFamilyMemInputChange(index, e)}
+                        />
+                        <div className="error-message">{errors.occupation}</div>
+                      </div>
+                      <div class="family-item">
+                        <div style={{ display: "flex", margin: "0px" }}>
+                          <span for="full_name">monthlyIncome</span>
+                          <span className="error-message">⁕</span>
+                        </div>
+                        <input
+                          type="number"
+                          className="family-input"
+                          placeholder="monthlyIncome"
+                          name="monthlyIncome"
+                          value={member.monthlyIncome}
+                          onChange={(e) => handleFamilyMemInputChange(index, e)}
+                        />
+                        <div className="error-message">
+                          {errors.monthlyIncome}
+                        </div>
+                      </div>
+                      <div class="family-item">
+                        {" "}
+                        <button
+                          type="button"
+                          className="deleteBtn"
+                          onClick={() => handleDeleteMember(index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ))}
+              <div style={{ marginRight: "0px" }}>
+                <button
+                  style={{ width: "fit-content" }}
+                  className="addFamilyBtn"
+                  type="button"
+                  onClick={handleAddMember}
+                >
+                  Add Family Member
+                </button>
+              </div>
+
+              <button
+                className="full-width-btn form-input"
+                // onClick={() => setStatus(3)}
+                onClick={handleNext2}
+              >
+                Next
+              </button>
+            </>
           ) : status === 2 ? (
             <>
               <h2>CareTaker Details</h2>
 
               <div className="form-div">
-                <span for="full_name">Full Name</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="full_name">Full Name</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1375,7 +1577,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="phone_number1">Phone Number 1</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="phone_number1">Phone Number 1</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1388,7 +1593,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="phone_number2">Phone Number 2</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="phone_number2">Phone Number 2</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1401,7 +1609,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="particulars">Particulars</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="particulars">Particulars</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <textarea
                   className="form-input"
                   placeholder="Particulars"
@@ -1414,7 +1625,7 @@ const navigate = useNavigate()
               <button
                 className="full-width-btn form-input"
                 // onClick={() => setStatus(3)}
-                onClick={handleNext2}
+                onClick={handleNext3}
               >
                 Next
               </button>
@@ -1424,7 +1635,10 @@ const navigate = useNavigate()
               <h2>Disease Details</h2>
 
               <div className="form-div">
-                <span for="full_name">Full Name</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="full_name">Full Name</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   required
                   type="text"
@@ -1438,7 +1652,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Diagnose_date">Diagnose Date</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Diagnose_date">Diagnose Date</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="date"
                   className="form-input"
@@ -1451,7 +1668,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Diagnose_Dr">Diagnose by Dr</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Diagnose_Dr">Diagnose by Dr</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1464,7 +1684,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Investigation_1">Investigation Done 1</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Investigation_1">Investigation Done 1</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1477,7 +1700,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Investigation_2">Investigation Done 2</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Investigation_2">Investigation Done 2</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1490,7 +1716,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Investigation_3">Investigation Done 3</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Investigation_3">Investigation Done 3</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1503,7 +1732,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="current_hopital">Current Hospital Name</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="current_hopital">Current Hospital Name</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1518,7 +1750,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="Address">Address</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Address">Address</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="text"
                   className="form-input"
@@ -1533,7 +1768,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="hospitalNumber">Phone Number </span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="hospitalNumber">Phone Number </span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1546,7 +1784,10 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="current_Treatment">Current Treatment Details</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="current_Treatment">Current Treatment Details</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <textarea
                   className="form-input"
                   placeholder="Current Treatment Details"
@@ -1560,9 +1801,12 @@ const navigate = useNavigate()
               </div>
 
               <div className="form-div">
-                <span for="doctor_advice">
-                  Doctor's Advice for further process
-                </span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="doctor_advice">
+                    Doctor's Advice for further process
+                  </span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <textarea
                   className="form-input"
                   placeholder="Enter Doctor Advice"
@@ -1575,7 +1819,7 @@ const navigate = useNavigate()
 
               <button
                 className="full-width-btn form-input"
-                onClick={handleNext3}
+                onClick={handleNext4}
               >
                 Submit
               </button>
