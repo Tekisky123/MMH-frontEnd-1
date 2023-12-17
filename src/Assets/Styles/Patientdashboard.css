@@ -19,11 +19,6 @@
   border-radius: 5px;
   border: 2px solid lightgrey;
 }
-.full-width-btn {
-  background-color: green;
-  color: white;
-  margin-top: 20px;
-}
 
 .body {
   background-color: #866aea;
@@ -187,11 +182,6 @@ input[type="radio"] {
     margin: 5px 0px;
     border-radius: 5px;
     border: 2px solid lightgrey;
-  }
-  .full-width-btn {
-    background-color: green;
-    color: white;
-    margin-top: 20px;
   }
   
   .body {
@@ -387,6 +377,13 @@ input[type="radio"] {
   background-color: green;
   color: white;
   margin-top: 20px;
+  width: 50%;
+}
+.previewBtn{
+  background-color: #ffc107;
+  color: white;
+  margin-top: 20px;
+  width: 50%;
 }
 .deleteBtn{
   background-color: red;
@@ -395,7 +392,7 @@ input[type="radio"] {
   width: 100%;
   padding: 5px;
   border-radius: 5px;
-  /* margin-top: 31px; */
+  margin-top: 34px;
   vertical-align: bottom;
 }
 .addFamilyBtn{

@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 const AddPatientDetails = () => {
   //   const updateData = useData();
   const [familyMembers, setFamilyMembers] = useState([]);
-  console.log("familyMembers",familyMembers)
   const [status, setStatus] = useState(0);
   console.log("status", status);
   const navigate = useNavigate();
@@ -19,11 +18,11 @@ const AddPatientDetails = () => {
     full_name: "",
     phoneNumber: "",
     aadharNumber: "",
-    gender: "Male",
+    gender: "empty",
     age: "",
-    maritalStatus: "married",
-    state: 0,
-    district: "",
+    maritalStatus: "empty",
+    state: "empty",
+    district: "empty",
     taluka: "",
     pincode: "",
     fullAddress: "",
@@ -49,11 +48,11 @@ const AddPatientDetails = () => {
     full_name: "",
     phoneNumber: "",
     aadharNumber: "",
-    gender: "male",
+    gender: "empty",
     age: "",
-    maritalStatus: "married",
-    state: 0,
-    district: "",
+    maritalStatus: "empty",
+    state: "empty",
+    district: "empty",
     taluka: "",
     pincode: "",
     fullAddress: "",
@@ -147,6 +146,13 @@ const AddPatientDetails = () => {
   };
   const handleNext2 = (e) => {
     e.preventDefault();
+
+    // if (familyMembers.length === 0) {
+    //   // No family members added, show warning message
+    //   toast.warning("At least one family member required");
+    //   return;
+    // }
+
     var requiredFields = [
       "familyMemberName",
       "familyMemberRelation",
@@ -160,16 +166,16 @@ const AddPatientDetails = () => {
     console.log(hasError);
 
     familyMembers.forEach((member, index) => {
-    requiredFields.forEach((field) => {
-      if (!member[field]) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [`${field}_${index}`]: " required",
-        }));
-        hasError = true;
-      }
+      requiredFields.forEach((field) => {
+        if (!member[field]) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [`${field}_${index}`]: " required",
+          }));
+          hasError = true;
+        }
+      });
     });
-  });
 
     console.log("hasError", hasError);
 
@@ -1133,13 +1139,13 @@ const AddPatientDetails = () => {
         maritalstatus: formData.maritalStatus,
       };
       const familyDetails = familyMembers.map((member, index) => ({
-  id: index + 1,
-  name: member.familyMemberName,
-  relation: member.familyMemberRelation,
-  age: member.familyMemberAge,
-  occupation: member.occupation,
-  monthlyIncome: member.monthlyIncome,
-}));
+        id: index + 1,
+        name: member.familyMemberName,
+        relation: member.familyMemberRelation,
+        age: member.familyMemberAge,
+        occupation: member.occupation,
+        monthlyIncome: member.monthlyIncome,
+      }));
 
       const careTakerDetails = {
         name: formData.careTakerName,
@@ -1204,11 +1210,7 @@ const AddPatientDetails = () => {
             key={index}
             className={`step ${
               // status === index + 1
-              status === index
-                ? "active"
-                : status > index + 1
-                ? "completed"
-                : ""
+              status === index ? "active" : status > index && "completed"
             }`}
           >
             {step}
@@ -1270,7 +1272,7 @@ const AddPatientDetails = () => {
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="+1-416-967-1111"
+                  placeholder="Phone Number"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
@@ -1286,7 +1288,7 @@ const AddPatientDetails = () => {
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="5416-5967-1111"
+                  placeholder="Aadhar Number"
                   name="aadharNumber"
                   value={formData.aadharNumber}
                   onChange={handleInputChange}
@@ -1295,7 +1297,11 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
+              <div style={{ display: "flex", margin: "0px" }}>
+                
                 <span for="gender">Patient Gender</span>
+                <span className="error-message">⁕</span>
+              </div>
 
                 <select
                   name="gender"
@@ -1303,6 +1309,7 @@ const AddPatientDetails = () => {
                   value={formData.gender}
                   onChange={handleInputChange}
                 >
+                  <option value="empty">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="Other">Other</option>
@@ -1329,13 +1336,18 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
+              <div style={{ display: "flex", margin: "0px" }}>
+
                 <span for="marital-status">Marital Status</span>
+                <span className="error-message">⁕</span>
+              </div>
                 <select
                   name="maritalStatus"
                   className="form-input"
                   value={formData.maritalStatus}
                   onChange={handleInputChange}
                 >
+                  <option value="empty">Select Marital Status</option>
                   <option value="married">Married</option>
                   <option value="single">Single</option>
                 </select>
@@ -1343,13 +1355,18 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
+              <div style={{ display: "flex", margin: "0px" }}>
+
                 <span for="state">State</span>
+                <span className="error-message">⁕</span>
+              </div>
                 <select
                   value={formData.state}
                   onChange={handleInputChange}
                   name="state"
                   className="form-input"
                 >
+                  <option value="empty">Select State</option>
                   {countries.map((item, index) => {
                     return (
                       <option key={index} value={index}>
@@ -1361,13 +1378,18 @@ const AddPatientDetails = () => {
                 {/* <div className="error-message">{errors.state}</div> */}
               </div>
               <div className="form-div">
+              <div style={{ display: "flex", margin: "0px" }}>
+
                 <span for="district">District</span>
+                <span className="error-message">⁕</span>
+              </div>
                 <select
                   name="district"
                   value={formData.district}
                   onChange={handleInputChange}
                   className="form-input"
                 >
+                  <option value="empty">Select District</option>
                   {countries[formData.state] &&
                     countries[formData.state].districts.map((item, index) => (
                       <option key={index} value={item}>
@@ -1379,9 +1401,9 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
-              <div style={{ display: "flex", margin: "0px" }}>
-                <span for="Taluka">Taluka</span>
-                <span className="error-message">⁕</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="Taluka">Taluka</span>
+                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="text"
@@ -1425,14 +1447,16 @@ const AddPatientDetails = () => {
                 />
                 <div className="error-message">{errors.fullAddress}</div>
               </div>
-
-              <button
-                className="full-width-btn form-input"
-                // onClick={() => setStatus(2)}
-                onClick={handleNext1}
-              >
-                Next
-              </button>
+       
+                <button
+                  style={{ float: "inline-end",width:"100%" }}
+                  className="full-width-btn form-input"
+                  // onClick={() => setStatus(2)}
+                  onClick={handleNext1}
+                >
+                  Next
+                </button>
+              
             </>
           ) : status === 1 ? (
             <>
@@ -1497,7 +1521,7 @@ const AddPatientDetails = () => {
                           <span className="error-message">⁕</span>
                         </div>
                         <input
-                          type="number"
+                          type="text"
                           className="family-input"
                           placeholder="Occupation"
                           name="occupation"
@@ -1514,7 +1538,7 @@ const AddPatientDetails = () => {
                         <input
                           type="number"
                           className="family-input"
-                          placeholder="monthlyIncome"
+                          placeholder="Monthly Income"
                           name="monthlyIncome"
                           value={member.monthlyIncome}
                           onChange={(e) => handleFamilyMemInputChange(index, e)}
@@ -1547,14 +1571,21 @@ const AddPatientDetails = () => {
                   Add Family Member
                 </button>
               </div>
-
-              <button
-                className="full-width-btn form-input"
-                // onClick={() => setStatus(3)}
-                onClick={handleNext2}
-              >
-                Next
-              </button>
+              <div style={{ width: "100%" }}>
+                <button
+                  className="previewBtn form-input"
+                  onClick={() => setStatus(0)}
+                >
+                  Previous
+                </button>
+                <button
+                  className="full-width-btn form-input"
+                  // onClick={() => setStatus(3)}
+                  onClick={handleNext2}
+                >
+                  Next
+                </button>
+              </div>
             </>
           ) : status === 2 ? (
             <>
@@ -1584,7 +1615,7 @@ const AddPatientDetails = () => {
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="+1-416-967-1111"
+                  placeholder="Phone Number"
                   name="careTakerNum1"
                   value={formData.careTakerNum1}
                   onChange={handleInputChange}
@@ -1600,7 +1631,7 @@ const AddPatientDetails = () => {
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="+1-416-967-1111"
+                  placeholder="Phone Number"
                   name="careTakerNum2"
                   value={formData.careTakerNum2}
                   onChange={handleInputChange}
@@ -1622,13 +1653,21 @@ const AddPatientDetails = () => {
                 ></textarea>
                 <div className="error-message">{errors.particulars}</div>
               </div>
-              <button
-                className="full-width-btn form-input"
-                // onClick={() => setStatus(3)}
-                onClick={handleNext3}
-              >
-                Next
-              </button>
+              <div style={{ width: "100%" }}>
+                <button
+                  className="previewBtn form-input"
+                  onClick={() => setStatus(1)}
+                >
+                  Previous
+                </button>
+                <button
+                  className="full-width-btn form-input"
+                  // onClick={() => setStatus(3)}
+                  onClick={handleNext3}
+                >
+                  Next
+                </button>
+              </div>
             </>
           ) : status === 3 ? (
             <>
@@ -1636,7 +1675,7 @@ const AddPatientDetails = () => {
 
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
-                  <span for="full_name">Full Name</span>
+                  <span for="full_name">Disease Name</span>
                   <span className="error-message">⁕</span>
                 </div>
                 <input
@@ -1775,7 +1814,7 @@ const AddPatientDetails = () => {
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="+1-416-967-1111"
+                  placeholder="Phone Number"
                   name="hospitalNumber"
                   value={formData.hospitalNumber}
                   onChange={handleInputChange}
@@ -1817,12 +1856,22 @@ const AddPatientDetails = () => {
                 <div className="error-message">{errors.doctorAdvice}</div>
               </div>
 
-              <button
+              <div style={{ width: "100%" }}>
+                <button
+                  className="previewBtn form-input"
+                  onClick={() => setStatus(2)}
+                >
+                  Previous
+                </button>
+                <button
                 className="full-width-btn form-input"
                 onClick={handleNext4}
               >
                 Submit
               </button>
+              </div>
+
+        
             </>
           ) : (
             <></>

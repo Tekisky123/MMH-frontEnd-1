@@ -62,6 +62,7 @@
 .inputbox {
   position: relative;
   margin: 30px 0;
+  background-color: transparent!important;
   border-bottom: 2px solid black;
 }
 
@@ -69,6 +70,8 @@
   position: absolute;
   top: 50%;
   left: 5px;
+  background-color: transparent!important;
+
   transform: translateY(-50%);
   color: black;
   font-size: 1em;
@@ -118,6 +121,7 @@ input:valid ~ label {
   height: 40px;
   border-radius: 20px;
   color: white;
+
   border: none;
   outline: none;
   cursor: pointer;
