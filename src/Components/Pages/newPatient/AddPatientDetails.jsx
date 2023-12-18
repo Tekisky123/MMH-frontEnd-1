@@ -86,14 +86,43 @@ const AddPatientDetails = () => {
     hospitalNumber: "",
     currentTreatmentDetails: "",
     doctorAdvice: "",
+
+    phoneError: "",
+    aadharError: "",
+    
   });
   console.log("formData", formData);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+  
+    switch (name) {
+      case "phoneNumber":
+        const isValidPhone = /^\d{10}$/.test(value);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: isValidPhone ? "" : "Phone number must be 10 digits",
+        }));
+        break;
+  
+      case "aadharNumber":
+        const isValidAadhar = /^\d{12}$/.test(value);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: isValidAadhar ? "" : "Aadhar number must be 12 digits",
+        }));
+        break;
+  
+      // Add more cases for other fields if needed
+  
+      default:
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    }
+  
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
+  
+  
   const handleFamilyMemInputChange = (index, event) => {
     const { name, value } = event.target;
     const newFamilyMembers = [...familyMembers];
@@ -1187,7 +1216,7 @@ const AddPatientDetails = () => {
         disease: "Sample Disease",
         diseaseDetail: diseaseDetails,
         createdBy: CreatedBy,
-        "status": "Active",
+        "status": "Patient Registered",
         referredBy: formData.referredBy,
       };
       const url = "http://13.126.14.109:4000/patient/create";
@@ -1309,7 +1338,7 @@ const AddPatientDetails = () => {
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.phoneNumber}</div>
+                <div className="error-message fontBold">{errors.phoneNumber || errors.phoneError}</div>
               </div>
 
               <div className="form-div">
@@ -1325,7 +1354,7 @@ const AddPatientDetails = () => {
                   value={formData.aadharNumber}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.aadharNumber}</div>
+                <div className="error-message fontBold">{errors.aadharNumber || errors.aadharError}</div>
               </div>
 
               <div className="form-div">
@@ -1336,7 +1365,7 @@ const AddPatientDetails = () => {
                 <input
                   type="number"
                   className="form-input"
-                  placeholder="Aadhar Number"
+                  placeholder="Ration Card Number"
                   name="rationCardNo"
                   value={formData.rationCardNo}
                   onChange={handleInputChange}
@@ -1663,7 +1692,7 @@ const AddPatientDetails = () => {
                   value={formData.careTakerNum1}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.careTakerNum1}</div>
+                <div className="error-message fontBold">{errors.careTakerNum1 || errors.phoneError}</div>
               </div>
 
               <div className="form-div">
@@ -1679,7 +1708,7 @@ const AddPatientDetails = () => {
                   value={formData.careTakerNum2}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.careTakerNum2}</div>
+                <div className="error-message fontBold">{ errors.phoneError}</div>
               </div>
 
               <div className="form-div">
@@ -1862,7 +1891,7 @@ const AddPatientDetails = () => {
                   value={formData.hospitalNumber}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.hospitalNumber}</div>
+                <div className="error-message fontBold">{errors.hospitalNumber || errors.phoneError}</div>
               </div>
 
               <div className="form-div">

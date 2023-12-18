@@ -65,13 +65,16 @@
 
 .error-message {
   color: red;
+  margin: 0px;
   font-size: 13px;
   position: relative;
   bottom: 3px;
   left: 3px;
 }
+.fontBold {
 
-
+  font-weight: bold;
+}
 
 /* Responsive styles */
 

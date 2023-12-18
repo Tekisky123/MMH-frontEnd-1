@@ -11,7 +11,7 @@ const User = () => {
   // Fetch user data on component mount and whenever data changes
   useEffect(() => {
     getData();
-  }, [data]);
+  }, []);
 
   // Delete user data by ID
   const DeleteData = async (id) => {
