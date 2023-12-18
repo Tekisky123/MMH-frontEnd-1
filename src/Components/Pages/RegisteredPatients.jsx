@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import ReactToPdf from "react-to-pdf";
 import "../../Assets/Styles/RegisteredPatients.css";
 import check from "../../Assets/Images/check.png";
 import error from "../../Assets/Images/error.png";
@@ -8,9 +9,13 @@ import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png";
 import UploadDocuments from "../UploadDocuments";
 import ViewMMH from "../ViewMMH";
 import { Document, Page, pdfjs } from "react-pdf";
-import { jsPDF } from "jspdf";
-import generatePDF from 'react-to-pdf';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
+import generatePDF from "react-to-pdf";
 import html2pdf from "html2pdf.js";
+import html2canvas from "html2canvas";
+
 
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -24,11 +29,19 @@ const RegisteredPatients = () => {
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
   const [refToDownload, setRefToDownload] = useState(null);
-  
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [imgView, setImgView] = useState();
+
+  const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
   const baseURL = "http://13.126.14.109:4000/patient/getpatient";
 
+  const pdfRef = useRef();
+  const options = {
+    orientation: "portrait",
+    // Add other options as needed
+  };
   useEffect(() => {
     axios.get(baseURL).then((responce) => {
       console.log(responce.data.result);
@@ -81,34 +94,99 @@ const RegisteredPatients = () => {
     setFiles(updatedFiles);
   };
 
+  // const handleDownloadPDF = async (index, id) => {
+  //   try {
+  //     setIsDownloading(true);
+
+  //     // Create a new jsPDF instance
+  //     const doc = new jsPDF();
+
+  //     // Get the reference to the specific card using the ref
+  //     const cardRef = pdfRefs[index].current;
+
+  //     // Check if the card reference is available
+  //     if (cardRef) {
+  //       // Use html2canvas to capture the card content as an image
+  //       const canvas = await html2canvas(cardRef);
+
+  //       // Convert the canvas to a data URL
+  //       const imgData = canvas.toDataURL("image/png");
+  //       console.log(imgData);
+  //       setImgView(imgData);
+
+  //       // Add the image to the PDF
+  //       // doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height);
+
+  //       // // Save the PDF with a specific filename
+  //       // doc.save(`${id}_patient_details.pdf`);
+  //     } else {
+  //       console.error("Unable to get the target element.");
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred:", error);
+  //   } finally {
+  //     setIsDownloading(false);
+  //   }
+  // };
+  
+  // const handleDownloadPDF = (index) => {
+  //   const doc = new jsPDF();
+  //   const pdfElement = pdfRefs[index].current;
+
+  //   // Ensure that the content is ready before trying to generate PDF
+  //   if (pdfElement) {
+  //     // Calculate width and height based on content size
+  //     const contentWidth = pdfElement.clientWidth;
+  //     const contentHeight = pdfElement.clientHeight;
+
+  //     // Set PDF dimensions
+  //     doc.internal.pageSize.setWidth(contentWidth);
+  //     doc.internal.pageSize.setHeight(contentHeight);
+
+  //     // Generate PDF
+  //     doc.html(pdfElement, {
+  //       callback: function (pdf) {
+  //         pdf.save("patient_details.pdf");
+  //       },
+  //       x: 0,
+  //       y: 0,
+  //     });
+  //   }
+  // };
 
   const handleDownloadPDF = (index) => {
-    const elementRef = pdfRefs[index].current;
-
-    if (elementRef) {
-      const options = {
+    const customPageSize = { width: 300, height: 400 }; // Set your custom page size here
+    const pdfElement = pdfRefs[index].current;
+  
+    // Ensure that the content is ready before trying to generate PDF
+    if (pdfElement) {
+      // Calculate content dimensions
+      const contentWidth = pdfElement.clientWidth;
+      const contentHeight = pdfElement.clientHeight;
+  
+      // Calculate scale factor to fit content within the page
+      const scaleFactor = Math.min(customPageSize.width / contentWidth, customPageSize.height / contentHeight);
+  
+      // Set PDF dimensions
+      const pdfWidth = contentWidth * scaleFactor;
+      const pdfHeight = contentHeight * scaleFactor;
+  
+      // Convert HTML content to a data array using html2pdf
+      html2pdf(pdfElement, {
         margin: 10,
         filename: "patient_details.pdf",
-        image: { type: "pdf", quality: 0.98 },
+        image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      };
-
-      html2pdf().from(elementRef).set(options).outputPdf((pdf) => {
-        const blob = new Blob([pdf], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = "patient_details.pdf";
-        link.click();
-      });
-    } else {
-      console.error("Unable to get the target element.");
+      }).from(pdfElement).save();
     }
   };
-
+  
+  
 
   return (
     <>
+      <img src={imgView} alt="" />
       <div className="maincontainer">
         {data.map((item, index) => {
           const isDetailsActive = activePatientId === item.patientDetails._id;
@@ -120,6 +198,7 @@ const RegisteredPatients = () => {
 
           return (
             <div
+              id={`card-${index + 1}`}
               className="patient-card"
               style={{ background: cardBackgroundColor, border: cardBorder }}
               key={index}
@@ -131,9 +210,7 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td style={{ border: "none" }}>ID:</td>
-                        <td style={{ border: "none" }}>
-                          {item._id}
-                        </td>
+                        <td style={{ border: "none" }}>{item.patientID}</td>
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>Name:</td>
@@ -191,31 +268,35 @@ const RegisteredPatients = () => {
                     </div>
                   )}
                 </p>
-                <div className="data-btn">
-                  <button
-                    className="btn-register-more"
-                    onClick={() => handleShowDetails(index)}
-                  >
-                    More Info
-                  </button>
-                  <button
-                    className="btn-register-status"
-                    onClick={() => handleShowStatus(index)}
-                  >
-                    Status
-                  </button>
-                  <button
-                    className="btn-register-status"
-                    onClick={() => handleShowDocument(index)}
-                  >
-                    Upload Documents
-                  </button>
-                  <button
+
+                {isDownloading === false ? (
+                  <div className="data-btn">
+                    <button
+                      className="btn-register-more"
+                      onClick={() => handleShowDetails(index)}
+                    >
+                      More Info
+                    </button>
+                    <button
+                      className="btn-register-status"
+                      onClick={() => handleShowStatus(index)}
+                    >
+                      Status
+                    </button>
+                    <button
+                      className="btn-register-status"
+                      onClick={() => handleShowDocument(index)}
+                    >
+                      Upload Documents
+                    </button>
+                    <button
                     className="btn-download-pdf"
-                    onClick={() => handleDownloadPDF(index)}                  >
+                    onClick={() => handleDownloadPDF(index)}
+                  >
                     Download PDF
                   </button>
-                </div>
+                  </div>
+                ) : null}
               </div>
 
               {isDetailsActive && (
@@ -388,15 +469,15 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td>Registered Date</td>
-                        <td>{item.diseaseDetail.name}</td>
+                        <td>{item.registeredDate}</td>
                       </tr>
                       <tr>
                         <td>Created by </td>
-                        <td>{item.diseaseDetail.diagnoseDate} </td>
+                        <td>{item.createdBy} </td>
                       </tr>
                       <tr>
                         <td>Status</td>
-                        <td>{item.diseaseDetail.diagnoseBy}</td>
+                        <td>{item.status}</td>
                       </tr>
                       {/* <tr>
                         <td>Investigation Done</td>
