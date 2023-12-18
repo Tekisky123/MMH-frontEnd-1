@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const UploadDoc = () => {
   const [document, setDocument] = useState([]);
+   
 
   const handleDocumentChange = (index, event) => {
     const { name, value } = event.target;

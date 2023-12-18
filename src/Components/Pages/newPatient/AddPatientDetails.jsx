@@ -4,15 +4,17 @@ import ReactDOM from "react-dom";
 // import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
 import "../../../Assets/Styles/Patientdashboard.css";
-import "../../../Assets/Styles/NewPatient.css"
+import "../../../Assets/Styles/NewPatient.css";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AddPatientDetails = () => {
   //   const updateData = useData();
+  const CreatedBy = localStorage.getItem('mobileNumber');
+  console.log("mobileNumber",CreatedBy)
   const [familyMembers, setFamilyMembers] = useState([]);
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(0);
   console.log("status", status);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const AddPatientDetails = () => {
     gender: "empty",
     age: "",
     maritalStatus: "empty",
+    rationCardNo:"",
     state: "empty",
     district: "empty",
     taluka: "",
@@ -44,6 +47,9 @@ const AddPatientDetails = () => {
     hospitalNumber: "",
     currentTreatmentDetails: "",
     doctorAdvice: "",
+
+    createdBy: "",
+    referredBy: "None",
   });
   const [errors, setErrors] = useState({
     full_name: "",
@@ -120,8 +126,11 @@ const AddPatientDetails = () => {
       "full_name",
       "phoneNumber",
       "aadharNumber",
+      "maritalStatus",
       "age",
-      "taluka",
+      "state",
+      "state",
+      "district",
       "pincode",
       "fullAddress",
     ];
@@ -1138,6 +1147,8 @@ const AddPatientDetails = () => {
         district: formData.district,
         state: formData.state,
         maritalstatus: formData.maritalStatus,
+
+        rationCardNo:formData.rationCardNo
       };
       const familyDetails = familyMembers.map((member, index) => ({
         id: index + 1,
@@ -1175,6 +1186,9 @@ const AddPatientDetails = () => {
         careTaker: careTakerDetails,
         disease: "Sample Disease",
         diseaseDetail: diseaseDetails,
+        createdBy: CreatedBy,
+        "status": "Active",
+        referredBy: formData.referredBy,
       };
       const url = "http://13.126.14.109:4000/patient/create";
       const response = await axios.post(url, payload);
@@ -1250,6 +1264,23 @@ const AddPatientDetails = () => {
 
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="referredBy">Referred By</span>
+                  {/* <span className="error-message">⁕</span> */}
+                </div>
+
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="First Name"
+                  name="referredBy"
+                  value={formData.referredBy}
+                  onChange={handleInputChange}
+                />
+                {/* <div className="error-message">{errors.referredBy}</div> */}
+              </div>
+
+              <div className="form-div">
+                <div style={{ display: "flex", margin: "0px" }}>
                   <span for="full_name">Patient Full Name</span>
                   <span className="error-message">⁕</span>
                 </div>
@@ -1298,11 +1329,26 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
-              <div style={{ display: "flex", margin: "0px" }}>
-                
-                <span for="gender">Patient Gender</span>
-                <span className="error-message">⁕</span>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="rationCardNo">Ration Card Number</span>
+                  {/* <span className="error-message">⁕</span> */}
+                </div>
+                <input
+                  type="number"
+                  className="form-input"
+                  placeholder="Aadhar Number"
+                  name="rationCardNo"
+                  value={formData.rationCardNo}
+                  onChange={handleInputChange}
+                />
+                {/* <div className="error-message">{errors.rationCardNo}</div> */}
               </div>
+
+              <div className="form-div">
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="gender">Patient Gender</span>
+                  <span className="error-message">⁕</span>
+                </div>
 
                 <select
                   name="gender"
@@ -1337,11 +1383,10 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
-              <div style={{ display: "flex", margin: "0px" }}>
-
-                <span for="marital-status">Marital Status</span>
-                <span className="error-message">⁕</span>
-              </div>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="marital-status">Marital Status</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <select
                   name="maritalStatus"
                   className="form-input"
@@ -1356,11 +1401,10 @@ const AddPatientDetails = () => {
               </div>
 
               <div className="form-div">
-              <div style={{ display: "flex", margin: "0px" }}>
-
-                <span for="state">State</span>
-                <span className="error-message">⁕</span>
-              </div>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="state">State</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <select
                   value={formData.state}
                   onChange={handleInputChange}
@@ -1379,11 +1423,10 @@ const AddPatientDetails = () => {
                 {/* <div className="error-message">{errors.state}</div> */}
               </div>
               <div className="form-div">
-              <div style={{ display: "flex", margin: "0px" }}>
-
-                <span for="district">District</span>
-                <span className="error-message">⁕</span>
-              </div>
+                <div style={{ display: "flex", margin: "0px" }}>
+                  <span for="district">District</span>
+                  <span className="error-message">⁕</span>
+                </div>
                 <select
                   name="district"
                   value={formData.district}
@@ -1448,16 +1491,15 @@ const AddPatientDetails = () => {
                 />
                 <div className="error-message">{errors.fullAddress}</div>
               </div>
-       
-                <button
-                  style={{ float: "inline-end",width:"100%" }}
-                  className="full-width-btn form-input"
-                  // onClick={() => setStatus(2)}
-                  onClick={handleNext1}
-                >
-                  Next
-                </button>
-              
+
+              <button
+                style={{ float: "inline-end", width: "100%" }}
+                className="full-width-btn form-input"
+                // onClick={() => setStatus(2)}
+                onClick={handleNext1}
+              >
+                Next
+              </button>
             </>
           ) : status === 1 ? (
             <>
@@ -1865,14 +1907,12 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
-                className="full-width-btn form-input"
-                onClick={handleNext4}
-              >
-                Submit
-              </button>
+                  className="full-width-btn form-input"
+                  onClick={handleNext4}
+                >
+                  Submit
+                </button>
               </div>
-
-        
             </>
           ) : (
             <></>

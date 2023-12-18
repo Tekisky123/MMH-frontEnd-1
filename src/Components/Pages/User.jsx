@@ -68,7 +68,7 @@ const User = () => {
               <td>
                 {/* Button for editing user data */}
                 <Link
-                    className="btn btn-warning me-3 "
+                    className="edit-button"
                     to={`/createuser/${user._id}`}
                   >
                     Edit

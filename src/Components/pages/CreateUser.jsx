@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../Assets/Styles/Signup.css";
-import { useForm } from "react-hook-form";
 
 const CreateUser = () => {
   const navigate = useNavigate();
-  const editid =useParams()
-  const { register, handleSubmit, reset } = useForm();
-
   const { _id } = useParams();
   console.log(_id);
 
@@ -23,36 +19,6 @@ const CreateUser = () => {
 
   const [errors, setErrors] = useState({});
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
-  // useEffect(() => {
-  //   getEditUserDetails()
-  // }, [])
-  
-
-  const getEditUserDetails=(editid)=>{
-    axios.get("http://13.126.14.109:4000/user/getuser/"+editid).then((response) => {
-      console.log(response.data);
-    })
-  }
-
-  const onsubmit = (data) => {
-    console.log(data );
-    console.log("simple ");
-    // if(editid){
-    //   axios.put(`http://13.126.14.109:4000/user/updateuser/${editid}`, data).then((response) => {
-    //   console.log(response.data);
-    // })
-    // }else{
-    //   axios.post("http://13.126.14.109:4000/user/register", data).then((response) => {
-    //   console.log(response.data);
-    // })
-    // }
-
-      axios.post("http://13.126.14.109:4000/user/register", data).then((response) => {
-      console.log(response.data);
-    })
-
-    navigate("/user")
-    reset();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -264,6 +230,6 @@ const CreateUser = () => {
       
     </div>
   );
-};}
+};
 
 export default CreateUser;

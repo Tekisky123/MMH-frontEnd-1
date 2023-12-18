@@ -11,6 +11,7 @@ import Modal from "react-modal";
 // Functional component for the Login page
 const Login = ({ setUserType }) => {
   const [showContactAdminModal, setShowContactAdminModal] = useState(false);
+  const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
   const openContactAdminModal = () => {
     setShowContactAdminModal(true);
   };
@@ -30,6 +31,8 @@ const Login = ({ setUserType }) => {
   const [MobileNumber, setMobileNumber] = useState("");
   const [Password, setPassword] = useState("");
   const [userType, setuserType] = useState("");
+
+  console.log(setuserType);
 
   // Function to handle form submission
   const SubmitData = async (e) => {
@@ -51,6 +54,7 @@ const Login = ({ setUserType }) => {
       if (response.status === 200) {
         // Save user type in local storage and update in the parent component
         localStorage.setItem("userType", response.data.data.userType);
+        localStorage.setItem("mobileNumber", response.data.data.mobile);
         setUserType(response.data.data.userType);
         notifySuccess(); // Show success toast notification
 
@@ -59,6 +63,7 @@ const Login = ({ setUserType }) => {
           navigate("/home");
         }, 1000);
       } else {
+         setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
         // Show error toast notification for invalid credentials
         notifyError();
         console.log("Error occurred");
@@ -143,10 +148,10 @@ const Login = ({ setUserType }) => {
                   <div className="modal-content">
                     <h2>Contact Admins</h2>
                     <p>
-                      Admin Name: <span> Admin Name</span>
+                      Admin Name: <span> Advocate Talha ,<br /> Mohammad Siddiqui</span>
                     </p>
                     <p>
-                      Mobile Number: <span> Admin's Mobile Number</span>
+                      Mobile Number: <span>9923472806, 9011304885</span>
                     </p>
                     <button  className="btn-login" onClick={closeContactAdminModal}> Close</button>
                   </div>
