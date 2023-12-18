@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import ReactToPdf from "react-to-pdf";
 import "../../Assets/Styles/RegisteredPatients.css";
 import check from "../../Assets/Images/check.png";
 import error from "../../Assets/Images/error.png";
@@ -8,9 +9,13 @@ import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png";
 import UploadDocuments from "../UploadDocuments";
 import ViewMMH from "../ViewMMH";
 import { Document, Page, pdfjs } from "react-pdf";
-import { jsPDF } from "jspdf";
-import generatePDF from 'react-to-pdf';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
+import generatePDF from "react-to-pdf";
 import html2pdf from "html2pdf.js";
+import html2canvas from "html2canvas";
+
 
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -24,20 +29,48 @@ const RegisteredPatients = () => {
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
   const [refToDownload, setRefToDownload] = useState(null);
-  
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [imgView, setImgView] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
+
+  const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
   const baseURL = "http://13.126.14.109:4000/patient/getpatient";
 
+  const pdfRef = useRef();
+  const options = {
+    orientation: "portrait",
+    // Add other options as needed
+  };
   useEffect(() => {
     axios.get(baseURL).then((responce) => {
       console.log(responce.data.result);
 
-      setData(responce.data.result);
+      setData(responce.data.result.reverse());
+      setFilteredData(responce.data.result.reverse());
     });
 
     // getData();
   }, []);
+
+  useEffect(() => {
+    // Update filtered data when search term changes
+    const filteredResults = data.filter((item) => {
+      console.log("ghsdhfsagd", data);
+      console.log("fgfsg",searchTerm);
+      return (
+        item.patientDetails.name.includes(searchTerm)
+        // Add more fields to search if needed
+        // ...
+      );
+      
+    });
+    setFilteredData(filteredResults);
+  }, [searchTerm, data]);
+  console.log("dsfdgshd",searchTerm);
 
   const handleShowDetails = (index) => {
     // setShowDetails(!showDetails);
@@ -81,45 +114,120 @@ const RegisteredPatients = () => {
     setFiles(updatedFiles);
   };
 
+  const handleDownloadPDF = async (index, id) => {
+    try {
+      setIsDownloading(true);
 
-  const handleDownloadPDF = (index) => {
-    const elementRef = pdfRefs[index].current;
+      // Create a new jsPDF instance
+      const doc = new jsPDF();
 
-    if (elementRef) {
-      const options = {
-        margin: 10,
-        filename: "patient_details.pdf",
-        image: { type: "pdf", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      };
+      // Get the reference to the specific card using the ref
+      const cardRef = pdfRefs[index].current;
 
-      html2pdf().from(elementRef).set(options).outputPdf((pdf) => {
-        const blob = new Blob([pdf], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = "patient_details.pdf";
-        link.click();
-      });
-    } else {
-      console.error("Unable to get the target element.");
+      // Check if the card reference is available
+      if (cardRef) {
+        // Use html2canvas to capture the card content as an image
+        const canvas = await html2canvas(cardRef);
+
+        // Convert the canvas to a data URL
+        const imgData = canvas.toDataURL("image/png");
+        console.log(imgData);
+        setImgView(imgData);
+
+        // Add the image to the PDF
+        doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height);
+
+        // Save the PDF with a specific filename
+        doc.save(`${id}_patient_details.pdf`);
+      } else {
+        console.error("Unable to get the target element.");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setIsDownloading(false);
     }
   };
+  
+  // const handleDownloadPDF = (index) => {
+  //   const doc = new jsPDF();
+  //   const pdfElement = pdfRefs[index].current;
 
+  //   // Ensure that the content is ready before trying to generate PDF
+  //   if (pdfElement) {
+  //     // Calculate width and height based on content size
+  //     const contentWidth = pdfElement.clientWidth;
+  //     const contentHeight = pdfElement.clientHeight;
+
+  //     // Set PDF dimensions
+  //     doc.internal.pageSize.setWidth(contentWidth);
+  //     doc.internal.pageSize.setHeight(contentHeight);
+
+  //     // Generate PDF
+  //     doc.html(pdfElement, {
+  //       callback: function (pdf) {
+  //         pdf.save("patient_details.pdf");
+  //       },
+  //       x: 0,
+  //       y: 0,
+  //     });
+  //   }
+  // };
+
+  // const handleDownloadPDF = (index) => {
+  //   const customPageSize = { width: 300, height: 400 }; // Set your custom page size here
+  //   const pdfElement = pdfRefs[index].current;
+  
+  //   // Ensure that the content is ready before trying to generate PDF
+  //   if (pdfElement) {
+  //     // Calculate content dimensions
+  //     const contentWidth = pdfElement.clientWidth;
+  //     const contentHeight = pdfElement.clientHeight;
+  
+  //     // Calculate scale factor to fit content within the page
+  //     const scaleFactor = Math.min(customPageSize.width / contentWidth, customPageSize.height / contentHeight);
+  
+  //     // Set PDF dimensions
+  //     const pdfWidth = contentWidth * scaleFactor;
+  //     const pdfHeight = contentHeight * scaleFactor;
+  
+  //     // Convert HTML content to a data array using html2pdf
+  //     html2pdf(pdfElement, {
+  //       margin: 10,
+  //       filename: "patient_details.pdf",
+  //       image: { type: "jpeg", quality: 0.98 },
+  //       html2canvas: { scale: 2 },
+  //       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+  //     }).from(pdfElement).save();
+  //   }
+  // };
+  
+  
 
   return (
     <>
+    <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by patient name or ID..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+      </div>
+      {/* <img src={imgView} alt="" /> */}
       <div className="maincontainer">
-        {data.map((item, index) => {
+        {filteredData.map((item, index) => {
           const isDetailsActive = activePatientId === item.patientDetails._id;
           const isStatusActive = activeStatusId === item._id;
           const isDocumentActive = activeDocumentId === item._id;
           const isCardActive = activeCardIndex === index;
-          const cardBackgroundColor = isCardActive ? "#E7E7E7" : "";
+          const cardBackgroundColor = isCardActive ? "#transform" : "";
           const cardBorder = isCardActive ? "3px solid #a4c639" : "";
 
           return (
             <div
+              id={`card-${index + 1}`}
               className="patient-card"
               style={{ background: cardBackgroundColor, border: cardBorder }}
               key={index}
@@ -130,35 +238,32 @@ const RegisteredPatients = () => {
                   <table className="patient-table" style={{ border: "none" }}>
                     <tbody>
                       <tr>
-                        <td style={{ border: "none" }}>ID:</td>
-                        <td style={{ border: "none" }}>
-                          {item._id}
-                        </td>
+                        <td style={{ border: "none" }}>Patient ID:</td>
+                        <td style={{ border: "none" }}>{item.patientID}</td>
+                        <td style={{ border: "none" }}>Status:</td>
+                        <td style={{ border: "none" }}>{item.status}</td>
                       </tr>
                       <tr>
-                        <td style={{ border: "none" }}>Name:</td>
+                        <td style={{ border: "none" }}>Patient Name:</td>
                         <td style={{ border: "none" }}>
                           {item.patientDetails.name}
                         </td>
                       </tr>
                       <tr>
-                        <td style={{ border: "none" }}>Gender:</td>
-                        <td style={{ border: "none" }}>
-                          {item.patientDetails.sex}
-                        </td>
-                      </tr>
-                      <tr className="patient-table-row">
-                        <td style={{ border: "none" }}>Age:</td>
-                        <td style={{ border: "none" }}>
-                          {item.patientDetails.age}
-                        </td>
+                        <td style={{ border: "none" }}>Disease Name:</td>
+                        <td style={{ border: "none" }}>{item.diseaseDetail.name}</td>
                       </tr>
                       <tr>
-                        <td style={{ border: "none" }}>Aadhar No:</td>
-                        <td style={{ border: "none" }}>
-                          {item.patientDetails.aadhar}
-                        </td>
+                        <td style={{ border: "none" }}>Care Taker Name:</td>
+                        <td style={{ border: "none" }}>{item.careTaker.name} </td>
                       </tr>
+                      <tr>
+                        <td style={{ border: "none" }}>Care Taker Mobile No:</td>
+                        <td style={{ border: "none" }}>{item.careTaker.mobile1}</td>
+                      </tr>
+                
+              
+                      
                     </tbody>
                   </table>
                 </div>
@@ -191,31 +296,35 @@ const RegisteredPatients = () => {
                     </div>
                   )} */}
                 </p>
-                <div className="data-btn">
-                  <button
-                    className="btn-register-more"
-                    onClick={() => handleShowDetails(index)}
-                  >
-                    More Info
-                  </button>
-                  <button
-                    className="btn-register-status"
-                    onClick={() => handleShowStatus(index)}
-                  >
-                    Status
-                  </button>
-                  <button
-                    className="btn-register-status"
-                    onClick={() => handleShowDocument(index)}
-                  >
-                    Upload Documents
-                  </button>
-                  <button
+
+                {isDownloading === false ? (
+                  <div className="data-btn">
+                    <button
+                      className="btn-register-more"
+                      onClick={() => handleShowDetails(index)}
+                    >
+                      More Info
+                    </button>
+                    <button
+                      className="btn-register-status"
+                      onClick={() => handleShowStatus(index)}
+                    >
+                      Close Application
+                    </button>
+                    <button
+                      className="btn-register-status"
+                      onClick={() => handleShowDocument(index)}
+                    >
+                      Upload Documents
+                    </button>
+                    <button
                     className="btn-download-pdf"
-                    onClick={() => handleDownloadPDF(index)}                  >
+                    onClick={() => handleDownloadPDF(index,item.patientID)}
+                  >
                     Download PDF
                   </button>
-                </div>
+                  </div>
+                ) : null}
               </div>
 
               {isDetailsActive && (
@@ -388,45 +497,20 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td>Registered Date</td>
-                        <td>{item.diseaseDetail.name}</td>
+                        <td>{item.registeredDate}</td>
                       </tr>
                       <tr>
                         <td>Created by </td>
-                        <td>{item.diseaseDetail.diagnoseDate} </td>
+                        <td>{item.createdBy} </td>
                       </tr>
                       <tr>
                         <td>Status</td>
-                        <td>{item.diseaseDetail.diagnoseBy}</td>
+                        <td>{item.status}</td>
                       </tr>
-                      {/* <tr>
-                        <td>Investigation Done</td>
-                        <td>{item.diseaseDetail.investigationDone1}</td>
-                      </tr>
-                      <tr>
-                        <td>Current Hospital Name</td>
-                        <td>{item.diseaseDetail.currentHospitalName}</td>
-                      </tr>
-                      <tr>
-                        <td>Address</td>
-                        <td>{item.diseaseDetail.currentHospitalAddress}</td>
-                      </tr>
-                      <tr>
-                        <td>Contact No.</td>
-                        <td>{item.diseaseDetail.currentHospitalContactNo}</td>
-                      </tr>
-                      <tr>
-                        <td>Current Treatment Details </td>
-                        <td>{item.diseaseDetail.currentTreatmentDetail} </td>
-                      </tr>
-                      <tr>
-                        <td>Doctor’s advice for further process</td>
-                        <td>
-                          {item.diseaseDetail.doctorAdviceForFurtherProcess}{" "}
-                        </td>
-                      </tr> */}
                     </tbody>
+                    
                   </table>
-                  <h2 className="table-heading">Scheme/Hospital Details</h2>
+                  <h2 className="table-heading">Documents</h2>
                   <table>
                     <thead>
                       <tr>
@@ -436,16 +520,15 @@ const RegisteredPatients = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Scheme</td>
-                        <td>Sample Scheme</td>
+                        <td>{item.documents[0].imageName}</td>
+                        <td><a href={item.documents[0].imageUrl}>Download</a></td>
                       </tr>
-                      <tr>
-                        <td>Hospital </td>
-                        <td>Sample Hospital </td>
-                      </tr>
-                      <ViewMMH />
+                      
                     </tbody>
+                    
                   </table>
+                  <ViewMMH />
+                  
                 </div>
               )}
 
@@ -454,30 +537,35 @@ const RegisteredPatients = () => {
                   <span className="close-icon" onClick={handleSidebarClose}>
                     ❌
                   </span>
-                  <h2>Status</h2>
+                  <h2>Close Application</h2>
                   <table>
                     <thead>
                       <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>ID</td>
-                        <td>{item.patientDetails._id}</td>
+                        <td>Amount Saved</td>
+                        <td>₹ <input type="number" /></td>
                       </tr>
                       <tr>
-                        <td>Name</td>
-                        <td>{item.patientDetails.name}</td>
+                        <td>Comments</td>
+                        <td><input type="text" /></td>
                       </tr>
                       <tr>
-                        <td>Gender</td>
-                        <td>{item.patientDetails.sex}</td>
+                        <td>Patient Feedback</td>
+                        <td><input type="text" /></td>
                       </tr>
                       <tr>
-                        <td>Age</td>
-                        <td>{item.patientDetails.age}</td>
+                        <td>Status</td>
+                        <td><select name="" id="" className="form-input">
+                          <option value="">select</option>
+                          <option value="">Active</option>
+                          <option value="">Application Closed</option>
+                          <option value="">Pending</option>
+                          <option value="">Patient Rejected</option>
+                          </select></td>
                       </tr>
                       {/* <tr>
                         <td>Documents</td>
@@ -510,7 +598,9 @@ const RegisteredPatients = () => {
                   </table>
                 </div>
               )}
-              {isDocumentActive && <UploadDocuments />}
+
+              {isDocumentActive && <UploadDocuments currentItem={item._id}/>}
+
             </div>
           );
         })}

@@ -12,9 +12,9 @@
     position: relative;
   }
 
-  .docInput{
-    /* max-width: 100px; */
-  }
+  /* .docInput{
+    max-width: 100px;
+  } */
 .btn-docDelete,
 .btn-docAdd,
 .btn-docSubmit

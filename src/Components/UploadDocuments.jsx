@@ -3,7 +3,8 @@ import "../Assets/Styles/UploadDocuments.css";
 import check from "../Assets/Images/check.png";
 import error from "../Assets/Images/error.png";
 
-const UploadDocuments = () => {
+const UploadDocuments = ({currentItem}) => {
+  console.log("Top",currentItem);
   const [files, setFiles] = useState([]);
   const [document, setDocument] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -14,17 +15,62 @@ const UploadDocuments = () => {
   const [activeStatusId, setActiveStatusId] = useState(false);
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
+  // Add this state variable
+  const [otherDocumentType, setOtherDocumentType] = useState("");
+
+  // const handleDocumentChange = (index, event) => {
+  //   const { name, value } = event.target;
+  //   const newFiles = [...files];
+  //   newFiles[index][name] = value;
+
+  //   // If the selected option is "Other", update the otherDocumentType state
+  //   if (value === "Other") {
+  //     setOtherDocumentType(newFiles[index].otherType || "");
+  //   }
+
+  //   setFiles(newFiles);
+  // };
 
   const [isUploadSuccess, setUploadSuccess] = useState(false);
   const [isAddSuccess, setAddSuccess] = useState(false);
 
   const handleDocumentChange = (index, event) => {
     const { name, value } = event.target;
-    const newFiles = [...files];
-    newFiles[index][name] = value;
-    setFiles(newFiles);
-    setAddSuccess(false);
+    setFiles((prevFiles) => {
+      const updatedFiles = [...prevFiles];
+      updatedFiles[index] = {
+        ...updatedFiles[index],
+        [name]: value,
+      };
+  
+      // If the selected document type is "Other," update otherType
+      if (name === 'type' && value === 'Other') {
+        updatedFiles[index] = {
+          ...updatedFiles[index],
+          otherType: '',
+        };
+      }
+  
+      // If the selected document type is not "Other," reset otherType
+      if (name === 'type' && value !== 'Other') {
+        updatedFiles[index] = {
+          ...updatedFiles[index],
+          otherType: undefined,
+        };
+      }
+  
+      // If the selected document type is not "Other," set imageName
+      if (name === 'type' && value !== 'Other') {
+        updatedFiles[index] = {
+          ...updatedFiles[index],
+          imageName: value,
+        };
+      }
+  
+      return updatedFiles;
+    });
   };
+  
 
   const handleAddDocument = () => {
     setFiles([...files, { files: "", type: "" }]);
@@ -52,11 +98,10 @@ const UploadDocuments = () => {
     setActiveCardIndex("");
   };
 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const apiUrl = "http://localhost:5050/patient/657ecc7cd7f6ca684e609b95";
+    console.log("sgdhgshdgsd",currentItem);
+    const apiUrl = "http://13.126.14.109:4000/patient/"+currentItem;
 
     try {
       const formData = new FormData();
@@ -69,6 +114,8 @@ const UploadDocuments = () => {
       const response = await fetch(apiUrl, {
         method: "PUT",
         body: formData,
+        documents:[]
+        
       });
 
       if (response.ok) {
@@ -119,6 +166,7 @@ const UploadDocuments = () => {
 
       <form onSubmit={handleSubmit} style={{ position: "relative" }}>
         <h2>Documents</h2>
+        <img src="" alt="" />
         {/* <span className="close-icon" onClick={handleSidebarClose}>
           ❌
         </span> */}
@@ -132,12 +180,12 @@ const UploadDocuments = () => {
         </table>
         {files.map((doc, index) => (
           <div key={index}>
+            {console.log("sjkdhsaj",doc.type)}
             <div className="patient-documents-sidebar">
               <table>
                 <tr>
                   <td className="form-div">
                     <select
-                  
                       className="form-input1"
                       name="type"
                       value={doc.type}
@@ -176,7 +224,17 @@ const UploadDocuments = () => {
                       <option value="Death Certificate of family head">
                         Death Certificate of family head
                       </option>
+                      <option value="Other">Other</option>
                     </select>
+                    {doc.type === "Other" && (
+                      <input
+                        type="text"
+                        name="otherType"
+                        placeholder="Type here..."
+                        value={doc.otherType || ""}
+                        onChange={(e) => handleDocumentChange(index, e)}
+                      />
+                    )}
                   </td>
                   <td>
                     <input
@@ -213,7 +271,6 @@ const UploadDocuments = () => {
           Submit
         </button>
       </form>
-      
     </div>
   );
 };
