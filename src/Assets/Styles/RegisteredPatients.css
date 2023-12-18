@@ -4,9 +4,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* border: 2px solid red; */
   flex-direction: column;
   flex-wrap: wrap;
   gap: 20px;
+  background-image: url('../../Assets//Images/mainbodylogo.jpeg');
+  background-size: cover;
+  background-attachment: fixed; /* This ensures that the background remains fixed */
+
 }
 
 .patient-card {
@@ -15,7 +20,7 @@
   padding: 30px;
    /* Use full width on smaller screens */ /* Limit max width for larger screens */
   box-shadow: 1px 1px 8px black;
-  background-color: #fff;
+  background-color: #ffffffee;
   width: 80%;
 }
 
@@ -63,7 +68,7 @@
 
 .btn-register-more,
 .btn-register-status {
-  background-color: #fd7e14;
+  background-color: #a4c639;
   border-radius: 10px;
   color: white;
   border: none;
@@ -114,7 +119,7 @@
 }
 
 .btn-register-status {
-  background-color: #2196f3;
+  background-color: #a4c639;
 }
 
 /* .patient-details-sidebar,
