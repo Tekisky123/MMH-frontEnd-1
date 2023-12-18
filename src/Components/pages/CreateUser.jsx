@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+// Import necessary dependencies
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../Assets/Styles/Signup.css";
 
+// Functional component for creating a user
 const CreateUser = () => {
+  // Initialize necessary hooks and state variables
   const navigate = useNavigate();
   const { _id } = useParams();
-  const { editId } = useParams();
   console.log(_id);
 
+  // State variables for form data, errors, and success animation
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -17,17 +20,19 @@ const CreateUser = () => {
     mobile: "",
     userType: "Please Select Role",
   });
-  const [data, setData] = useState([]);
-  const [loader, setLoader] = useState(false);
+
   const [errors, setErrors] = useState({});
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
+  // Function to handle input changes and update form data
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const truncatedValue = value.slice(0, 10);
+    setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
+  // Function to validate form inputs
   const validateForm = () => {
     let isValid = true;
     const newErrors = {};
@@ -56,9 +61,10 @@ const CreateUser = () => {
       isValid = false;
     }
 
-    // Validate mobile
-    if (!formData.mobile.trim()) {
-      newErrors.mobile = "Mobile number is required";
+    // Validate mobile number with a regular expression
+    const mobileRegex = /^\d{10}$/;
+    if (!mobileRegex.test(formData.mobile)) {
+      newErrors.mobile = "Mobile number must be 10 digits";
       isValid = false;
     }
 
@@ -68,93 +74,38 @@ const CreateUser = () => {
       isValid = false;
     }
 
-    // Add more specific validation if needed
-
+    // Set errors and return validation result
     setErrors(newErrors);
     return isValid;
   };
 
-  // const onsubmit = (e) => {
-  //   e.preventDefault();
-  //   // if (validateForm()) {
-  //   const response ={}
-  //     if(editId){
-  //     }
-  //     axios
-  //       .post("http://13.126.14.109:4000/user/register", formData)
-  //       .then((response) => {
-  //         console.log(response.data);
-  //         setShowSuccessAnimation(true);
-
-  //         setTimeout(() => {
-  //           setShowSuccessAnimation(false);
-  //           navigate("/user");
-  //           // Optionally, reset form state here if needed
-  //         }, 2000);
-  //       });
-  //   // }
-  // };
-  
-useEffect(() => {
-
-  if(editId){
-    getEditUserDetails();
-  }
-}, [])
-
-  const getEditUserDetails=async()=>{
-
-    try {
-      setLoader(true);
-      const result = await axios.get("http://13.126.14.109:4000/user/"+editId);
-      const userData = result.data;
-      console.log("userData",userData);
-      setFormData((prevData) => ({
-      ...prevData,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        password: userData.password,
-        mobile: userData.mobile,
-        userType: userData.userType,
-    }));
-      // setData(result.data.data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoader(false);
-    }
-
-  }
-
-  // 
-
-  const onsubmit = async (e) => {
+  // Function to handle form submission
+  const onsubmit = (e) => {
     e.preventDefault();
 
-    try {
-      const response ={}
-      if(editId){
-        // await axios.put("http://13.126.14.109:4000/user/updateuser/" + editId);
-        await axios.post("http://13.126.14.109:4000/user/updateuser");
-      }else{
-        await axios.post("http://13.126.14.109:4000/user/register", formData);
-      }
-      if (response.status === 200) {
-        setShowSuccessAnimation(true);
-        setTimeout(() => {
-        setShowSuccessAnimation(false);
-          navigate("/user");
-        }, 2000);
-      } else {
-        // notifyError();
-      }
-    } catch (error) {
-      console.error("API call error:", error);
-      // notifyError();
+    // Validate form inputs
+    if (validateForm()) {
+      // Make API call to register a new user
+      axios
+        .post("http://13.126.14.109:4000/user/register", formData)
+        .then((response) => {
+          // Handle success response
+          if (response.status === 200) {
+            console.log(response.data);
+            setShowSuccessAnimation(true);
+
+            // Redirect to the user page after a delay
+            setTimeout(() => {
+              setShowSuccessAnimation(false);
+              navigate("/user");
+              // Optionally, reset form state here if needed
+            }, 2000);
+          }
+        });
     }
   };
 
+  // JSX rendering for the CreateUser component
   return (
     <div className="Main-container">
       <section className="section">
@@ -162,6 +113,8 @@ useEffect(() => {
           <div className="form-value">
             <form onSubmit={onsubmit}>
               <h2 className="heading">Create User</h2>
+              {/* Input fields for user details */}
+
               <div className="names">
                 <div className="inputbox name">
                   <input
@@ -172,10 +125,15 @@ useEffect(() => {
                     onChange={handleChange}
                   />
                   <label>
-                    First Name <span className="error-message">⁕</span>
+                    First Name{" "}
+                    <span className="error-message">
+                      {errors.firstName ? "⁕" : ""}
+                    </span>
                   </label>
                   {errors.firstName && (
-                    <span className="error">{errors.firstName}</span>
+                    <span className="error" style={{ color: "red" }}>
+                      {errors.firstName}
+                    </span>
                   )}
                 </div>
                 <div className="inputbox name">
@@ -187,13 +145,19 @@ useEffect(() => {
                     onChange={handleChange}
                   />
                   <label>
-                    Last Name <span className="error-message">⁕</span>
+                    Last Name{" "}
+                    <span className="error-message">
+                      {errors.lastName ? "⁕" : ""}
+                    </span>
                   </label>
                   {errors.lastName && (
-                    <span className="error">{errors.lastName}</span>
+                    <span className="error" style={{ color: "red" }}>
+                      {errors.lastName}
+                    </span>
                   )}
                 </div>
               </div>
+
               <div className="inputbox second-section">
                 <input
                   type="email"
@@ -203,10 +167,18 @@ useEffect(() => {
                   onChange={handleChange}
                 />
                 <label>
-                  Email <span className="error-message">⁕</span>
+                  Email{" "}
+                  <span className="error-message">
+                    {errors.email ? "⁕" : ""}
+                  </span>
                 </label>
-                {errors.email && <span className="error">{errors.email}</span>}
+                {errors.email && (
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.email}
+                  </span>
+                )}
               </div>
+
               <div className="inputbox second-section">
                 <input
                   type="password"
@@ -216,12 +188,18 @@ useEffect(() => {
                   onChange={handleChange}
                 />
                 <label>
-                  Password <span className="error-message">⁕</span>
+                  Password{" "}
+                  <span className="error-message">
+                    {errors.password ? "⁕" : ""}
+                  </span>
                 </label>
                 {errors.password && (
-                  <span className="error">{errors.password}</span>
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.password}
+                  </span>
                 )}
               </div>
+
               <div className="inputbox second-section">
                 <input
                   type="number"
@@ -229,17 +207,27 @@ useEffect(() => {
                   name="mobile"
                   value={formData.mobile}
                   onChange={handleChange}
+                  maxLength="10"
                 />
                 <label>
-                  Mobile Number <span className="error-message">⁕</span>
+                  Mobile Number{" "}
+                  <span className="error-message">
+                    {errors.mobile ? "⁕" : ""}
+                  </span>
                 </label>
                 {errors.mobile && (
-                  <span className="error">{errors.mobile}</span>
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.mobile}
+                  </span>
                 )}
               </div>
+
               <div className="role-type">
                 <label htmlFor="">
-                  User Type <span className="error-message">⁕</span>
+                  User Type{" "}
+                  <span className="error-message">
+                    {errors.userType ? "⁕" : ""}
+                  </span>
                 </label>
                 <select
                   name="userType"
@@ -251,49 +239,51 @@ useEffect(() => {
                   <option value="SuperAdmin">Super Admin</option>
                   <option value="Operator">Operator</option>
                 </select>
+                {errors.userType && (
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.userType}
+                  </span>
+                )}
               </div>
+
               <button className="create btn-login" type="submit">
                 Create User
               </button>
               {/* Success Animation */}
-             
             </form>
           </div>
         </div>
-        <div
-                className={` ${
-                  showSuccessAnimation ? "blur-background" : ""
-                }`}
-              >
-                {showSuccessAnimation && (
-                  <div className="success-animation">
-                    <svg
-                      className="checkmark"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 52 52"
-                    >
-                      <circle
-                        className="checkmark__circle"
-                        cx="26"
-                        cy="26"
-                        r="25"
-                        fill="none"
-                      />
-                      <path
-                        className="checkmark__check"
-                        fill="none"
-                        d="M14.1 27.2l7.1 7.2 16.7-16.8"
-                      />
-                    </svg>
-                  </div>
-                )}
+        {/* Blur background during success animation */}
 
-                {/* Your existing content goes here */}
-              </div>
+        <div className={` ${showSuccessAnimation ? "blur-background" : ""}`}>
+          {showSuccessAnimation && (
+            <div className="success-animation">
+              {/* Checkmark SVG for success animation */}
+              <svg
+                className="checkmark"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 52 52"
+              >
+                <circle
+                  className="checkmark__circle"
+                  cx="26"
+                  cy="26"
+                  r="25"
+                  fill="none"
+                />
+                <path
+                  className="checkmark__check"
+                  fill="none"
+                  d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                />
+              </svg>
+            </div>
+          )}
+          {/* Your existing content goes here */}
+        </div>
       </section>
-      
     </div>
   );
 };
 
-export default CreateUser;
+export default CreateUser; // Export the CreateUser component as the default export
