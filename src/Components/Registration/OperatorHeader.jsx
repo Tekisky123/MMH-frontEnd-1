@@ -1,6 +1,7 @@
 // Import NavLink from react-router-dom and styles from the Header.css file
 import { NavLink } from "react-router-dom";
 import "../../Assets/Styles/Header.css";
+import logo from "../../Assets/Images/logo-main.png"
 
 // OperatorHeader component for navigation with operator-specific links
 const OperatorHeader = () => {
@@ -18,6 +19,7 @@ const OperatorHeader = () => {
         {/* Menu items with NavLink for each page */}
         <ul className="menu-items">
           <li>
+          <h1 className="logo-main"><img className="logo-main" src={logo} alt="" /></h1>
             <NavLink
               // Apply styles based on isActive state
               style={({ isActive }) => ({

@@ -82,29 +82,29 @@ const RegisteredPatients = () => {
   };
 
 
-  // const handleDownloadPDF = (index) => {
-  //   const elementRef = pdfRefs[index].current;
+  const handleDownloadPDF = (index) => {
+    const elementRef = pdfRefs[index].current;
 
-  //   if (elementRef) {
-  //     const options = {
-  //       margin: 10,
-  //       filename: "patient_details.pdf",
-  //       image: { type: "pdf", quality: 0.98 },
-  //       html2canvas: { scale: 2 },
-  //       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-  //     };
+    if (elementRef) {
+      const options = {
+        margin: 10,
+        filename: "patient_details.pdf",
+        image: { type: "pdf", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
 
-  //     html2pdf().from(elementRef).set(options).outputPdf((pdf) => {
-  //       const blob = new Blob([pdf], { type: "application/pdf" });
-  //       const link = document.createElement("a");
-  //       link.href = window.URL.createObjectURL(blob);
-  //       link.download = "patient_details.pdf";
-  //       link.click();
-  //     });
-  //   } else {
-  //     console.error("Unable to get the target element.");
-  //   }
-  // };
+      html2pdf().from(elementRef).set(options).outputPdf((pdf) => {
+        const blob = new Blob([pdf], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "patient_details.pdf";
+        link.click();
+      });
+    } else {
+      console.error("Unable to get the target element.");
+    }
+  };
 
 
   return (
@@ -164,7 +164,7 @@ const RegisteredPatients = () => {
                 </div>
 
                 <p>
-                  {files.length > 0 ? (
+                  {/* {files.length > 0 ? (
                     <div className="file-upload-or-not">
                       <img
                         src={check}
@@ -189,7 +189,7 @@ const RegisteredPatients = () => {
                         </span>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </p>
                 <div className="data-btn">
                   <button
@@ -212,7 +212,7 @@ const RegisteredPatients = () => {
                   </button>
                   <button
                     className="btn-download-pdf"
-                                      >
+                    onClick={() => handleDownloadPDF(index)}                  >
                     Download PDF
                   </button>
                 </div>

@@ -25,7 +25,7 @@
 .navbar-container{
     display: flex;
     justify-content: space-between;
-    height: 90px;
+    height: 60px;
     
     align-items: center;
 }
@@ -54,9 +54,9 @@
 }
 .logo-main{
    position: absolute;
-   top: 1px;
-   left: 10px;
-   height: 100px;
+   top: 2px;
+   left: 20px;
+   height: 70px;
    filter: drop-shadow(1px 2px 50px white);
 }
 

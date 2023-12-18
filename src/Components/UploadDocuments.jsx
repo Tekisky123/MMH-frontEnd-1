@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../Assets/Styles/UploadDocuments.css";
+import check from "../Assets/Images/check.png";
+import error from "../Assets/Images/error.png";
 
 const UploadDocuments = () => {
   const [files, setFiles] = useState([]);
@@ -13,15 +15,21 @@ const UploadDocuments = () => {
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
 
+  const [isUploadSuccess, setUploadSuccess] = useState(false);
+  const [isAddSuccess, setAddSuccess] = useState(false);
+
   const handleDocumentChange = (index, event) => {
     const { name, value } = event.target;
     const newFiles = [...files];
     newFiles[index][name] = value;
     setFiles(newFiles);
+    setAddSuccess(false);
   };
 
   const handleAddDocument = () => {
     setFiles([...files, { files: "", type: "" }]);
+    setAddSuccess(true);
+    setUploadSuccess(false);
   };
 
   const handleDeleteDocument = (index) => {
@@ -64,17 +72,51 @@ const UploadDocuments = () => {
       });
 
       if (response.ok) {
+        setUploadSuccess(true);
+        setAddSuccess(false);
         console.log("Files uploaded successfully!");
       } else {
+        setUploadSuccess(false);
+        setAddSuccess(false);
         console.error("Failed to upload files.");
       }
     } catch (error) {
+      setUploadSuccess(false);
+      setAddSuccess(false);
       console.error("Error uploading files:", error);
     }
+  
+
+    
   };
+  const isDocumentUploaded = files.length > 0;
 
   return (
     <div>
+      {isDocumentUploaded ? (
+  <div className="file-upload-or-not">
+    <img
+      src={check}
+      alt="Files Uploaded"
+      className="file-upload-logo"
+    />
+    <span className="card-file-upload">
+      {files.length} {files.length === 1 ? "Document" : "Documents"} Selected
+    </span>
+  </div>
+) : (
+  <div className="file-upload-or-not">
+    <img
+      src={error}
+      alt="Files Not Uploaded"
+      className="file-upload-logo"
+    />
+    <span className="card-file-not-found">
+      {files.length === 0 ? "No documents Selected" : "Documents not uploaded"}
+    </span>
+  </div>
+)}
+
       <form onSubmit={handleSubmit} style={{ position: "relative" }}>
         <h2>Documents</h2>
         {/* <span className="close-icon" onClick={handleSidebarClose}>

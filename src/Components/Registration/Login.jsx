@@ -3,9 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
 import logo from "../../Assets/Images/logo-main.png"; // Import the logo image
 import { useState } from "react"; // Import the useState hook for managing state
-import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
+import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios"; // Import Axios for API requests
-// import { Modal } from "bootstrap";
 import Modal from "react-modal";
 
 // Functional component for the Login page
@@ -20,23 +19,31 @@ const Login = ({ setUserType }) => {
   const closeContactAdminModal = () => {
     setShowContactAdminModal(false);
   };
+
   // Initialize the navigation hook from React Router
   const navigate = useNavigate();
 
   // Functions to show toast notifications for login success and failure
-  const notifyError = () => toast.error("Invalid Number or Password");
-  const notifySuccess = () => toast.success("Successfully logged in");
+  const notifyError = () => toast("Invalid Number or Password");
+  
 
   // State variables to store mobile number, password, and user type
   const [MobileNumber, setMobileNumber] = useState("");
   const [Password, setPassword] = useState("");
   const [userType, setuserType] = useState("");
 
-  console.log(setuserType);
+  // Regular expression for validating the mobile number
+  const mobileNumberRegex = /^[0-9]{10}$/;
 
   // Function to handle form submission
   const SubmitData = async (e) => {
     e.preventDefault();
+
+    // Validate mobile number using the regular expression
+    if (!mobileNumberRegex.test(MobileNumber)) {
+      toast.error("Invalid mobile number format");
+      return;
+    }
 
     try {
       // Make an API call to the login endpoint with user credentials
@@ -56,14 +63,13 @@ const Login = ({ setUserType }) => {
         localStorage.setItem("userType", response.data.data.userType);
         localStorage.setItem("mobileNumber", response.data.data.mobile);
         setUserType(response.data.data.userType);
-        notifySuccess(); // Show success toast notification
 
         // Redirect to the dashboard after a delay
         setTimeout(() => {
           navigate("/home");
-        }, 1000);
+        }, 900);
       } else {
-         setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
+        setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
         // Show error toast notification for invalid credentials
         notifyError();
         console.log("Error occurred");
@@ -80,7 +86,7 @@ const Login = ({ setUserType }) => {
   return (
     <div className="Main-container">
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -90,7 +96,7 @@ const Login = ({ setUserType }) => {
         draggable
         pauseOnHover
         theme="colored"
-      />{" "}
+      />
       {/* Container for displaying toast notifications */}
       <section className="section">
         <div className="logo">
@@ -103,10 +109,13 @@ const Login = ({ setUserType }) => {
               {/* Input fields for mobile number and password */}
               <div className="input-box">
                 <input
-                  type="number"
+                  type="text"
+                  pattern="[0-9]{10}"
                   required
                   value={MobileNumber}
                   onChange={(e) => setMobileNumber(e.target.value)}
+                  maxLength={10}
+                  title="Mobile number must be 10 digits"
                 />
                 <label>Mobile Number</label>
               </div>
@@ -118,13 +127,6 @@ const Login = ({ setUserType }) => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <label>Password</label>
-              </div>
-              {/* Checkbox for "Remember Me" and link for "Forget Password" */}
-              <div className="forget">
-                <label>
-                  <input type="checkbox" /> Remember Me{" "}
-                  <Link to="#">Forget Password</Link>
-                </label>
               </div>
               {/* Submit button for the login form */}
               <button type="submit" className="btn-login">
@@ -148,12 +150,22 @@ const Login = ({ setUserType }) => {
                   <div className="modal-content">
                     <h2>Contact Admins</h2>
                     <p>
-                      Admin Name: <span> Advocate Talha ,<br /> Mohammad Siddiqui</span>
+                      Admin Name:{" "}
+                      <span>
+                        {" "}
+                        Advocate Talha ,<br /> Mohammad Siddiqui
+                      </span>
                     </p>
                     <p>
                       Mobile Number: <span>9923472806, 9011304885</span>
                     </p>
-                    <button  className="btn-login" onClick={closeContactAdminModal}> Close</button>
+                    <button
+                      className="btn-login"
+                      onClick={closeContactAdminModal}
+                    >
+                      {" "}
+                      Close
+                    </button>
                   </div>
                 </Modal>
               </div>
