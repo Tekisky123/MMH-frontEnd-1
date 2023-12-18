@@ -57,8 +57,8 @@
 }
 
 .card img {
-  width: 100%;
-  height: auto; /* Allow the image to adjust its height */
+  width: 380px;
+  height: 300px;
   object-fit: cover;
 }
 
