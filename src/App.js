@@ -5,17 +5,17 @@ import Login from "./Components/Registration/Login";
 import Signup from "./Components/Registration/Signup";
 import Dashboard from "./Components/dashboard/Dashboard";
 import Header from "./Components/Header";
-import Home from "./Components/Pages/Home";
-import RegisteredPatients from "./Components/Pages/RegisteredPatients";
-import PageNotFound from "./Components/Pages/PageNotFound";
-import User from "./Components/Pages/User";
-import CreateUser from "./Components/Pages/CreateUser";
+import Home from "./Components/pages/Home";
+import RegisteredPatients from "./Components/pages/RegisteredPatients";
+import PageNotFound from "./Components/pages/PageNotFound";
+import User from "./Components/pages/User";
+import CreateUser from "./Components/pages/CreateUser";
 import "./App.css";
 // import NewPatientDetails from "./Components/pages/newPatient/NewPatientDetails";
-import Yojna from "./Components/Pages/Yojna";
-import EditUser from "./Components/Pages/EditUser";
+import Yojna from "./Components/pages/Yojna";
+import EditUser from "./Components/pages/EditUser";
 import OperatorHeader from "./Components/Registration/OperatorHeader";
-import AddPatientDetails from "./Components/Pages/newPatient/AddPatientDetails";
+import AddPatientDetails from "./Components/pages/newPatient/AddPatientDetails";
 import Loader from "./common/Loader";
 
 function App() {
