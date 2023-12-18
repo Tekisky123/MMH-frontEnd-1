@@ -8,7 +8,7 @@ const ViewMMH = () => {
 
   const handleFreezeTextareas = () => {
     // Call the API function here before freezing the textareas
-    sendToApi();
+    handleSubmit();
 
     // Freeze the textareas after sending data to the API
     setFreezeTextareas(true);
@@ -19,7 +19,7 @@ const ViewMMH = () => {
   };
 
   // Function to send data to the API
-  const sendToApi = () => {
+  const handleSubmit = () => {
     const data = {
       viewContent,
       adviceContent,
@@ -27,25 +27,48 @@ const ViewMMH = () => {
     };
 
     // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
-    fetch('http://13.126.14.109:4000/patient/getpatient/657dd9c7eacb8d8ad81b80c6', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
+    fetch(
+      "http://13.126.14.109:4000/patient/getpatient/657dd9c7eacb8d8ad81b80c6",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
         // Handle the response from the API if needed
-        console.log('API Response:', data);
+        console.log("API Response:", data);
       })
-      .catch(error => {
-        console.error('Error sending data to API:', error);
+      .catch((error) => {
+        console.error("Error sending data to API:", error);
       });
   };
 
   return (
+    <form onSubmit={handleSubmit}>
     <div>
+      <h2 className="table-heading">Scheme/Hospital Details</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Scheme</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Hospital </td>
+            <td>Sample Hospital </td>
+          </tr>
+        </tbody>
+      </table>
       <h2 className="table-heading">MMH Guidance Plan</h2>
       <table>
         <thead>
@@ -66,7 +89,9 @@ const ViewMMH = () => {
                 value={viewContent}
                 onChange={(e) => setViewContent(e.target.value)}
                 readOnly={freezeTextareas}
-                style={{ backgroundColor: freezeTextareas ? "#f0f0f0" : "white" }}
+                style={{
+                  backgroundColor: freezeTextareas ? "#f0f0f0" : "white",
+                }}
               ></textarea>
             </td>
           </tr>
@@ -81,7 +106,9 @@ const ViewMMH = () => {
                 value={adviceContent}
                 onChange={(e) => setAdviceContent(e.target.value)}
                 readOnly={freezeTextareas}
-                style={{ backgroundColor: freezeTextareas ? "#f0f0f0" : "white" }}
+                style={{
+                  backgroundColor: freezeTextareas ? "#f0f0f0" : "white",
+                }}
               ></textarea>
             </td>
           </tr>
@@ -96,7 +123,9 @@ const ViewMMH = () => {
                 value={proposeHelpContent}
                 onChange={(e) => setProposeHelpContent(e.target.value)}
                 readOnly={freezeTextareas}
-                style={{ backgroundColor: freezeTextareas ? "#f0f0f0" : "white" }}
+                style={{
+                  backgroundColor: freezeTextareas ? "#f0f0f0" : "white",
+                }}
               ></textarea>
             </td>
           </tr>
@@ -105,6 +134,7 @@ const ViewMMH = () => {
       <button onClick={handleFreezeTextareas}>Submit</button>
       <button onClick={handleUnfreezeTextareas}>Edit</button>
     </div>
+    </form>
   );
 };
 
