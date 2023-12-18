@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../Assets/Styles/Signup.css";
@@ -6,6 +6,7 @@ import "../../Assets/Styles/Signup.css";
 const CreateUser = () => {
   const navigate = useNavigate();
   const { _id } = useParams();
+  const { editId } = useParams();
   console.log(_id);
 
   const [formData, setFormData] = useState({
@@ -16,7 +17,8 @@ const CreateUser = () => {
     mobile: "",
     userType: "Please Select Role",
   });
-
+  const [data, setData] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [errors, setErrors] = useState({});
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
@@ -72,22 +74,84 @@ const CreateUser = () => {
     return isValid;
   };
 
-  const onsubmit = (e) => {
+  // const onsubmit = (e) => {
+  //   e.preventDefault();
+  //   // if (validateForm()) {
+  //   const response ={}
+  //     if(editId){
+  //     }
+  //     axios
+  //       .post("http://13.126.14.109:4000/user/register", formData)
+  //       .then((response) => {
+  //         console.log(response.data);
+  //         setShowSuccessAnimation(true);
+
+  //         setTimeout(() => {
+  //           setShowSuccessAnimation(false);
+  //           navigate("/user");
+  //           // Optionally, reset form state here if needed
+  //         }, 2000);
+  //       });
+  //   // }
+  // };
+  
+useEffect(() => {
+
+  if(editId){
+    getEditUserDetails();
+  }
+}, [])
+
+  const getEditUserDetails=async()=>{
+
+    try {
+      setLoader(true);
+      const result = await axios.get("http://13.126.14.109:4000/user/"+editId);
+      const userData = result.data;
+      console.log("userData",userData);
+      setFormData((prevData) => ({
+      ...prevData,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        password: userData.password,
+        mobile: userData.mobile,
+        userType: userData.userType,
+    }));
+      // setData(result.data.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoader(false);
+    }
+
+  }
+
+  // 
+
+  const onsubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      axios
-        .post("http://13.126.14.109:4000/user/register", formData)
-        .then((response) => {
-          console.log(response.data);
-          setShowSuccessAnimation(true);
-
-          setTimeout(() => {
-            setShowSuccessAnimation(false);
-            navigate("/user");
-            // Optionally, reset form state here if needed
-          }, 2000);
-        });
+    try {
+      const response ={}
+      if(editId){
+        // await axios.put("http://13.126.14.109:4000/user/updateuser/" + editId);
+        await axios.post("http://13.126.14.109:4000/user/updateuser");
+      }else{
+        await axios.post("http://13.126.14.109:4000/user/register", formData);
+      }
+      if (response.status === 200) {
+        setShowSuccessAnimation(true);
+        setTimeout(() => {
+        setShowSuccessAnimation(false);
+          navigate("/user");
+        }, 2000);
+      } else {
+        // notifyError();
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+      // notifyError();
     }
   };
 
