@@ -1,25 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const EditData = () => {
   const navigate = useNavigate();
+  const { _id } = useParams();
+  const baseURL = "http://13.126.14.109:4000/user/updateuser";
 
-  const { id } = useParams();
-  console.log(id);
-
-  const baseURL =
-    "https://6571a476d61ba6fcc01327e9.mockapi.io/example/curd/react/curdreact";
-
-  const [data, setData] = useState({
-    name: "",
-    mobile: "",
-    email: "",
-    address: "",
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      mobile: "",
+      userType: "",
+    },
   });
-
-  const { name, mobile, email, address } = data;
 
   useEffect(() => {
     getData();
@@ -27,39 +26,28 @@ const EditData = () => {
 
   const getData = async () => {
     try {
-      const result = await axios.get(`${baseURL}/${id}`);
+      const result = await axios.get(`${baseURL}/${_id}`);
       console.log(result);
 
-      const { name, mobile, email, address } = result.data;
+      const { firstName, lastName, email, password, mobile, userType } =
+        result.data;
 
-      setData({ name, mobile, email, address });
+      setValue("firstName", firstName);
+      setValue("lastName", lastName);
+      setValue("email", email);
+      setValue("password", password);
+      setValue("mobile", mobile);
+      setValue("userType", userType);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const HandleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const HandleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(data);
-
-    //
-
+  const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`${baseURL}/${id}`, {
-        name,
-        mobile,
-        email,
-        address,
-      });
+      const res = await axios.put(`${baseURL}/${_id}`, data);
       console.log(res);
 
-      toast.success("Data Successfully Updated");
-      toast.success("Data Successfully Updated");
-      toast.success("Data Successfully Updated");
       toast.success("Data Successfully Updated");
       setTimeout(() => {
         navigate("/");
@@ -68,6 +56,7 @@ const EditData = () => {
       console.log(err);
     }
   };
+
   return (
     <div>
       <div className="border">
@@ -77,54 +66,107 @@ const EditData = () => {
         </div>
 
         <div className="p-4">
-          <form className="" onSubmit={HandleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="" className="form-label">
               User Name
             </label>
-            <input
-              type="text"
-              name="name"
-              value={name}
-              required
-              className="form-control mb-4"
-              placeholder="Enter User Name"
-              onChange={HandleChange}
+            <Controller
+              name="firstName"
+              control={control}
+              value=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="form-control mb-4"
+                  placeholder="Enter User Name"
+                />
+              )}
             />
+
             <label htmlFor="" className="form-label">
               Mobile No.
             </label>
-            <input
-              type="number"
-              name="mobile"
-              value={mobile}
-              required
-              className="form-control mb-4"
-              placeholder="Enter Mobile No."
-              onChange={HandleChange}
+            <Controller
+              name="userMobile"
+              control={control}
+              value=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="number"
+                  className="form-control mb-4"
+                  placeholder="Enter Mobile No."
+                />
+              )}
             />
+
             <label htmlFor="" className="form-label">
               Email
             </label>
-            <input
-              type="email"
+            <Controller
               name="email"
-              value={email}
-              required
-              className="form-control mb-4"
-              placeholder="Enter User Email"
-              onChange={HandleChange}
+              control={control}
+              value=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="email"
+                  className="form-control mb-4"
+                  placeholder="Enter User Email"
+                />
+              )}
             />
+
             <label htmlFor="" className="form-label">
               Address
             </label>
-            <input
-              type="text"
-              name="address"
-              value={address}
-              required
-              className="form-control mb-4"
-              placeholder="Enter Address"
-              onChange={HandleChange}
+            <Controller
+              name="password"
+              control={control}
+              value=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="form-control mb-4"
+                  placeholder="Enter Address"
+                />
+              )}
+            />
+
+            <label htmlFor="" className="form-label">
+              Mobile
+            </label>
+            <Controller
+              name="mobile"
+              control={control}
+              value=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="number"
+                  className="form-control mb-4"
+                  placeholder="Enter Mobile"
+                />
+              )}
+            />
+
+            <label htmlFor="" className="form-label">
+              User Type
+            </label>
+            <Controller
+              name="userType"
+              control={control}
+              value=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  className="form-control mb-4"
+                  placeholder="Enter User Type"
+                />
+              )}
             />
 
             <button type="submit" className="btn btn-danger w-100">

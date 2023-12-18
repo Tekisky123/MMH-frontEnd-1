@@ -1,27 +1,8 @@
-import {  NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../Assets/Styles/Header.css";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
+import logo from "../Assets/Images/logo-main.png"
 
 const Header = () => {
-  // const [typeData,setTypeData ] = useState()
-  // useEffect(() => {
-  //   console.log("hello");
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.post("http://13.126.14.109:4000/user/login");
-  //       console.log("hi", response.data.userType);
-  //       setTypeData(response.data.userType);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       // Handle the error, show a message to the user, or retry the request.
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, []);
-  
- 
   return (
     <nav className="navbar">
       <div className="navbar-container container">
@@ -33,12 +14,19 @@ const Header = () => {
         </div>
         <ul className="menu-items">
           <li>
+          <h1 className="logo-main"><img className="logo-main" src={logo} alt="" /></h1>
+
+            
             <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+            
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
               to="/home"
             >
               Home
@@ -46,11 +34,14 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
               to="/yojna"
             >
               Yojna Details
@@ -58,31 +49,44 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+               style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
               to="/addPatient"
             >
               New Patient
             </NavLink>
           </li>
           <li>
-            <NavLink style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
-              to="/registered-patients">Registered Patients</NavLink>
+            <NavLink
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
+              to="/registered-patients"
+            >
+              Registered Patients
+            </NavLink>
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+             style={({ isActive }) => ({
+              color: isActive ? "#a4c639" : "",
+              backgroundColor: isActive ? "white" : "",
+              textDecoration: isActive ? "" : "",
+              // border: isActive ? "1px solid black" : "",
+              padding: isActive ? "8px" : "", // Add padding style here
+              borderRadius: isActive ? "10px" : "", // Add border radius style here
+            })}
               to="/user"
             >
               User
@@ -90,21 +94,21 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              style={({ isActive }) => {
-                return isActive
-                  ? { color: "black", textDecoration: "underline" }
-                  : {};
-              }}
+             style={({ isActive }) => ({
+              color: isActive ? "#a4c639" : "",
+              backgroundColor: isActive ? "white" : "",
+              textDecoration: isActive ? "" : "",
+              // border: isActive ? "1px solid black" : "",
+              padding: isActive ? "8px" : "", // Add padding style here
+              borderRadius: isActive ? "10px" : "", // Add border radius style here
+            })}
               to="/dashboard"
             >
               DashBoard
             </NavLink>
           </li>
-         
         </ul>
-        <h1 className="logo">
-          {/* <img src={logo} alt="" /> */}
-        </h1>
+        <h1 className="logo">{/* <img src={logo} alt="" /> */}</h1>
       </div>
     </nav>
   );

@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form"
-import ReactDOM from "react-dom"
+import { useForm } from "react-hook-form";
+import ReactDOM from "react-dom";
+import { useData } from '../newPatient/DataContext';
+import { ToastContainer, toast } from "react-toastify"; // Import toast notifications
+import { useNavigate } from 'react-router-dom';
 
 const DiseaseDetails = () => {
 
+  const { updateData } = useData();
+  const { data } = useData();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
-//   } = useForm<Inputs>()
 
-  const onSubmit= (data) =>{ 
+
+  const onSubmit= (DiseaseData) =>{ 
    
-   console.log(data)
+    const newData = {...data, DiseaseDetails: DiseaseData };
+    updateData(newData);
+
+    console.log("updateData",updateData)
+// console.log("CareDetails",data.CareDetails)
+// console.log("DiseaseDetails",data.DiseaseDetails)
+
+   console.log(DiseaseData)
+
 }
+
 
 
   return (

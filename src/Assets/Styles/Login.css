@@ -1,7 +1,6 @@
-
 .section {
   display: flex;
-  /* background-image: url(../Images/background-1.jpg); */
+  background-image: url(../../Assets/Images/background-1.jpeg);
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -15,28 +14,31 @@
   position: relative;
   width: 400px;
   height: 450px;
-  background-color: rgba(255, 255, 255, 0.384) !important;
+  background-color: rgba(255, 255, 255, 0.238) !important;
   border: 1px solid black;
-  border-radius: 10px;
+  border-radius: 8px;
   backdrop-filter: blur(15px);
   display: flex;
   margin-top: 50px;
+  left: 300px;
   justify-content: center;
   align-items: center;
   box-shadow: 2px 2px 20px black;
 }
+
 .heading {
   font-size: 2em;
   color: black !important;
   text-align: center;
 }
+
 .input-box {
   position: relative;
   margin: 30px 0;
   width: 310px;
   border-bottom: 2px solid black !important;
-
 }
+
 .input-box label {
   position: absolute;
   overflow: hidden;
@@ -48,10 +50,12 @@
   pointer-events: none;
   transition: 0.5s;
 }
+
 input:focus ~ label,
 input:valid ~ label {
   top: -5px;
 }
+
 .input-box input {
   width: 100%;
   height: 50px;
@@ -74,13 +78,16 @@ input:valid ~ label {
 .forget label input {
   margin-right: 3px;
 }
+
 .forget label a {
   color: blue !important;
   text-decoration: underline;
 }
+
 .forget label a:hover {
   text-decoration: underline;
 }
+
 .btn-login {
   width: 100%;
   height: 40px;
@@ -92,32 +99,36 @@ input:valid ~ label {
   font-size: 1em;
   font-weight: 600;
 }
+
 .btn-login:hover {
-  border: 1px solid black;
-  box-shadow: 1px 1px 2px black;
+  box-shadow: 1px 1px 1px black;
 }
+
 .register {
   font-size: 0.9em;
   color: black !important;
   text-align: center;
   margin: 25px 0 10px;
 }
+
 .register p a {
   text-decoration: none;
   color: blue !important;
   font-weight: 600;
 }
+
 .register p a:hover {
   text-decoration: underline;
 }
 
 .logo {
-  filter: drop-shadow(5px 10px 10px white);
+  filter: drop-shadow(1px 1px 5px rgb(255, 255, 255));
   position: absolute;
-  top: 8px;
-  left: 335px;
+  top: 80px;
+  left: 80px;
   z-index: 99;
 }
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -135,12 +146,51 @@ input[type="number"]::-webkit-outer-spin-button {
 @media (max-width: 480px) {
   .form-box {
     width: 90%; /* Adjust the width for even smaller screens */
+    position: absolute;
+    left: 20px;
   }
 
   .logo {
     left: 50%; /* Center the logo on smaller screens */
-    top: -5px;
+    top: 5px;
     width: 60%;
     transform: translateX(-50%);
   }
 }
+
+/* Add these styles to your existing CSS file or create a new one */
+
+.custom-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  background-color:#e6d799;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid black;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-overlay {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+/* Add more styles as needed */
+
