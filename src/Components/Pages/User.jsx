@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // User component to display and manage user data
-const User = () => {
+const User = ({ location }) => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
+  
 
   // Fetch user data on component mount and whenever data changes
   useEffect(() => {
@@ -69,7 +70,7 @@ const User = () => {
                 {/* Button for editing user data */}
                 <Link
                     className="edit-button"
-                    to={`/createuser/${user._id}`}
+                    to={`/edituser/${user._id}`}
                   >
                     Edit
                   </Link>

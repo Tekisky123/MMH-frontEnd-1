@@ -57,6 +57,8 @@
   padding: 8px;
   margin-right: 5px;
   cursor: pointer;
+  text-decoration: none
+
 }
 
 .edit-button:hover, .delete-button:hover {

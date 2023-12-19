@@ -1,180 +1,302 @@
 import axios from "axios";
-import React, { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import "../../Assets/Styles/Signup.css";
 
 const EditData = () => {
   const navigate = useNavigate();
   const { _id } = useParams();
-  const baseURL = "http://13.126.14.109:4000/user/updateuser";
 
-  const { control, handleSubmit, setValue } = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      mobile: "",
-      userType: "",
-    },
+  const baseURL = `http://13.126.14.109:4000/user/updateuser`;
+
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    mobile: "",
+    userType: "",
   });
+  const [errors, setErrors] = useState({});
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+
+  const { firstName, lastName, email, password, mobile, userType } = data;
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [_id]); // Add _id as a dependency
 
   const getData = async () => {
     try {
-      const result = await axios.get(`${baseURL}/${_id}`);
+      const result = await axios.get(`http://13.126.14.109:4000/user/${_id}`);
       console.log(result);
 
       const { firstName, lastName, email, password, mobile, userType } =
         result.data;
 
-      setValue("firstName", firstName);
-      setValue("lastName", lastName);
-      setValue("email", email);
-      setValue("password", password);
-      setValue("mobile", mobile);
-      setValue("userType", userType);
+      setData({ firstName, lastName, email, password, mobile, userType });
     } catch (err) {
       console.log(err);
     }
   };
 
-  const onSubmit = async (data) => {
-    try {
-      const res = await axios.put(`${baseURL}/${_id}`, data);
-      console.log(res);
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
 
-      toast.success("Data Successfully Updated");
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-    } catch (err) {
-      console.log(err);
+  const validationRegex = {
+    name: /^[a-zA-Z\s]+$/,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+    mobile: /^[0-9]{10}$/,
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // Validate First Name
+    if (!validationRegex.name.test(firstName)) {
+      newErrors.firstName = "Invalid first name";
+      isValid = false;
+    }
+
+    // Validate Last Name
+    if (!validationRegex.name.test(lastName)) {
+      newErrors.lastName = "Invalid last name";
+      isValid = false;
+    }
+
+    // Validate Email
+    if (!validationRegex.email.test(email)) {
+      newErrors.email = "Invalid email address";
+      isValid = false;
+    }
+
+    // Validate Password
+    // if (!validationRegex.password.test(password)) {
+    //   newErrors.password =
+    //     "Invalid password (minimum 8 characters)";
+    //   isValid = false;
+    // }
+
+    // Validate Mobile Number
+    if (!validationRegex.mobile.test(mobile)) {
+      newErrors.mobile = "Invalid mobile number (should be 10 digits)";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      try {
+        const res = await axios.post(baseURL, {
+          firstName,
+          lastName,
+          email,
+          password,
+          mobile,
+          userType,
+        });
+
+        console.log(res);
+
+        toast.success("Data Successfully Updated");
+        setTimeout(() => {
+          navigate("/user");
+        }, 2000);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("Form validation failed");
     }
   };
 
   return (
-    <div>
-      <div className="border">
-        <ToastContainer />
-        <div className="bg-danger py-2 px-4 d-flex justify-content-between">
-          <h3 className="text-light">Update User Details</h3>
-        </div>
+    <div className="Main-container ">
+      <section className="section ">
+        <div className="form-box-user edit ">
+          <div className="form-value ">
+            <form onSubmit={handleSubmit}>
+              <h2 className="heading">Edit User</h2>
+              {/* Input fields for user details */}
 
-        <div className="p-4">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="" className="form-label">
-              User Name
-            </label>
-            <Controller
-              name="firstName"
-              control={control}
-              value=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  className="form-control mb-4"
-                  placeholder="Enter User Name"
-                />
-              )}
-            />
+              <div className="names">
+                <div className="inputbox name">
+                  <input
+                    type="text"
+                    required
+                    name="firstName"
+                    value={data.firstName}
+                    onChange={handleChange}
+                  />
+                  <label>
+                    First Name{" "}
+                    <span className="error-message">
+                      {errors.firstName ? "⁕" : ""}
+                    </span>
+                  </label>
+                  {errors.firstName && (
+                    <span className="error" style={{ color: "red" }}>
+                      {errors.firstName}
+                    </span>
+                  )}
+                </div>
+                <div className="inputbox name">
+                  <input
+                    type="text"
+                    required
+                    name="lastName"
+                    value={data.lastName}
+                    onChange={handleChange}
+                  />
+                  <label>
+                    Last Name{" "}
+                    <span className="error-message">
+                      {errors.lastName ? "⁕" : ""}
+                    </span>
+                  </label>
+                  {errors.lastName && (
+                    <span className="error" style={{ color: "red" }}>
+                      {errors.lastName}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-            <label htmlFor="" className="form-label">
-              Mobile No.
-            </label>
-            <Controller
-              name="userMobile"
-              control={control}
-              value=""
-              render={({ field }) => (
+              <div className="inputbox second-section">
                 <input
-                  {...field}
-                  type="number"
-                  className="form-control mb-4"
-                  placeholder="Enter Mobile No."
-                />
-              )}
-            />
-
-            <label htmlFor="" className="form-label">
-              Email
-            </label>
-            <Controller
-              name="email"
-              control={control}
-              value=""
-              render={({ field }) => (
-                <input
-                  {...field}
                   type="email"
-                  className="form-control mb-4"
-                  placeholder="Enter User Email"
+                  required
+                  name="email"
+                  value={data.email}
+                  onChange={handleChange}
                 />
-              )}
-            />
+                <label>
+                  Email{" "}
+                  <span className="error-message">
+                    {errors.email ? "⁕" : ""}
+                  </span>
+                </label>
+                {errors.email && (
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.email}
+                  </span>
+                )}
+              </div>
 
-            <label htmlFor="" className="form-label">
-              Address
-            </label>
-            <Controller
-              name="password"
-              control={control}
-              value=""
-              render={({ field }) => (
+              <div className="inputbox second-section">
                 <input
-                  {...field}
-                  type="text"
-                  className="form-control mb-4"
-                  placeholder="Enter Address"
+                  type="password"
+                  required
+                  name="password"
+                  value={data.password}
+                  onChange={handleChange}
                 />
-              )}
-            />
+                <label>
+                  Password{" "}
+                  <span className="error-message">
+                    {errors.password ? "⁕" : ""}
+                  </span>
+                </label>
+                {errors.password && (
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.password}
+                  </span>
+                )}
+              </div>
 
-            <label htmlFor="" className="form-label">
-              Mobile
-            </label>
-            <Controller
-              name="mobile"
-              control={control}
-              value=""
-              render={({ field }) => (
+              <div className="inputbox second-section">
                 <input
-                  {...field}
                   type="number"
-                  className="form-control mb-4"
-                  placeholder="Enter Mobile"
+                  required
+                  name="mobile"
+                  value={data.mobile}
+                  onChange={handleChange}
+                  maxLength="10"
                 />
-              )}
-            />
+                <label>
+                  Mobile Number{" "}
+                  <span className="error-message">
+                    {errors.mobile ? "⁕" : ""}
+                  </span>
+                </label>
+                {errors.mobile && (
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.mobile}
+                  </span>
+                )}
+              </div>
 
-            <label htmlFor="" className="form-label">
-              User Type
-            </label>
-            <Controller
-              name="userType"
-              control={control}
-              value=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  className="form-control mb-4"
-                  placeholder="Enter User Type"
-                />
-              )}
-            />
+              <div className="role-type">
+                <label htmlFor="">
+                  User Type{" "}
+                  <span className="error-message">
+                    {errors.userType ? "⁕" : ""}
+                  </span>
+                </label>
+                <select
+                  name="userType"
+                  value={data.userType}
+                  onChange={handleChange}
+                >
+                  <option>Please Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="SuperAdmin">Super Admin</option>
+                  <option value="Operator">Operator</option>
+                </select>
+                {errors.userType && (
+                  <span className="error" style={{ color: "red" }}>
+                    {errors.userType}
+                  </span>
+                )}
+              </div>
 
-            <button type="submit" className="btn btn-danger w-100">
-              Submit
-            </button>
-          </form>
+              {/* ... (Previous code remains unchanged) */}
+
+              <button className="create btn-login" type="submit">
+                Update User
+              </button>
+              {/* Success Animation */}
+            </form>
+          </div>
         </div>
-      </div>
+        {/* Blur background during success animation */}
+
+        <div className={` ${showSuccessAnimation ? "blur-background" : ""}`}>
+          {showSuccessAnimation && (
+            <div className="success-animation">
+              {/* Checkmark SVG for success animation */}
+              <svg
+                className="checkmark"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 52 52"
+              >
+                <circle
+                  className="checkmark__circle"
+                  cx="26"
+                  cy="26"
+                  r="25"
+                  fill="none"
+                />
+                <path
+                  className="checkmark__check"
+                  fill="none"
+                  d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                />
+              </svg>
+            </div>
+          )}
+          {/* Your existing content goes here */}
+        </div>
+      </section>
     </div>
   );
 };

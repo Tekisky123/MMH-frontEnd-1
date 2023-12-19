@@ -27,7 +27,7 @@ const CreateUser = () => {
   // Function to handle input changes and update form data
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const truncatedValue = value.slice(0, 10);
+    const truncatedValue = value.slice(0, 40);
     setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };

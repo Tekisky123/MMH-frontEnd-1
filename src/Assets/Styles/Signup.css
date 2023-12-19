@@ -11,7 +11,10 @@ input:-webkit-autofill:active {
   align-items: center;
   height: auto;
 }
-
+.edit{
+  margin-top: 80px !important;
+  padding: 50px !important;
+}
 .section {
   /* background-image: url(../Images//background-1.jpg); */
   background-image: url(../../Assets/Images/background.jpg);

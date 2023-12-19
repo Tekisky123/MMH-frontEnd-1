@@ -16,7 +16,6 @@ import generatePDF from "react-to-pdf";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
 
-
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
   const [document, setDocument] = useState([]);
@@ -33,7 +32,6 @@ const RegisteredPatients = () => {
   const [imgView, setImgView] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-
 
   const doc = new jsPDF();
 
@@ -60,17 +58,14 @@ const RegisteredPatients = () => {
     // Update filtered data when search term changes
     const filteredResults = data.filter((item) => {
       console.log("ghsdhfsagd", data);
-      console.log("fgfsg",searchTerm);
-      return (
-        item.patientDetails.name.includes(searchTerm)
-        // Add more fields to search if needed
-        // ...
-      );
-      
+      console.log("fgfsg", searchTerm);
+      return item.patientDetails.name.includes(searchTerm);
+      // Add more fields to search if needed
+      // ...
     });
     setFilteredData(filteredResults);
   }, [searchTerm, data]);
-  console.log("dsfdgshd",searchTerm);
+  console.log("dsfdgshd", searchTerm);
 
   const handleShowDetails = (index) => {
     // setShowDetails(!showDetails);
@@ -135,7 +130,14 @@ const RegisteredPatients = () => {
         setImgView(imgData);
 
         // Add the image to the PDF
-        doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height);
+        doc.addImage(
+          imgData,
+          "PNG",
+          0,
+          0,
+          doc.internal.pageSize.width,
+          doc.internal.pageSize.height
+        );
 
         // Save the PDF with a specific filename
         doc.save(`${id}_patient_details.pdf`);
@@ -148,7 +150,7 @@ const RegisteredPatients = () => {
       setIsDownloading(false);
     }
   };
-  
+
   // const handleDownloadPDF = (index) => {
   //   const doc = new jsPDF();
   //   const pdfElement = pdfRefs[index].current;
@@ -177,20 +179,20 @@ const RegisteredPatients = () => {
   // const handleDownloadPDF = (index) => {
   //   const customPageSize = { width: 300, height: 400 }; // Set your custom page size here
   //   const pdfElement = pdfRefs[index].current;
-  
+
   //   // Ensure that the content is ready before trying to generate PDF
   //   if (pdfElement) {
   //     // Calculate content dimensions
   //     const contentWidth = pdfElement.clientWidth;
   //     const contentHeight = pdfElement.clientHeight;
-  
+
   //     // Calculate scale factor to fit content within the page
   //     const scaleFactor = Math.min(customPageSize.width / contentWidth, customPageSize.height / contentHeight);
-  
+
   //     // Set PDF dimensions
   //     const pdfWidth = contentWidth * scaleFactor;
   //     const pdfHeight = contentHeight * scaleFactor;
-  
+
   //     // Convert HTML content to a data array using html2pdf
   //     html2pdf(pdfElement, {
   //       margin: 10,
@@ -201,19 +203,22 @@ const RegisteredPatients = () => {
   //     }).from(pdfElement).save();
   //   }
   // };
-  
-  
 
   return (
     <>
-    <div className="search-bar">
+      <div className="search-bar group">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+          <g>
+            <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+          </g>
+        </svg>
         <input
           type="text"
           placeholder="Search by patient name or ID..."
           value={searchTerm}
+          className="input"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-
       </div>
       {/* <img src={imgView} alt="" /> */}
       <div className="maincontainer">
@@ -241,8 +246,9 @@ const RegisteredPatients = () => {
                         <td style={{ border: "none" }}>Patient ID:</td>
                         <td style={{ border: "none" }}>{item.patientID}</td>
                         <td style={{ border: "none" }}>Status:</td>
-                        <td style={{ border: "none" }}>{item.status}</td>
+                        <td style={{ color: "#a4c639" , border: "none" , fontWeight: "bolder", textDecoration:"underline" }}>{item.status}</td>
                       </tr>
+                      
                       <tr>
                         <td style={{ border: "none" }}>Patient Name:</td>
                         <td style={{ border: "none" }}>
@@ -251,19 +257,24 @@ const RegisteredPatients = () => {
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>Disease Name:</td>
-                        <td style={{ border: "none" }}>{item.diseaseDetail.name}</td>
+                        <td style={{ border: "none" }}>
+                          {item.diseaseDetail.name}
+                        </td>
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>Care Taker Name:</td>
-                        <td style={{ border: "none" }}>{item.careTaker.name} </td>
+                        <td style={{ border: "none" }}>
+                          {item.careTaker.name}{" "}
+                        </td>
                       </tr>
                       <tr>
-                        <td style={{ border: "none" }}>Care Taker Mobile No:</td>
-                        <td style={{ border: "none" }}>{item.careTaker.mobile1}</td>
+                        <td style={{ border: "none" }}>
+                          Care Taker Mobile No:
+                        </td>
+                        <td style={{ border: "none" }}>
+                          {item.careTaker.mobile1}
+                        </td>
                       </tr>
-                
-              
-                      
                     </tbody>
                   </table>
                 </div>
@@ -318,11 +329,11 @@ const RegisteredPatients = () => {
                       Upload Documents
                     </button>
                     <button
-                    className="btn-download-pdf"
-                    onClick={() => handleDownloadPDF(index,item.patientID)}
-                  >
-                    Download PDF
-                  </button>
+                      className="btn-download-pdf"
+                      onClick={() => handleDownloadPDF(index, item.patientID)}
+                    >
+                      Download PDF
+                    </button>
                   </div>
                 ) : null}
               </div>
@@ -508,7 +519,6 @@ const RegisteredPatients = () => {
                         <td>{item.status}</td>
                       </tr>
                     </tbody>
-                    
                   </table>
                   <h2 className="table-heading">Documents</h2>
                   <table>
@@ -521,14 +531,13 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td>{item.documents[0].imageName}</td>
-                        <td><a href={item.documents[0].imageUrl}>Download</a></td>
+                        <td>
+                          <a href={item.documents[0].imageUrl}>Download</a>
+                        </td>
                       </tr>
-                      
                     </tbody>
-                    
                   </table>
                   <ViewMMH />
-                  
                 </div>
               )}
 
@@ -540,32 +549,38 @@ const RegisteredPatients = () => {
                   <h2>Close Application</h2>
                   <table>
                     <thead>
-                      <tr>
-                        
-                      </tr>
+                      <tr></tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>Amount Saved</td>
-                        <td>₹ <input type="number" /></td>
+                        <td>
+                          ₹ <input type="number" />
+                        </td>
                       </tr>
                       <tr>
                         <td>Comments</td>
-                        <td><input type="text" /></td>
+                        <td>
+                          <input type="text" />
+                        </td>
                       </tr>
                       <tr>
                         <td>Patient Feedback</td>
-                        <td><input type="text" /></td>
+                        <td>
+                          <input type="text" />
+                        </td>
                       </tr>
                       <tr>
                         <td>Status</td>
-                        <td><select name="" id="" className="form-input">
-                          <option value="">select</option>
-                          <option value="">Active</option>
-                          <option value="">Application Closed</option>
-                          <option value="">Pending</option>
-                          <option value="">Patient Rejected</option>
-                          </select></td>
+                        <td>
+                          <select name="" id="" className="form-input">
+                            <option value="">select</option>
+                            <option value="">Active</option>
+                            <option value="">Application Closed</option>
+                            <option value="">Pending</option>
+                            <option value="">Patient Rejected</option>
+                          </select>
+                        </td>
                       </tr>
                       {/* <tr>
                         <td>Documents</td>
@@ -599,8 +614,7 @@ const RegisteredPatients = () => {
                 </div>
               )}
 
-              {isDocumentActive && <UploadDocuments currentItem={item._id}/>}
-
+              {isDocumentActive && <UploadDocuments currentItem={item._id} onClose={handleSidebarClose}/>}
             </div>
           );
         })}
