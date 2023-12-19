@@ -1631,7 +1631,7 @@ const AddPatientDetails = () => {
                       </div>
                       <div class="family-item">
                         <div style={{ display: "flex", margin: "0px" }}>
-                          <span for="full_name">monthlyIncome</span>
+                          <span for="full_name">Monthly Income</span>
                           <span className="error-message">⁕</span>
                         </div>
                         <input
