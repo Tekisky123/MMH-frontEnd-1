@@ -11,9 +11,18 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
       status: "",
       closedate: new Date().toLocaleDateString()
     });
+
+    const handleConfirmation = () => {
+      return window.confirm("Are you sure to close application?");
+    };
   
     const handleSubmit = async (e) => {
-      // e.preventDefault();
+      e.preventDefault();
+
+      if (!handleConfirmation()) {
+        return; // User canceled submission
+      }
+
       const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
   
       try {
@@ -28,6 +37,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
         if (response.status >= 200 && response.status < 300) {
           // Handle successful submission
           console.log("Form submitted successfully!");
+          window.location.reload();
         } else {
           // Handle errors
           console.error("Error submitting form");
@@ -102,7 +112,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               required
               onChange={handleInputChange}>
                   <option value="">select</option>
-                  <option value="Patient Rejected">Patient Rejected</option>
+                  <option value="Closed-Patient Rejected">Closed-Patient Rejected</option>
                   <option value="Closed-Civil">Closed-Civil</option>
                   <option value="Closed-Ayushman Bharat">Closed-Ayushman Bharat</option>
                   <option value="Closed-Private">Closed-Private</option>
@@ -111,14 +121,14 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                 </select>
                 <br />
                 {formData.status === "Closed-Other" && (
-                      <input
-                        type="text"
-                        name="otherType"
-                        placeholder="Type here..."
-                        // value={formData.status || ""}
-                        onChange={(e) => handleInputChange(index, e)}
-                      />
-                    )}
+              <input
+                type="text"
+                name="otherType"
+                placeholder="Type here..."
+                value={formData.otherType || ""}
+                onChange={handleInputChange}
+              />
+            )}
               </td>
             </tr>
           

@@ -30,7 +30,7 @@ const RegisteredPatients = () => {
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
   const [refToDownload, setRefToDownload] = useState(null);
-  // const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [imgView, setImgView] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -117,7 +117,7 @@ const RegisteredPatients = () => {
 
   const handleDownloadPDF = async (index, id) => {
     try {
-      // setIsDownloading(true);
+      setIsDownloading(true);
 
       // Create a new jsPDF instance
       const doc = new jsPDF();
@@ -153,7 +153,10 @@ const RegisteredPatients = () => {
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
-      // setIsDownloading(false);
+      setTimeout(() => {
+        setIsDownloading(false);
+      }, 10000);
+      
     }
   };
 
@@ -227,7 +230,7 @@ const RegisteredPatients = () => {
         />
       </div>
       {/* <img src={imgView} alt="" /> */}
-      <div className="maincontainer">
+      <div className="maincontainer" ref={pdfRef}>
         {filteredData.map((item, index) => {
           const isDetailsActive = activePatientId === item.patientDetails._id;
           const isCloseActive = activeStatusId === item._id;
@@ -239,7 +242,14 @@ const RegisteredPatients = () => {
           const statusColor =
             item.status === "Documents Uploaded"
               ? "green"
-              : "" || item.status === "Application Closed"
+              : "" ||
+                item.status === "Application Closed" ||
+                item.status === "Closed-Patient Rejected" ||
+                item.status === "Closed-Civil" ||
+                item.status === "Closed-Ayushman Bharat" ||
+                item.status === "Closed-Private" ||
+                item.status === "Closed-MJPJA" ||
+                item.status === "Closed-Other"
               ? "red"
               : "" || item.status === "Pending"
               ? "orange"
@@ -281,7 +291,7 @@ const RegisteredPatients = () => {
                         {/* <span style={{marginLeft:"50px"}}>Status:</span>
                         <span>{item.status}</span> */}
                       </tr>
-                      
+
                       <tr>
                         <td style={{ border: "none" }}>Patient Name:</td>
                         <td style={{ border: "none" }}>
@@ -349,7 +359,7 @@ const RegisteredPatients = () => {
                     More Info
                   </button>
 
-                  {item.status !== "Patient Rejected" &&
+                  {item.status !== "Closed-Patient Rejected" &&
                     item.status !== "Closed-Civil" &&
                     item.status !== "Closed-Ayushman Bharat" &&
                     item.status !== "Closed-Private" &&
@@ -419,12 +429,12 @@ const RegisteredPatients = () => {
                   <h2 className="table-heading">Family Details</h2>
                   <table>
                     <thead>
-                      <th>Sr.No.</th>
-                      <th>Family Member</th>
-                      <th>Relation</th>
-                      <th>Age</th>
-                      <th>Occupation</th>
-                      <th>Monthly Income</th>
+                      <th  style={{border: "1px solid black"}}>Sr.No.</th>
+                      <th style={{border: "1px solid black"}}> Family Member</th>
+                      <th  style={{border: "1px solid black"}}>Relation</th>
+                      <th  style={{border: "1px solid black"}}>Age</th>
+                      <th  style={{border: "1px solid black"}}>Occupation</th>
+                      <th  style={{border: "1px solid black"}}>Monthly Income</th>
                     </thead>
                     <tbody>
                       {item.familyDetail.map((familyMember, familyIndex) => (
@@ -554,7 +564,7 @@ const RegisteredPatients = () => {
                     </tbody>
                   </table>
                   {item.schemeName ? (
-                    <MMH item={item} />
+                    <MMH item={item} isDownloading={isDownloading} pdfRef={pdfRef} />
                   ) : (
                     <ViewMMH currentItem={item._id} />
                   )}
@@ -569,7 +579,12 @@ const RegisteredPatients = () => {
                 />
               )}
 
-              {isDocumentActive && <UploadDocuments currentItem={item._id} onClose={handleSidebarClose} />}
+              {isDocumentActive && (
+                <UploadDocuments
+                  currentItem={item._id}
+                  onClose={handleSidebarClose}
+                />
+              )}
             </div>
           );
         })}
