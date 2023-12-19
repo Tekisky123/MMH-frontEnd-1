@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const ViewMMH = ({currentItem}) => {
+const ViewMMH = ({ currentItem }) => {
   const [schemeName, setSchemeName] = useState("");
   const [hospital, setHospital] = useState("");
   const [viewByMhh, setViewByMhh] = useState("");
   const [adviceByMhh, setAdviceByMhh] = useState("");
   const [proposeHelpByMhh, setProposeHelpByMhh] = useState("");
+
+  const [errors, setErrors] = useState({
+    schemeName: "",
+    hospital: "",
+    viewByMhh: "",
+    adviceByMhh: "",
+    proposeHelpByMhh: "",
+  });
 
   // Function to send data to the API using Axios
   const handleSubmit = async (e) => {
@@ -21,12 +29,51 @@ const ViewMMH = ({currentItem}) => {
         proposeHelpByMhh,
         status: "Scheme & Hospital Selected",
       };
+      var requiredFields = [
+        "schemeName",
+        "hospital",
+        "viewByMhh",
+        "adviceByMhh",
+        "proposeHelpByMhh",
+      ];
 
-      // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
-      const response = await axios.put("http://13.126.14.109:4000/patient/"+currentItem, data);
+      let hasError = false;
 
-      // Handle the response from the API if needed
-      console.log("API Response:", response.data);
+      if (
+        !schemeName ||
+        !hospital ||
+        !viewByMhh ||
+        !adviceByMhh ||
+        !proposeHelpByMhh
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          schemeName: "",
+          hospital: "",
+          viewByMhh: "",
+          adviceByMhh: "",
+          proposeHelpByMhh: "",
+        }));
+        hasError = true;
+      }
+      if (!hasError) {
+        const data = {
+          schemeName,
+          hospital,
+          viewByMhh,
+          adviceByMhh,
+          proposeHelpByMhh,
+        };
+
+        // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
+        const response = await axios.put(
+          "http://13.126.14.109:4000/patient/" + currentItem,
+          data
+        );
+
+        // Handle the response from the API if needed
+        console.log("API Response:", response.data);
+      }
     } catch (error) {
       console.error("Error sending data to API:", error);
     }
@@ -37,68 +84,88 @@ const ViewMMH = ({currentItem}) => {
       <div>
         <h2 className="table-heading">Scheme/Hospital Details</h2>
         <table>
-          
           <tbody>
             <tr>
-              <td>Scheme</td>
+              <td>
+                Scheme <span className="error-message">⁕</span>
+              </td>
               <td>
                 <input
                   type="text"
+                  className="form-input"
+                  name="schemeName"
                   value={schemeName}
                   onChange={(e) => setSchemeName(e.target.value)}
                 />
+                <div className="error-message">{errors.schemeName}</div>
               </td>
             </tr>
             <tr>
-              <td>Hospital </td>
+              <td>
+                Hospital <span className="error-message">⁕</span>{" "}
+              </td>
               <td>
                 <input
                   type="text"
+                  className="form-input"
+                  name="hospital"
                   value={hospital}
                   onChange={(e) => setHospital(e.target.value)}
                 />
+                <div className="error-message">{errors.hospital}</div>
               </td>
             </tr>
           </tbody>
         </table>
-      <h2 className="table-heading">MMH Guidance Plan</h2>
-      <table>
-       
-        <tbody>
-        <tr>
-              <td>View of M.M.H.</td>
+        <h2 className="table-heading">MMH Guidance Plan</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                View of M.M.H.<span className="error-message">⁕</span>
+              </td>
               <td>
                 <textarea
                   name="viewByMhh"
+                  className="form-input"
                   cols="80"
                   rows="3"
                   value={viewByMhh}
                   onChange={(e) => setViewByMhh(e.target.value)}
                 ></textarea>
+                <div className="error-message">{errors.viewByMhh}</div>
               </td>
             </tr>
             <tr>
-              <td>Advice by M.M.H.</td>
+              <td>
+                Advice by M.M.H.<span className="error-message">⁕</span>
+              </td>
               <td>
                 <textarea
                   name="adviceByMhh"
+                  className="form-input"
                   cols="80"
                   rows="3"
                   value={adviceByMhh}
                   onChange={(e) => setAdviceByMhh(e.target.value)}
                 ></textarea>
+                <div className="error-message">{errors.adviceByMhh}</div>
               </td>
             </tr>
             <tr>
-              <td>Propose Help by M.M.H</td>
+              <td>
+                Propose Help by M.M.H <span className="error-message">⁕</span>
+              </td>
               <td>
                 <textarea
                   name="proposeHelpByMhh"
+                  className="form-input"
                   cols="80"
                   rows="3"
                   value={proposeHelpByMhh}
                   onChange={(e) => setProposeHelpByMhh(e.target.value)}
                 ></textarea>
+                <div className="error-message">{errors.proposeHelpByMhh}</div>
               </td>
             </tr>
           </tbody>
