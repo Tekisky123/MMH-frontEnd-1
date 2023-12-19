@@ -349,22 +349,28 @@ const RegisteredPatients = () => {
                     More Info
                   </button>
 
-                  {item.status !== "Application Closed" && (
-                    <>
-                      <button
-                        className="btn-register-status"
-                        onClick={() => handleShowStatus(index)}
-                      >
-                        Close Application
-                      </button>
-                      <button
-                        className="btn-register-status"
-                        onClick={() => handleShowDocument(index)}
-                      >
-                        Upload Documents
-                      </button>
-                    </>
-                  )}
+                  {item.status !== "Closed-Patient Not Reponded" &&
+                    item.status !== "Closed-Civil" &&
+                    item.status !== "Closed-Ayushman Bharat" &&
+                    item.status !== "Closed-Private" &&
+                    item.status !== "Closed-MJPJA" &&
+                    item.status !== "Closed-Other" && (
+                      <>
+                        <button
+                          className="btn-register-status"
+                          onClick={() => handleShowStatus(index)}
+                        >
+                          Close Application
+                        </button>
+                        <button
+                          className="btn-register-status"
+                          onClick={() => handleShowDocument(index)}
+                        >
+                          Upload Documents
+                        </button>
+                      </>
+                    )}
+
                   <button
                     className="btn-download-pdf"
                     onClick={() => handleDownloadPDF(index, item.patientID)}
@@ -524,11 +530,10 @@ const RegisteredPatients = () => {
                       </tr>
                     </tbody>
                   </table>
-                  
-                  {item.documents.length>0 && (
-                    
+
+                  {item.documents.length > 0 && (
                     <>
-<h2 className="table-heading">Documents</h2>
+                      <h2 className="table-heading">Documents</h2>
                     </>
                   )}
                   <table>

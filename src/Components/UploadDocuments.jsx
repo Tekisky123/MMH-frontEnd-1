@@ -95,31 +95,30 @@ const UploadDocuments = ({ currentItem, onClose }) => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
-  
+
     try {
       const formData = new FormData();
-  
+
       // Append status to formData
-      formData.append("status", status);
-  
+      formData.append("status", "Documents Uploaded");
+
       // Append files, types, and doc.type
       files.forEach((doc) => {
         formData.append("files", doc.files);
         formData.append("types[]", doc.type);
-  
+
         // Append doc.type directly to formData
         formData.append("docType", doc.type);
-        console.log("hgsagdsha",doc.type);
+        console.log("hgsagdsha", doc.type);
       });
 
-  
       const response = await fetch(updateUrl, {
         method: "PUT",
         body: formData,
       });
-  
+
       if (response.ok) {
         setUploadSuccess(false);
         setAddSuccess(false);
@@ -145,7 +144,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
       console.error("Error uploading files:", error);
     }
   };
-  
+
   return (
     <div>
       {files.length > 0 ? (
@@ -167,38 +166,11 @@ const UploadDocuments = ({ currentItem, onClose }) => {
       {/* <form onSubmit={handleSubmit} style={{ position: "relative" }}>
         <h2>Documents</h2>
         <img src="" alt="" /> */}
-      <form
-        onSubmit={(event) => handleSubmit(event, currentItem)}
-      >
+      
+        
+      <form onSubmit={(event) => handleSubmit(event, currentItem)}>
         <h2>Documents</h2>
-        <table>
-          <tr>
-            <td>Status:</td>
-            <td>
-              <select
-                name="status"
-                value={status}
-                onChange={(e) => handleStatusChange(e)}
-                className="form-input1"
-              >
-                <option value="">select</option>
-                <option value="Active">Active</option>
-                <option value="Application Closed">Application Closed</option>
-                <option value="Pending">Pending</option>
-                <option value="Patient Rejected">Patient Rejected</option>
-                <option value="Documents Uploaded">Documents Uploaded</option>
-              </select>
-            </td>
-          </tr>
-        </table>
-        
-        
-        {/* <span className="close-icon" onClick={handleSidebarClose}>
-          ❌
-        </span> */}
-        <table>
-          <thead></thead>
-        </table>
+
         {files.map((doc, index) => (
           <div key={index}>
             {console.log("sjkdhsaj", doc.type)}
@@ -213,6 +185,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
                       onChange={(e) => handleDocumentChange(index, e)}
                     >
                       <option value="">select document</option>
+                      <option value="Application Form">Application Form</option>
                       <option value="Aadhar Card">Aadhar Card</option>
                       <option value="PAN Card">PAN Card</option>
                       <option value="Election Card">Election Card</option>

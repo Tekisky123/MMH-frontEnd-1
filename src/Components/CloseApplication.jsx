@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
-    const currDate = new Date().toLocaleDateString();
+    
   
     const [formData, setFormData] = useState({
       amountsaved: "",
       comments: "",
       patientfeedback: "",
       status: "",
-      closedate: currDate,
+      closedate: new Date().toLocaleDateString()
     });
   
     const handleSubmit = async (e) => {
@@ -109,6 +109,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                   <option value="Closed-MJPJA">Closed-MJPJA</option>
                   <option value="Closed-Other">Closed-Other</option>
                 </select>
+                <br />
                 {formData.status === "Closed-Other" && (
                       <input
                         type="text"
@@ -120,17 +121,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                     )}
               </td>
             </tr>
-            {/* <tr>
-              <td>Closing Date</td>
-              <td>
-              <input
-              type="text"
-              name="closedate"
-              value={formData.closedate}
-              readOnly
-            />
-              </td>
-            </tr> */}
+          
           </tbody>
         </table>
         <button type="submit">Submit</button>
