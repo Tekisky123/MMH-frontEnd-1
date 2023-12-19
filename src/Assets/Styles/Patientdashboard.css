@@ -379,6 +379,12 @@ input[type="radio"] {
   margin-top: 20px;
   width: 50%;
 }
+.nextBtn{
+  background-color: green;
+  color: white;
+  margin-top: 20px;
+  width: 50%;
+}
 .previewBtn{
   background-color: #ffc107;
   color: white;
@@ -404,4 +410,34 @@ input[type="radio"] {
   border-radius: 5px;
   /* margin-top: 31px; */
   vertical-align: bottom;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .previewBtn{
+    width: 100%;
+  }
+  .nextBtn{
+    width: 100%;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 601px) and (max-width: 768px) {
+  .previewBtn{
+    width: 100%;
+  }
+  .nextBtn{
+    width: 100%;
+  }
 }

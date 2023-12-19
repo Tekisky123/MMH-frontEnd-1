@@ -1678,7 +1678,7 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
-                  className="full-width-btn form-input"
+                  className="nextBtn form-input"
                   // onClick={() => setStatus(3)}
                   onClick={handleNext2}
                 >
@@ -1760,7 +1760,7 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
-                  className="full-width-btn form-input"
+                  className="nextBtn form-input"
                   // onClick={() => setStatus(3)}
                   onClick={handleNext3}
                 >
@@ -1959,7 +1959,7 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
-                  className="full-width-btn form-input"
+                  className="nextBtn form-input"
                   onClick={handleNext4}
                 >
                   Submit
