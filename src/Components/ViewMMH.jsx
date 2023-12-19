@@ -30,8 +30,8 @@ const ViewMMH = ({ currentItem }) => {
       ];
 
       let hasError = false;
-
-      if (
+      requiredFields.forEach((field) => {
+        if (
         !schemeName ||
         !hospital ||
         !viewByMhh ||
@@ -40,14 +40,12 @@ const ViewMMH = ({ currentItem }) => {
       ) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          schemeName: "",
-          hospital: "",
-          viewByMhh: "",
-          adviceByMhh: "",
-          proposeHelpByMhh: "",
+          [field]: " ",
         }));
         hasError = true;
       }
+      })
+
       if (!hasError) {
         const data = {
           schemeName,
