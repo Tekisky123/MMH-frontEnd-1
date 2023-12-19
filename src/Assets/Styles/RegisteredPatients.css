@@ -257,8 +257,9 @@ th {
   border: 2px solid transparent;
   border-radius: 8px;
   outline: none;
-  background-color: #e0e0e4;
+  background-color: transparent;
   color: #0d0c22;
+  border: 1px solid black;
   transition: 0.3s ease;
 }
 
@@ -271,7 +272,7 @@ th {
   outline: none;
   border-color: rgba(0, 48, 73, 0.4);
   background-color: #fff;
-  box-shadow: 0 0 2px 1px#a4c639;
+  box-shadow: 0 0 2px 3px#a4c639;
 }
 
 .icon {

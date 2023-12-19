@@ -114,7 +114,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
         }, 1000); // Adjust the delay time as needed
   
         handleSidebarClose();
-        onClose();
+        // onClose();
       } else {
         setUploadSuccess(false);
         setAddSuccess(false);
