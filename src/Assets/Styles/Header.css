@@ -187,5 +187,39 @@
 
 
 
+
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .menu-items{
+        justify-content: flex-start;
+    }
+  }
+  
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 601px) and (max-width: 768px) {
+    .menu-items li{
+        list-style: none;
+        margin-left: 25px;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+  }
+  
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 769px) and (max-width: 992px) {
+    .menu-items li{
+        list-style: none;
+        margin-left: 20px;
+        margin-top: 10px;
+        font-size: 15px;
+    }
+    .menu-items{
+        padding-left: 4rem!important;
+    }
+  }
+
 /* home page css here  */
 
