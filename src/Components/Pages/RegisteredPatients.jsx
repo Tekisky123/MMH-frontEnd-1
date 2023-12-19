@@ -349,7 +349,7 @@ const RegisteredPatients = () => {
                     More Info
                   </button>
 
-                  {item.status !== "Closed-Patient Not Reponded" &&
+                  {item.status !== "Patient Rejected" &&
                     item.status !== "Closed-Civil" &&
                     item.status !== "Closed-Ayushman Bharat" &&
                     item.status !== "Closed-Private" &&
