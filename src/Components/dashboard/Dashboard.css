@@ -1,57 +1,72 @@
 /* Dashboard.css */
 
 .dashbord-main {
-  /* display: flex;
+  display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; */
+  justify-content: space-around;
   margin: 20px;
+  background-image: url(../../Assets/Images//mainbodylogo.jpeg);
+  background-size: cover;
+  
+  background-repeat: no-repeat;
 }
 
-.dashboard-card1 {
-  background-color: #fff;
-  
-  border: 1px solid #da0a0a;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  padding: 20px;
-  width: 1200px;
-  /* text-align: center; */
-}
-.dashboard-card {
-  background-color: #fff;
+.dashboard-card,
+.dashboard-big-card {
+  background: #ffffffe5;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 1200px;
-  height: 300px;
-  /* text-align: center; */
+  margin: 10px;
 }
 
+.dashboard-card {
+  width: 300px;
+  height: 200px;
+  margin-top: 30px;
+  
+}
+.amount{
+  border: 2px solid #198754;
+  box-shadow: 2px 2px 15px #198754;
+  color: #198754;
+}
+
+.dashboard-big-card {
+  width: 1300px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.monthly-amount-heading,
+.total-closed-cases-heading,
+.total-approach-heading,
+.pending-cases-heading,
 .total-amount-heading {
-  color: #333;
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 10px;
+}
+.pending-cases{
+  border: 2px solid red;
+  color: red;
+
+  box-shadow: 1px 1px 15px rgba(255, 0, 0, 0.603);
+}
+.total-closed-cases{
+  border: 2px solid #a4c639;
+  box-shadow: 1px 3px 20px #a4c639;
+  
+}
+.cards{
+  border: 2px solid #a4c639;
+  box-shadow: 1px 3px 20px #a4c639;
+  color: #a4c639;
 }
 
 .card-value {
-  
-  color: #007bff;
-  font-size: 34px;
+  font-size: 54px;
+  text-align: center;
   font-weight: bold;
-}
-
-.Pending-case {
-  color: #e44d26;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.dashbord-data {
-  /* display: flex;
-  justify-content: space-around; */
-  margin-top: 20px;
 }

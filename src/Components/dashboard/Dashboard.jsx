@@ -1,5 +1,8 @@
+// Dashboard.js
+
 import React, { useState, useEffect } from "react";
 import "../../Components/dashboard/Dashboard.css";
+
 
 const Dashboard = () => {
   const [data, setData] = useState({
@@ -22,12 +25,11 @@ const Dashboard = () => {
         // Update state with API data
         setData({
           totalAmountSaved: json.totalAmountSaved,
-          monthAmountSaved: json.monthAmountSaved,
-          PendingCasesMoreThan5Days: json.PendingCasesMoreThan5Days,
-          totalClosedCasesInMonth: json.totalClosedCasesInMonth,
+          monthlyAmountSaved: json.monthlyAmountSaved,
+          pendingCases: json.pendingCases,
           totalClosedCases: json.totalClosedCases,
-          totalNumberOfApproach: json.totalNumberOfApproach,
-          totalNumberOfMonthApproach: json.totalNumberOfMonthApproach,
+          totalApproach: json.totalApproach,
+          totalMonthApproach: json.totalMonthApproach,
         });
       })
       .catch((error) => console.error("Error fetching data: ", error));
@@ -35,41 +37,42 @@ const Dashboard = () => {
 
   return (
     <div className="dashbord-main">
-      <div className="dashboard-card1">
-        <h1 className="total-amount-heading">Total Amount Saved</h1>
-        <p className="card-value">{data.totalAmountSaved}</p>
+      {/* First Row */}
+      <div className="dashboard-card amount">
+        <h1 className="monthly-amount-heading ">Monthly Amount Saved</h1>
+        <p className="card-value">₹ {data.monthlyAmountSaved}</p>
       </div>
 
-      <div className="dashboard-card1">
-        <h1 className="total-amount-heading">Monthly Amount Saved</h1>
-        <p className="card-value">{data.monthAmountSaved}</p>
+      <div className="dashboard-card total-closed-cases cards">
+        <h1 className="total-closed-cases-heading ">Total Closed Cases In Month</h1>
+        <p className="card-value">{data.totalClosedCases}</p>
       </div>
 
-      <div className="dashboard-card1">
-        <h1 className="Pending-case">Pending case for more than 5 days</h1>
-        <p className="card-value">{data.PendingCasesMoreThan5Days}</p>
-      </div>
-      <div className="dashboard-card1">
-        <h1 className="Pending-case">Total Closed Cases In Month</h1>
-        <p className="card-value">{data.totalClosedCasesInMonth}</p>
+      <div className="dashboard-card cards">
+        <h1 className="total-approach-heading ">Total Number of Approaches In Month</h1>
+        <p className="card-value">{data.totalApproach}</p>
       </div>
 
-      <div className="dashbord-data">
-        <div className="dashboard-card1">
-          <h3 className="total-closed-cases">Total Closed Cases</h3>
+      <div className="dashboard-card pending-cases">
+        <h1 className="pending-cases-heading ">Pending cases for more than 5 days</h1>
+        <p className="card-value">{data.pendingCases}</p>
+      </div>
+
+      {/* Second Row */}
+      <div className="dashboard-big-card">
+        <div className="dashboard-card amount">
+          <h1 className="total-amount-heading ">Total Amount Saved</h1>
+          <p className="card-value">₹ {data.totalAmountSaved}</p>
+        </div>
+
+        <div className="dashboard-card cards">
+          <h1 className="total-closed-cases-heading">Total Closed Cases</h1>
           <p className="card-value">{data.totalClosedCases}</p>
         </div>
 
-        <div className="dashboard-card1">
-          <h3 className="total-number-of-approach">Total Number of Approaches</h3>
-          <p className="card-value">{data.totalNumberOfApproach}</p>
-        </div>
-
-        <div className="dashboard-card1">
-          <h3 className="total-number-of-month-approach">
-            Total Number of Approaches In  Month
-          </h3>
-          <p className="card-value">{data.totalNumberOfMonthApproach}</p>
+        <div className="dashboard-card cards">
+          <h1 className="total-approach-heading">Total Number of Approaches</h1>
+          <p className="card-value">{data.totalApproach}</p>
         </div>
       </div>
     </div>
