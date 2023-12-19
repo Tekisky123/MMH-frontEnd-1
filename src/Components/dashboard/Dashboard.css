@@ -14,7 +14,7 @@
 .dashboard-card,
 .dashboard-big-card {
   background: #ffffffe5;
-  border: 1px solid #ddd;
+  border: 1.5px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
