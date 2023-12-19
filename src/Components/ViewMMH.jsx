@@ -19,6 +19,7 @@ const ViewMMH = ({currentItem}) => {
         viewByMhh,
         adviceByMhh,
         proposeHelpByMhh,
+        status: "Scheme & Hospital Selected",
       };
 
       // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
