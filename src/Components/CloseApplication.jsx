@@ -5,7 +5,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
     const currDate = new Date().toLocaleDateString();
   
     const [formData, setFormData] = useState({
-      amount: "",
+      amountsaved: "",
       comments: "",
       patientfeedback: "",
       status: "",
@@ -13,7 +13,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
     });
   
     const handleSubmit = async (e) => {
-      e.preventDefault();
+      // e.preventDefault();
       const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
   
       try {
@@ -65,8 +65,8 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                 ₹
                 <input
                   type="number"
-                  name="amount"
-                  value={formData.amount}
+                  name="amountsaved"
+                  value={formData.amountsaved}
                   onChange={handleInputChange}
                 />
               </td>
@@ -99,9 +99,10 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                 <select name="status"
               className="form-input"
               value={formData.status}
+              required
               onChange={handleInputChange}>
                   <option value="">select</option>
-                  <option value="Closed-Patient Not Reponded">Closed-Patient Not Reponded</option>
+                  <option value="Patient Rejected">Patient Rejected</option>
                   <option value="Closed-Civil">Closed-Civil</option>
                   <option value="Closed-Ayushman Bharat">Closed-Ayushman Bharat</option>
                   <option value="Closed-Private">Closed-Private</option>
@@ -119,7 +120,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                     )}
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>Closing Date</td>
               <td>
               <input
@@ -129,7 +130,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               readOnly
             />
               </td>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
         <button type="submit">Submit</button>

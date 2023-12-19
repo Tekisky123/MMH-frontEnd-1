@@ -1,67 +1,57 @@
-.tab-titles {
-    display: flex;
-    margin: 20px 0 40px;
-  }
-  
-  .tab-links {
-    margin-right: 100px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    position: relative;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid rgb(153, 153, 153);
+/* Dashboard.css */
 
-  }
-  .tab-links:active{
-    background-color: #4caf50;
-    border: 2px solid;
-  }
-  
-  .tab-links::after {
-    content: "";
-    width: 0;
-    height: 5px;
-    background-color: #4caf50;
-    position: absolute;
-    left: 0;
-    bottom: -8px;
-    transition: 0.5s;
-  }
-  
-  .tab-links.active-link::after {
-    width: 100%;
-    
-  }
-  
-  .tab-contents {
-    display: none;
-  }
-  
-  .tab-contents.active-tab {
-    display: block;
-  }
-
-  
-
-
-
-
-
-
-.form-div{
-    display: flex;
-    flex-direction: column;
-  }
-
- .form-input1 {    padding: 5px;
-    margin: 5px 0px;
-    border-radius: 5px;
-    border: 2px solid lightgrey;
+.dashbord-main {
+  /* display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; */
+  margin: 20px;
 }
-.full-width-btn{
-    background-color: green;
-    color: white;
-    margin-top: 20px;
+
+.dashboard-card1 {
+  background-color: #fff;
+  
+  border: 1px solid #da0a0a;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 20px;
+  width: 1200px;
+  /* text-align: center; */
+}
+.dashboard-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  text-align: center;
+  padding: 20px;
+  width: 1200px;
+  height: 300px;
+  /* text-align: center; */
+}
+
+.total-amount-heading {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card-value {
+  
+  color: #007bff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.Pending-case {
+  color: #e44d26;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.dashbord-data {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
