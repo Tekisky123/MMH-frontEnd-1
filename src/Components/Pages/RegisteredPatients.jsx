@@ -15,7 +15,8 @@ import autoTable from "jspdf-autotable";
 import generatePDF from "react-to-pdf";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
-
+import MMH from "../MMH";
+import CloseApplication from "../CloseApplication";
 
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -29,11 +30,11 @@ const RegisteredPatients = () => {
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
   const [refToDownload, setRefToDownload] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(false);
+  // const [isDownloading, setIsDownloading] = useState(false);
   const [imgView, setImgView] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-
+  const [statusColor, setStatusColor] = useState("");
 
   const doc = new jsPDF();
 
@@ -49,7 +50,7 @@ const RegisteredPatients = () => {
     axios.get(baseURL).then((responce) => {
       console.log(responce.data.result);
 
-      setData(responce.data.result.reverse());
+      setData(responce.data.result);
       setFilteredData(responce.data.result.reverse());
     });
 
@@ -60,17 +61,17 @@ const RegisteredPatients = () => {
     // Update filtered data when search term changes
     const filteredResults = data.filter((item) => {
       console.log("ghsdhfsagd", data);
-      console.log("fgfsg",searchTerm);
+      console.log("fgfsg", searchTerm);
       return (
-        item.patientDetails.name.includes(searchTerm)
-        // Add more fields to search if needed
-        // ...
+        item.patientDetails.name.includes(searchTerm) ||
+        item.patientID.includes(searchTerm)
       );
-      
+      // Add more fields to search if needed
+      // ...
     });
     setFilteredData(filteredResults);
   }, [searchTerm, data]);
-  console.log("dsfdgshd",searchTerm);
+  console.log("dsfdgshd", searchTerm);
 
   const handleShowDetails = (index) => {
     // setShowDetails(!showDetails);
@@ -116,7 +117,7 @@ const RegisteredPatients = () => {
 
   const handleDownloadPDF = async (index, id) => {
     try {
-      setIsDownloading(true);
+      // setIsDownloading(true);
 
       // Create a new jsPDF instance
       const doc = new jsPDF();
@@ -135,7 +136,14 @@ const RegisteredPatients = () => {
         setImgView(imgData);
 
         // Add the image to the PDF
-        doc.addImage(imgData, 'PNG', 0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height);
+        doc.addImage(
+          imgData,
+          "PNG",
+          0,
+          0,
+          doc.internal.pageSize.width,
+          doc.internal.pageSize.height
+        );
 
         // Save the PDF with a specific filename
         doc.save(`${id}_patient_details.pdf`);
@@ -145,10 +153,10 @@ const RegisteredPatients = () => {
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
-      setIsDownloading(false);
+      // setIsDownloading(false);
     }
   };
-  
+
   // const handleDownloadPDF = (index) => {
   //   const doc = new jsPDF();
   //   const pdfElement = pdfRefs[index].current;
@@ -177,20 +185,20 @@ const RegisteredPatients = () => {
   // const handleDownloadPDF = (index) => {
   //   const customPageSize = { width: 300, height: 400 }; // Set your custom page size here
   //   const pdfElement = pdfRefs[index].current;
-  
+
   //   // Ensure that the content is ready before trying to generate PDF
   //   if (pdfElement) {
   //     // Calculate content dimensions
   //     const contentWidth = pdfElement.clientWidth;
   //     const contentHeight = pdfElement.clientHeight;
-  
+
   //     // Calculate scale factor to fit content within the page
   //     const scaleFactor = Math.min(customPageSize.width / contentWidth, customPageSize.height / contentHeight);
-  
+
   //     // Set PDF dimensions
   //     const pdfWidth = contentWidth * scaleFactor;
   //     const pdfHeight = contentHeight * scaleFactor;
-  
+
   //     // Convert HTML content to a data array using html2pdf
   //     html2pdf(pdfElement, {
   //       margin: 10,
@@ -201,29 +209,39 @@ const RegisteredPatients = () => {
   //     }).from(pdfElement).save();
   //   }
   // };
-  
-  
 
   return (
     <>
-    <div className="search-bar">
+      <div className="search-bar">
         <input
           type="text"
           placeholder="Search by patient name or ID..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-
       </div>
       {/* <img src={imgView} alt="" /> */}
       <div className="maincontainer">
         {filteredData.map((item, index) => {
           const isDetailsActive = activePatientId === item.patientDetails._id;
-          const isStatusActive = activeStatusId === item._id;
+          const isCloseActive = activeStatusId === item._id;
           const isDocumentActive = activeDocumentId === item._id;
           const isCardActive = activeCardIndex === index;
           const cardBackgroundColor = isCardActive ? "#transform" : "";
           const cardBorder = isCardActive ? "3px solid #a4c639" : "";
+
+          const statusColor =
+            item.status === "Documents Uploaded"
+              ? "green"
+              : "" || item.status === "Application Closed"
+              ? "red"
+              : "" || item.status === "Pending"
+              ? "orange"
+              : "" || item.status === "Active"
+              ? "green"
+              : "";
+          const statusText =
+            item.status === "Documents Uploaded" ? "bold" : "bold";
 
           return (
             <div
@@ -239,9 +257,23 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td style={{ border: "none" }}>Patient ID:</td>
-                        <td style={{ border: "none" }}>{item.patientID}</td>
-                        <td style={{ border: "none" }}>Status:</td>
-                        <td style={{ border: "none" }}>{item.status}</td>
+                        <td style={{ border: "none", width: "50%" }}>
+                          {item.patientID}
+                        </td>
+                        <td style={{ border: "none", width: "20px" }}>
+                          Status:
+                        </td>
+                        <td
+                          style={{
+                            border: "none",
+                            color: statusColor,
+                            fontWeight: statusText,
+                          }}
+                        >
+                          {item.status}
+                        </td>
+                        {/* <span style={{marginLeft:"50px"}}>Status:</span>
+                        <span>{item.status}</span> */}
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>Patient Name:</td>
@@ -251,19 +283,24 @@ const RegisteredPatients = () => {
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>Disease Name:</td>
-                        <td style={{ border: "none" }}>{item.diseaseDetail.name}</td>
+                        <td style={{ border: "none" }}>
+                          {item.diseaseDetail.name}
+                        </td>
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>Care Taker Name:</td>
-                        <td style={{ border: "none" }}>{item.careTaker.name} </td>
+                        <td style={{ border: "none" }}>
+                          {item.careTaker.name}{" "}
+                        </td>
                       </tr>
                       <tr>
-                        <td style={{ border: "none" }}>Care Taker Mobile No:</td>
-                        <td style={{ border: "none" }}>{item.careTaker.mobile1}</td>
+                        <td style={{ border: "none" }}>
+                          Care Taker Mobile No:
+                        </td>
+                        <td style={{ border: "none" }}>
+                          {item.careTaker.mobile1}
+                        </td>
                       </tr>
-                
-              
-                      
                     </tbody>
                   </table>
                 </div>
@@ -297,34 +334,37 @@ const RegisteredPatients = () => {
                   )}
                 </p>
 
-                {isDownloading === false ? (
-                  <div className="data-btn">
-                    <button
-                      className="btn-register-more"
-                      onClick={() => handleShowDetails(index)}
-                    >
-                      More Info
-                    </button>
-                    <button
-                      className="btn-register-status"
-                      onClick={() => handleShowStatus(index)}
-                    >
-                      Close Application
-                    </button>
-                    <button
-                      className="btn-register-status"
-                      onClick={() => handleShowDocument(index)}
-                    >
-                      Upload Documents
-                    </button>
-                    <button
+                <div className="data-btn">
+                  <button
+                    className="btn-register-more"
+                    onClick={() => handleShowDetails(index)}
+                  >
+                    More Info
+                  </button>
+
+                  {item.status !== "Application Closed" && (
+                    <>
+                      <button
+                        className="btn-register-status"
+                        onClick={() => handleShowStatus(index)}
+                      >
+                        Close Application
+                      </button>
+                      <button
+                        className="btn-register-status"
+                        onClick={() => handleShowDocument(index)}
+                      >
+                        Upload Documents
+                      </button>
+                    </>
+                  )}
+                  <button
                     className="btn-download-pdf"
-                    onClick={() => handleDownloadPDF(index,item.patientID)}
+                    onClick={() => handleDownloadPDF(index, item.patientID)}
                   >
                     Download PDF
                   </button>
-                  </div>
-                ) : null}
+                </div>
               </div>
 
               {isDetailsActive && (
@@ -339,12 +379,6 @@ const RegisteredPatients = () => {
                     </Link> */}
                   </h2>
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
                     <tbody>
                       <tr>
                         <td>Patient Name</td>
@@ -372,43 +406,29 @@ const RegisteredPatients = () => {
                   <h2 className="table-heading">Family Details</h2>
                   <table>
                     <thead>
-                      <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                      </tr>
+                      <th>Sr.No.</th>
+                      <th>Family Member</th>
+                      <th>Relation</th>
+                      <th>Age</th>
+                      <th>Occupation</th>
+                      <th>Monthly Income</th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Family Member</td>
-                        <td>{item.familyDetail[0].name} </td>
-                      </tr>
-                      <tr>
-                        <td>Relation</td>
-                        <td>{item.familyDetail[0].relation}</td>
-                      </tr>
-                      <tr>
-                        <td>Age</td>
-                        <td>{item.familyDetail[0].age}</td>
-                      </tr>
-                      <tr>
-                        <td>Occupation</td>
-                        <td>{item.familyDetail[0].occupation}</td>
-                      </tr>
-                      <tr>
-                        <td>Monthly Income</td>
-                        <td>{item.familyDetail[0].monthlyIncome}</td>
-                      </tr>
+                      {item.familyDetail.map((familyMember, familyIndex) => (
+                        <tr key={familyIndex}>
+                          <td>{familyIndex + 1}</td>
+                          <td>{familyMember.name}</td>
+                          <td>{familyMember.relation}</td>
+                          <td>{familyMember.age}</td>
+                          <td>{familyMember.occupation}</td>
+                          <td>{familyMember.monthlyIncome}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
 
                   <h2 className="table-heading">Care Taker</h2>
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
                     <tbody>
                       <tr>
                         <td>Name</td>
@@ -431,12 +451,6 @@ const RegisteredPatients = () => {
 
                   <h2 className="table-heading">Disease Details</h2>
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
                     <tbody>
                       <tr>
                         <td>Disease Name</td>
@@ -488,12 +502,6 @@ const RegisteredPatients = () => {
                   </table>
                   <h2 className="table-heading">Other Details</h2>
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
                     <tbody>
                       <tr>
                         <td>Registered Date</td>
@@ -508,99 +516,48 @@ const RegisteredPatients = () => {
                         <td>{item.status}</td>
                       </tr>
                     </tbody>
-                    
                   </table>
-                  <h2 className="table-heading">Documents</h2>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{item.documents[0].imageName}</td>
-                        <td><a href={item.documents[0].imageUrl}>Download</a></td>
-                      </tr>
-                      
-                    </tbody>
-                    
-                  </table>
-                  <ViewMMH />
                   
-                </div>
-              )}
-
-              {isStatusActive && (
-                <div className="patient-status-sidebar">
-                  <span className="close-icon" onClick={handleSidebarClose}>
-                    ❌
-                  </span>
-                  <h2>Close Application</h2>
+                  {item.documents.length>0 && (
+                    
+                    <>
+<h2 className="table-heading">Documents</h2>
+                    </>
+                  )}
                   <table>
-                    <thead>
-                      <tr>
-                        
-                      </tr>
-                    </thead>
                     <tbody>
-                      <tr>
-                        <td>Amount Saved</td>
-                        <td>₹ <input type="number" /></td>
-                      </tr>
-                      <tr>
-                        <td>Comments</td>
-                        <td><input type="text" /></td>
-                      </tr>
-                      <tr>
-                        <td>Patient Feedback</td>
-                        <td><input type="text" /></td>
-                      </tr>
-                      <tr>
-                        <td>Status</td>
-                        <td><select name="" id="" className="form-input">
-                          <option value="">select</option>
-                          <option value="">Active</option>
-                          <option value="">Application Closed</option>
-                          <option value="">Pending</option>
-                          <option value="">Patient Rejected</option>
-                          </select></td>
-                      </tr>
-                      {/* <tr>
-                        <td>Documents</td>
-                        <td>
-                          {files.map((file, idx) => (
-                            <div key={idx}>
-                              <img
-                                src={check}
-                                alt="File Uploaded"
-                                className="file-upload-logo"
-                              />
-                              <span className="file-upload">
-                                File {idx + 1} uploaded{" "}
-                                <button onClick={() => handleCancelFile(idx)}>
-                                  Cancel
-                                </button>
-                              </span>
-                            </div>
-                          ))}
-                          <input
-                            type="file"
-                            onChange={(e) =>
-                              setFiles([...files, e.target.files[0]])
-                            }
-                            multiple
-                          />
-                        </td>
-                      </tr> */}
+                      {item.documents.map((document, documentIndex) => (
+                        <tr key={documentIndex}>
+                          <td>{}</td>
+                          <td style={{ width: "300px" }}>
+                            <a href={document.imageUrl}>Download </a>
+                            <img
+                              src={document.imageUrl}
+                              alt=""
+                              style={{ width: "100px", marginLeft: "100px" }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
+                  {item.schemeName ? (
+                    <MMH item={item} />
+                  ) : (
+                    <ViewMMH currentItem={item._id} />
+                  )}
                 </div>
               )}
 
-              {isDocumentActive && <UploadDocuments currentItem={item._id}/>}
+              {isCloseActive && (
+                <CloseApplication
+                  handleSidebarClose={handleSidebarClose}
+                  currentItem={item._id}
+                  index={index}
+                />
+              )}
 
+              {isDocumentActive && <UploadDocuments currentItem={item._id} />}
             </div>
           );
         })}

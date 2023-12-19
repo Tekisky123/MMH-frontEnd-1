@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../Assets/Styles/UploadDocuments.css";
 
-const UploadDocuments = ({currentItem}) => {
-  console.log("Top",currentItem);
+const UploadDocuments = ({ currentItem }) => {
+  console.log("Top", currentItem);
   const [files, setFiles] = useState([]);
+  const [status, setStatus] = useState("");
   const [document, setDocument] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   // const [showDetails, setShowDetails] = useState(false);
@@ -29,6 +30,10 @@ const UploadDocuments = ({currentItem}) => {
   //   setFiles(newFiles);
   // };
 
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value);
+  };
+
   const handleDocumentChange = (index, event) => {
     const { name, value } = event.target;
     setFiles((prevFiles) => {
@@ -37,35 +42,34 @@ const UploadDocuments = ({currentItem}) => {
         ...updatedFiles[index],
         [name]: value,
       };
-  
+
       // If the selected document type is "Other," update otherType
-      if (name === 'type' && value === 'Other') {
+      if (name === "type" && value === "Other") {
         updatedFiles[index] = {
           ...updatedFiles[index],
-          otherType: '',
+          otherType: "",
         };
       }
-  
+
       // If the selected document type is not "Other," reset otherType
-      if (name === 'type' && value !== 'Other') {
+      if (name === "type" && value !== "Other") {
         updatedFiles[index] = {
           ...updatedFiles[index],
           otherType: undefined,
         };
       }
-  
+
       // If the selected document type is not "Other," set imageName
-      if (name === 'type' && value !== 'Other') {
+      if (name === "type" && value !== "Other") {
         updatedFiles[index] = {
           ...updatedFiles[index],
           imageName: value,
         };
       }
-  
+
       return updatedFiles;
     });
   };
-  
 
   const handleAddDocument = () => {
     setFiles([...files, { files: "", type: "" }]);
@@ -93,39 +97,68 @@ const UploadDocuments = ({currentItem}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("sgdhgshdgsd",currentItem);
-    const apiUrl = "http://13.126.14.109:4000/patient/"+currentItem;
-
+    const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
+  
     try {
       const formData = new FormData();
-
+  
+      // Append status to formData
+      formData.append("status", status);
+  
+      // Append files, types, and doc.type
       files.forEach((doc) => {
         formData.append("files", doc.files);
         formData.append("types[]", doc.type);
+  
+        // Append doc.type directly to formData
+        formData.append("docType", doc.type);
+        console.log("hgsagdsha",doc.type);
       });
 
-      const response = await fetch(apiUrl, {
+  
+      const response = await fetch(updateUrl, {
         method: "PUT",
         body: formData,
-        documents:[]
-        
       });
-
+  
       if (response.ok) {
-        console.log("Files uploaded successfully!");
+        console.log("Files and status uploaded successfully!");
       } else {
-        console.error("Failed to upload files.");
+        console.error("Failed to upload files and status.");
       }
     } catch (error) {
-      console.error("Error uploading files:", error);
+      console.error("Error uploading files and status:", error);
     }
   };
-
+  
   return (
     <div>
-      <form onSubmit={(event) => handleSubmit(event, currentItem)} style={{ position: "relative" }}>
+      <form
+        onSubmit={(event) => handleSubmit(event, currentItem)}
+      >
         <h2>Documents</h2>
-        <img src="" alt="" />
+        <table>
+          <tr>
+            <td>Status:</td>
+            <td>
+              <select
+                name="status"
+                value={status}
+                onChange={(e) => handleStatusChange(e)}
+                className="form-input1"
+              >
+                <option value="">select</option>
+                <option value="Active">Active</option>
+                <option value="Application Closed">Application Closed</option>
+                <option value="Pending">Pending</option>
+                <option value="Patient Rejected">Patient Rejected</option>
+                <option value="Documents Uploaded">Documents Uploaded</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        
+        
         {/* <span className="close-icon" onClick={handleSidebarClose}>
           ❌
         </span> */}
@@ -139,7 +172,7 @@ const UploadDocuments = ({currentItem}) => {
         </table>
         {files.map((doc, index) => (
           <div key={index}>
-            {console.log("sjkdhsaj",doc.type)}
+            {console.log("sjkdhsaj", doc.type)}
             <div className="patient-documents-sidebar">
               <table>
                 <tr>
