@@ -18,7 +18,7 @@ const ViewMMH = ({ currentItem }) => {
 
   // Function to send data to the API using Axios
   const handleSubmit = async (e) => {
-    // e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); // Prevent default form submission
 
     try {
       const data = {
@@ -72,6 +72,7 @@ const ViewMMH = ({ currentItem }) => {
 
         // Handle the response from the API if needed
         console.log("API Response:", response.data);
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error sending data to API:", error);
@@ -81,11 +82,6 @@ const ViewMMH = ({ currentItem }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <table>
-          <tbody>
-            
-          </tbody>
-        </table>
         <h2 className="table-heading">Scheme/Hospital/MMH Guidance Plan</h2>
         <table>
           <tbody>

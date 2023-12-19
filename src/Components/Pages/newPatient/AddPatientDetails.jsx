@@ -22,7 +22,7 @@ const AddPatientDetails = () => {
       monthlyIncome: "",
     },
   ]);
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(0);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

@@ -20,6 +20,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
   const [otherDocumentType, setOtherDocumentType] = useState("");
   const [isUploadSuccess, setUploadSuccess] = useState(false);
   const [isAddSuccess, setAddSuccess] = useState(false);
+  const [refresh, setRefresh]= useState(false)
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
@@ -96,6 +97,9 @@ const UploadDocuments = ({ currentItem, onClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    
+    
     const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
 
     try {
@@ -120,16 +124,22 @@ const UploadDocuments = ({ currentItem, onClose }) => {
       });
 
       if (response.ok) {
+        
+        console.log("gshjgdsah",response.data);
         setUploadSuccess(false);
         setAddSuccess(false);
+       
         showToast("Document uploaded successfully!", "success");
+
         setTimeout(() => {
           showToast("Document uploaded successfully!", "success")
-          onClose();;
+          onClose();
+          window.location.reload();
         }, 1000); // Adjust the delay time as needed
   
         handleSidebarClose();
         // onClose();
+
       } else {
         setUploadSuccess(false);
         setAddSuccess(false);
