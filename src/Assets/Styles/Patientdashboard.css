@@ -374,19 +374,21 @@ input[type="radio"] {
   border: 2px solid lightgrey;
 }
 .full-width-btn{
-  background-color: green;
+  background-color: #a4c639;
   color: white;
+  padding: 8px;
+  border-radius: 10px;
   margin-top: 20px;
   width: 50%;
 }
 .nextBtn{
-  background-color: green;
+  background-color: #a4c639;
   color: white;
   margin-top: 20px;
   width: 50%;
 }
 .previewBtn{
-  background-color: #ffc107;
+  background-color: #a5c639b4;
   color: white;
   margin-top: 20px;
   width: 50%;
@@ -402,7 +404,7 @@ input[type="radio"] {
   vertical-align: bottom;
 }
 .addFamilyBtn{
-  background-color: green;
+  background-color: #a4c639;
   color: white;
   border: none;
   /* width: 100%; */

@@ -95,7 +95,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
   };
 
   const handleSubmit = async (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
 
     try {
@@ -255,7 +255,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
         <button type="button" className="btn-docAdd" onClick={handleAddDocument}>
           Add Document
         </button>
-        <button type="submit" className="btn-docSubmit">
+        <button type="submit" className="btn-docSubmit" disabled = {!files.length > 0 }>
           Submit
         </button>
       </form>

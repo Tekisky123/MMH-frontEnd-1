@@ -375,7 +375,7 @@ const RegisteredPatients = () => {
                     className="btn-download-pdf"
                     onClick={() => handleDownloadPDF(index, item.patientID)}
                   >
-                    Download PDF
+                    Download MMH-Form
                   </button>
                 </div>
               </div>

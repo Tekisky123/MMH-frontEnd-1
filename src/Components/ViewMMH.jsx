@@ -57,10 +57,11 @@ const ViewMMH = ({ currentItem }) => {
       if (!hasError) {
         const data = {
           schemeName,
-          hospital,
-          viewByMhh,
-          adviceByMhh,
-          proposeHelpByMhh,
+        hospital,
+        viewByMhh,
+        adviceByMhh,
+        proposeHelpByMhh,
+        status: "Scheme & Hospital Selected",
         };
 
         // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
@@ -80,10 +81,15 @@ const ViewMMH = ({ currentItem }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <h2 className="table-heading">Scheme/Hospital Details</h2>
         <table>
           <tbody>
-            <tr>
+            
+          </tbody>
+        </table>
+        <h2 className="table-heading">Scheme/Hospital/MMH Guidance Plan</h2>
+        <table>
+          <tbody>
+          <tr>
               <td>
                 Scheme <span className="error-message">⁕</span>
               </td>
@@ -113,11 +119,6 @@ const ViewMMH = ({ currentItem }) => {
                 <div className="error-message">{errors.hospital}</div>
               </td>
             </tr>
-          </tbody>
-        </table>
-        <h2 className="table-heading">MMH Guidance Plan</h2>
-        <table>
-          <tbody>
             <tr>
               <td>
                 View of M.M.H.<span className="error-message">⁕</span>
@@ -168,7 +169,7 @@ const ViewMMH = ({ currentItem }) => {
             </tr>
           </tbody>
         </table>
-        <button type="submit">Submit</button>
+        <button type="submit"  className="btn-register-status submit">Submit</button>
       </div>
     </form>
   );

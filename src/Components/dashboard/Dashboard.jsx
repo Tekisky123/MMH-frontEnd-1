@@ -50,24 +50,24 @@ const Dashboard = () => {
         <p className="card-value">{data.PendingCasesMoreThan5Days}</p>
       </div>
       <div className="dashboard-card1">
-        <h1 className="Pending-case">total Closed Cases InMonth</h1>
+        <h1 className="Pending-case">Total Closed Cases In Month</h1>
         <p className="card-value">{data.totalClosedCasesInMonth}</p>
       </div>
 
       <div className="dashbord-data">
-        <div className="dashboard-card">
+        <div className="dashboard-card1">
           <h3 className="total-closed-cases">Total Closed Cases</h3>
           <p className="card-value">{data.totalClosedCases}</p>
         </div>
 
-        <div className="dashboard-card">
+        <div className="dashboard-card1">
           <h3 className="total-number-of-approach">Total Number of Approaches</h3>
           <p className="card-value">{data.totalNumberOfApproach}</p>
         </div>
 
-        <div className="dashboard-card">
+        <div className="dashboard-card1">
           <h3 className="total-number-of-month-approach">
-            Total Number of Month Approaches
+            Total Number of Approaches In  Month
           </h3>
           <p className="card-value">{data.totalNumberOfMonthApproach}</p>
         </div>

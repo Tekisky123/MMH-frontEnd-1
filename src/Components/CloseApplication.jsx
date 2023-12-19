@@ -62,13 +62,15 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           <tr>
               <td>Amount Saved</td>
               <td>
-                ₹
+                
                 <input
                   type="number"
                   name="amountsaved"
                   value={formData.amountsaved}
                   onChange={handleInputChange}
+                  placeholder=" ₹"
                 />
+                 
               </td>
             </tr>
             <tr>
@@ -124,7 +126,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           
           </tbody>
         </table>
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn-register-status btn-close-submit ">Submit</button>
       </div>
     </form>
   );
