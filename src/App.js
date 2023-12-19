@@ -17,6 +17,7 @@ import EditUser from "./Components/pages/EditUser";
 import OperatorHeader from "./Components/Registration/OperatorHeader";
 import AddPatientDetails from "./Components/pages/newPatient/AddPatientDetails";
 import Loader from "./common/Loader";
+import ProtectedRout from "./ProtectedRout";
 
 function App() {
   // Get the current location using the useLocation hook
@@ -54,22 +55,27 @@ function App() {
         <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Login setUserType={handleSetUserType} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/yojna" element={<Yojna />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/createuser" element={<CreateUser />} />
-        <Route path="/createuser/:editId" element={<CreateUser />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/registered-patients" element={<RegisteredPatients />} />
+        <Route path="/home" element={<ProtectedRout Component={Home} />} />
+        <Route path="/yojna" element={<ProtectedRout Component={Yojna} />} />
+        <Route path="/createuser" element={<ProtectedRout Component={CreateUser} />} />
+        <Route path="/createuser/:editId" element={<ProtectedRout Component={CreateUser} />} />
+        <Route path="/registered-patients" element={<ProtectedRout Component={RegisteredPatients} />} />
+      {(storedUserType === "Operator" ? "": (<>
+        <Route path="/user" element={<ProtectedRout Component={User} />} />
+        <Route path="/dashboard" element={<ProtectedRout Component={Dashboard} />} />
+      </>) 
+      )}
        
-        <Route path="/edituser/:_id" element={<EditUser />} />
+
+
+        <Route path="/edituser/:_id" element={<ProtectedRout Component={EditUser} />} />
         {/* <Route path="/signup" element={<Signup/>} /> */}
         {/* <Route path="/home" element={<Home/>} /> */}
         {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
         {/* <Route path="/register" element={<RegisteredPatients/>} /> */}
         {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
         {/* <Route path="/addPatient" element={<NewPatientDetails />} /> */}
-        <Route path="/addPatient" element={<AddPatientDetails />} />
+        <Route path="/addPatient" element={<ProtectedRout Component={AddPatientDetails} />} />
       </Routes>
       </Loader>
     </div>

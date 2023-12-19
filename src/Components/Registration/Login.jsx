@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
 import logo from "../../Assets/Images/logo-main.png"; // Import the logo image
-import { useState } from "react"; // Import the useState hook for managing state
+import { useEffect, useState } from "react"; // Import the useState hook for managing state
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios"; // Import Axios for API requests
 import Modal from "react-modal";
@@ -35,6 +35,15 @@ const Login = ({ setUserType }) => {
   // Regular expression for validating the mobile number
   const mobileNumberRegex = /^[0-9]{10}$/;
 
+
+    useEffect(() => {
+     let login = localStorage.getItem('login'); 
+     navigate('/')
+     if (!login) {
+        navigate('/')
+     }
+    })
+
   // Function to handle form submission
   const SubmitData = async (e) => {
     e.preventDefault();
@@ -62,6 +71,7 @@ const Login = ({ setUserType }) => {
         // Save user type in local storage and update in the parent component
         localStorage.setItem("userType", response.data.data.userType);
         localStorage.setItem("mobileNumber", response.data.data.mobile);
+        localStorage.setItem("login",true)
         setUserType(response.data.data.userType);
 
         // Redirect to the dashboard after a delay
