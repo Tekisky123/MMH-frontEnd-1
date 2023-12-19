@@ -11,11 +11,19 @@ import { useNavigate } from "react-router-dom";
 
 const AddPatientDetails = () => {
   //   const updateData = useData();
-  const CreatedBy = localStorage.getItem('mobileNumber');
-  console.log("mobileNumber",CreatedBy)
-  const [familyMembers, setFamilyMembers] = useState([]);
+  const CreatedBy = localStorage.getItem("mobileNumber");
+
+  const [familyMembers, setFamilyMembers] = useState([
+    {
+      familyMemberName: "",
+      familyMemberRelation: "",
+      familyMemberAge: "",
+      occupation: "",
+      monthlyIncome: "",
+    },
+  ]);
   const [status, setStatus] = useState(0);
-  console.log("status", status);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
@@ -24,7 +32,7 @@ const AddPatientDetails = () => {
     gender: "empty",
     age: "",
     maritalStatus: "empty",
-    rationCardNo:"",
+    rationCardNo: "",
     state: "empty",
     district: "empty",
     taluka: "",
@@ -88,51 +96,79 @@ const AddPatientDetails = () => {
     doctorAdvice: "",
 
     phoneError: "",
-    aadharError: "",
-    
   });
   console.log("formData", formData);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-  
-    switch (name) {
-      case "phoneNumber":
-        const isValidPhone = /^\d{10}$/.test(value);
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: isValidPhone ? "" : "Phone number must be 10 digits",
-        }));
-        break;
-  
-      case "aadharNumber":
-        const isValidAadhar = /^\d{12}$/.test(value);
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: isValidAadhar ? "" : "Aadhar number must be 12 digits",
-        }));
-        break;
-  
-      // Add more cases for other fields if needed
-  
-      default:
-        setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+
+    if (
+      name === "phoneNumber" ||
+      name === "careTakerNum1" ||
+      name === "careTakerNum2" ||
+      name === "hospitalNumber"
+    ) {
+      const slicedValue = value.slice(0, 10);
+      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
+    } else if (name === "aadharNumber") {
+      const slicedValue = value.slice(0, 12);
+      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
+    } else if (name === "pincode") {
+      const slicedValue = value.slice(0, 6);
+      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
+    } else if (name === "age") {
+      const ageValue = parseInt(value, 10);
+
+      // Check if the value is within the desired range (1 to 120)
+      const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
+
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isValidAge ? "" : "Age must be between 1 and 120",
+      }));
+
+      // Update form data with the validated value
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: isValidAge ? ageValue : "",
+      }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
-  
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-  
-  
+    };
+
+    
   const handleFamilyMemInputChange = (index, event) => {
     const { name, value } = event.target;
     const newFamilyMembers = [...familyMembers];
-    newFamilyMembers[index][name] = value;
+    const ageValue = name === 'familyMemberAge' ? parseInt(value, 10) : value;
+  
+    // Validate age if the input is for familyMemberAge
+    if (name === 'familyMemberAge') {
+      const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
+  
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [`familyMemberAge${index}`]: isValidAge ? '' : 'Age must be between 1 and 120',
+      }));
+  
+      // Update family members only if the age is valid
+      if (!isValidAge) {
+        newFamilyMembers[index][name] = ''; // Clear the invalid age
+        setFamilyMembers(newFamilyMembers);
+        return;
+      }
+    }
+  
+    newFamilyMembers[index][name] = ageValue;
     setFamilyMembers(newFamilyMembers);
   };
-
+  
+  
   const handleAddMember = () => {
-    setFamilyMembers([
-      ...familyMembers,
+    setFamilyMembers((prevMembers) => [
+      ...prevMembers,
       {
         familyMemberName: "",
         familyMemberRelation: "",
@@ -224,12 +260,7 @@ const AddPatientDetails = () => {
   };
   const handleNext3 = (e) => {
     e.preventDefault();
-    var requiredFields = [
-      "careTakerName",
-      "careTakerNum1",
-      "careTakerNum2",
-      "particulars",
-    ];
+    var requiredFields = ["careTakerName", "careTakerNum1", "particulars"];
 
     let hasError = false;
 
@@ -253,12 +284,6 @@ const AddPatientDetails = () => {
       "diseaseName",
       "diagnoseDate",
       "diagnoseBy",
-      "investigation1",
-      "investigation2",
-      "investigation3",
-      "currentHospitalName",
-      "currentHospitalAddress",
-      "hospitalNumber",
       "currentTreatmentDetails",
       "doctorAdvice",
     ];
@@ -1177,7 +1202,7 @@ const AddPatientDetails = () => {
         state: formData.state,
         maritalstatus: formData.maritalStatus,
 
-        rationCardNo:formData.rationCardNo
+        rationCardNo: formData.rationCardNo,
       };
       const familyDetails = familyMembers.map((member, index) => ({
         id: index + 1,
@@ -1216,7 +1241,7 @@ const AddPatientDetails = () => {
         disease: "Sample Disease",
         diseaseDetail: diseaseDetails,
         createdBy: CreatedBy,
-        "status": "Patient Registered",
+        status: "Patient Registered",
         referredBy: formData.referredBy,
       };
       const url = "http://13.126.14.109:4000/patient/create";
@@ -1338,7 +1363,9 @@ const AddPatientDetails = () => {
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
                 />
-                <div className="error-message fontBold">{errors.phoneNumber || errors.phoneError}</div>
+                {errors.phoneNumber && (
+                  <p className="error-message">{errors.phoneNumber}</p>
+                )}
               </div>
 
               <div className="form-div">
@@ -1354,7 +1381,7 @@ const AddPatientDetails = () => {
                   value={formData.aadharNumber}
                   onChange={handleInputChange}
                 />
-                <div className="error-message fontBold">{errors.aadharNumber || errors.aadharError}</div>
+                <div className="error-message">{errors.aadharNumber}</div>
               </div>
 
               <div className="form-div">
@@ -1403,12 +1430,12 @@ const AddPatientDetails = () => {
                   className="form-input"
                   placeholder="Age"
                   min="1"
-                  max="110"
+                  max="120"
                   name="age"
                   value={formData.age}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.age}</div>
+                <div className="error-message fontBold">{errors.age}</div>
               </div>
 
               <div className="form-div">
@@ -1692,13 +1719,14 @@ const AddPatientDetails = () => {
                   value={formData.careTakerNum1}
                   onChange={handleInputChange}
                 />
-                <div className="error-message fontBold">{errors.careTakerNum1 || errors.phoneError}</div>
+                <div className="error-message">
+                  {errors.careTakerNum1 || errors.phoneError}
+                </div>
               </div>
 
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="phone_number2">Phone Number 2</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="number"
@@ -1708,7 +1736,6 @@ const AddPatientDetails = () => {
                   value={formData.careTakerNum2}
                   onChange={handleInputChange}
                 />
-                <div className="error-message fontBold">{ errors.phoneError}</div>
               </div>
 
               <div className="form-div">
@@ -1797,7 +1824,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Investigation_1">Investigation Done 1</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="text"
@@ -1813,7 +1839,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Investigation_2">Investigation Done 2</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="text"
@@ -1829,7 +1854,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Investigation_3">Investigation Done 3</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="text"
@@ -1845,7 +1869,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="current_hopital">Current Hospital Name</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="text"
@@ -1863,7 +1886,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Address">Address</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="text"
@@ -1881,7 +1903,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="hospitalNumber">Phone Number </span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <input
                   type="number"
@@ -1891,7 +1912,9 @@ const AddPatientDetails = () => {
                   value={formData.hospitalNumber}
                   onChange={handleInputChange}
                 />
-                <div className="error-message fontBold">{errors.hospitalNumber || errors.phoneError}</div>
+                <div className="error-message">
+                  {errors.hospitalNumber || errors.phoneError}
+                </div>
               </div>
 
               <div className="form-div">

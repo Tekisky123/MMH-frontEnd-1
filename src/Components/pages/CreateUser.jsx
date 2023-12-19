@@ -140,6 +140,7 @@ useEffect(() => {
       }else{
         await axios.post("http://13.126.14.109:4000/user/register", formData);
       }
+
       if (response.status === 200) {
         setShowSuccessAnimation(true);
         setTimeout(() => {
