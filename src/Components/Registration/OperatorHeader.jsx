@@ -1,10 +1,34 @@
 // Import NavLink from react-router-dom and styles from the Header.css file
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Header.css";
 import logo from "../../Assets/Images/logo-main.png"
+import Modal from "react-modal";
+import { useState } from "react";
 
 // OperatorHeader component for navigation with operator-specific links
 const OperatorHeader = () => {
+
+  const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const openLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    localStorage.setItem("login",false)
+    setShowLogoutModal(false);
+    navigate('/')
+  };
+
+
+
+
   return (
     // Navigation bar with links to different pages
     <nav className="navbar">
@@ -80,11 +104,43 @@ const OperatorHeader = () => {
               Registered Patients
             </NavLink>
           </li>
+          <li className="logout-li">
+            <button onClick={openLogoutModal}>
+              Logout
+            </button>
+          </li>
         </ul>
         <h1 className="logo">
           {/* Logo image can be added here */}
         </h1>
       </div>
+      <Modal
+                  isOpen={showLogoutModal}
+                  onRequestClose={closeLogoutModal}
+                  contentLabel="Contact Admin Modal"
+                  ariaHideApp={false}
+                  className="custom-modal"
+                  overlayClassName="custom-overlay" 
+                >
+                  <div className="modal-content">
+                    <p>
+                       Are you sure you want to Logout ?
+                    </p>
+                    <button
+                    style={{margin:"10px 0px"}}
+                      className="btn-login"
+                      onClick={closeLogoutModal}
+                    >
+                      No
+                    </button>
+                    <button
+                      className="btn-login"
+                      onClick={handleLogout}
+                    >
+                      Yes
+                    </button>
+                  </div>
+                </Modal>
     </nav>
   );
 };
