@@ -17,6 +17,7 @@ import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
 import MMH from "../MMH";
 import CloseApplication from "../CloseApplication";
+import DeletePatient from "../DeletePatient";
 
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -378,6 +379,7 @@ const RegisteredPatients = () => {
                         >
                           Upload Documents
                         </button>
+                        
                       </>
                     )}
 
@@ -387,6 +389,7 @@ const RegisteredPatients = () => {
                   >
                     Download MMH-Form
                   </button>
+                  {/* <DeletePatient currentItem={item._id}/> */}
                 </div>
               </div>
 
@@ -550,7 +553,7 @@ const RegisteredPatients = () => {
                     <tbody>
                       {item.documents.map((document, documentIndex) => (
                         <tr key={documentIndex}>
-                          <td>{}</td>
+                          <td>{document.imageName}</td>
                           <td style={{ width: "300px" }}>
                             <a href={document.imageUrl}>Download </a>
                             <img
@@ -565,7 +568,15 @@ const RegisteredPatients = () => {
                   </table>
                   {item.schemeName ? (
                     <MMH item={item} isDownloading={isDownloading} pdfRef={pdfRef} />
-                  ) : (
+                  ) :
+                  item.status !== "Closed-Patient Rejected" &&
+                    item.status !== "Closed-Civil" &&
+                    item.status !== "Closed-Ayushman Bharat" &&
+                    item.status !== "Closed-Private" &&
+                    item.status !== "Closed-MJPJA" &&
+                    item.status !== "Closed-Other" && 
+                    (
+                    
                     <ViewMMH currentItem={item._id} />
                   )}
                 </div>

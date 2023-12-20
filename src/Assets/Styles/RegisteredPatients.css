@@ -75,7 +75,8 @@
 }
 
 .btn-register-more,
-.btn-register-status {
+.btn-register-status,
+.btn-patient-delete {
   background-color: #a4c639;
   border-radius: 10px;
   color: white;
@@ -88,6 +89,9 @@
   font-size: 14px;
   margin: 4px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
+}
+.btn-patient-delete{
+  background-color: #DC4C64;
 }
 .btn-register-more:hover, .btn-register-status:hover{
   background-color: #a4c639;
