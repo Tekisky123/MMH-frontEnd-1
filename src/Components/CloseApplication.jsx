@@ -5,7 +5,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
     
   
     const [formData, setFormData] = useState({
-      amountsaved: "",
+      amountSaved: "",
       comments: "",
       patientfeedback: "",
       status: "",
@@ -13,7 +13,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
     });
 
     const handleConfirmation = () => {
-      return window.confirm("Are you sure to close application?");
+      return window.confirm("Are You Sure You Want To Close Case ?");
     };
   
     const handleSubmit = async (e) => {
@@ -75,8 +75,8 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                 
                 <input
                   type="number"
-                  name="amountsaved"
-                  value={formData.amountsaved}
+                  name="amountSaved"
+                  value={formData.amountSaved}
                   onChange={handleInputChange}
                   placeholder=" ₹"
                 />
@@ -106,7 +106,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               </td>
             </tr>
             <tr>
-              <td>Status</td>
+              <td>Status<span className="error-message">⁕</span></td>
               <td>
                 <select name="status"
               className="form-input"
