@@ -15,10 +15,10 @@ const Header = () => {
   const closeLogoutModal = () => {
     setShowLogoutModal(false);
   };
-    const naam = false
+
   const handleLogout = () => {
     localStorage.clear();
-    localStorage.setItem("login",!naam)
+    localStorage.setItem("login",false)
     setShowLogoutModal(false);
     navigate('/')
   };
