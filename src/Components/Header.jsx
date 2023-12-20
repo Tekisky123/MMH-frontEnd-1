@@ -127,11 +127,11 @@ const Header = () => {
               DashBoard
             </NavLink>
           </li>
-          <li className="logout-li">
+          {/* <li className="logout-li">
             <button onClick={openLogoutModal}>
               Logout
             </button>
-          </li>
+          </li> */}
         </ul>
         <h1 className="logo">{/* <img src={logo} alt="" /> */}</h1>
       </div>

@@ -104,11 +104,11 @@ const OperatorHeader = () => {
               Registered Patients
             </NavLink>
           </li>
-          <li className="logout-li">
+          {/* <li className="logout-li">
             <button onClick={openLogoutModal}>
               Logout
             </button>
-          </li>
+          </li> */}
         </ul>
         <h1 className="logo">
           {/* Logo image can be added here */}
