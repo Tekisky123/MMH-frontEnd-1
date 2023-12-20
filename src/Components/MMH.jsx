@@ -58,7 +58,7 @@ const MMH = ({ item, isDownloading, pdfRef }) => {
         </tbody>
       </table>
       <hr />
-      {/* {isDownloading && ( */}
+      {isDownloading && (
       <div className="end-div" ref={pdfRef}>
         <div className="sign-maincontainer">
           <div className="sign-container">
@@ -105,7 +105,7 @@ const MMH = ({ item, isDownloading, pdfRef }) => {
           </div>
         </div>
       </div>
-      {/* )} */}
+      )}
     </div>
   );
 };
