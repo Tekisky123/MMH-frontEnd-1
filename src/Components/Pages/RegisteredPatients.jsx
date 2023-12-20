@@ -224,7 +224,7 @@ const RegisteredPatients = () => {
         </svg>
         <input
           type="text"
-          placeholder="Search by patient name or ID..."
+          placeholder="Search by Patient Name or Patient ID..."
           value={searchTerm}
           className="input"
           onChange={(e) => setSearchTerm(e.target.value)}
