@@ -57,10 +57,11 @@ const ViewMMH = ({ currentItem }) => {
       if (!hasError) {
         const data = {
           schemeName,
-          hospital,
-          viewByMhh,
-          adviceByMhh,
-          proposeHelpByMhh,
+        hospital,
+        viewByMhh,
+        adviceByMhh,
+        proposeHelpByMhh,
+        status: "Scheme & Hospital Selected",
         };
 
         // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
@@ -164,7 +165,7 @@ const ViewMMH = ({ currentItem }) => {
             </tr>
           </tbody>
         </table>
-        <button type="submit">Submit</button>
+        <button type="submit"  className="btn-register-status submit">Submit</button>
       </div>
     </form>
   );

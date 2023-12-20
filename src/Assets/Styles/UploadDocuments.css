@@ -19,7 +19,7 @@
 .btn-docAdd,
 .btn-docSubmit
 {
-  background-color: #fd7e14;
+  background-color: #a4c639;
   border-radius: 10px;
   color: white;
   border: none;
@@ -29,13 +29,14 @@
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
-  margin: 4px 0; /* Adjusted margin for smaller screens */
+  margin: 20px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
 }
 
 .btn-docSubmit{
-  background-color: initial;
-  background-image: linear-gradient(-180deg, #00D775, #00BD68);
+  /* background-color: initial; */
+  /* background-image: linear-gradient(-180deg, #00D775, #00BD68); */
+  background-color:#a4c639;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
   color: #FFFFFF;
@@ -59,15 +60,19 @@
   z-index: 9;
   border: 0;
 }
+.submit{
+  margin-top: 50px !important;
+}
 
-.btn-docSubmit:hover {
-  background: #00bd68;
+.btn-docSubmit:disabled{
+  background-color:lightgrey;
 }
 
 
 
 .btn-docDelete{
     background-color: red;
+    margin: 0;
 }
 
 .form-input1 {    padding: 5px;

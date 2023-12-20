@@ -45,7 +45,7 @@
   width: 20px;
   height: 20px;
   position: relative;
-  right: 200px;
+  right: -600px;
   /* margin-right: 5px; */
 }
 
@@ -53,13 +53,16 @@
 .file-not-found {
   font-weight: bold;
   
+  
 }
 .card-file-upload,
 .card-file-not-found {
   font-weight: bold;
   font-size: 20px;
   position: relative;
-  right: 620px;
+  right: 550px;
+  position: relative;
+  right: -170px;
 }
 
 .data-btn {
@@ -102,6 +105,10 @@
   /* Additional styles for the "Status" button when active */
 }
 
+.btn-close-submit{
+  margin-top: 20px;
+}
+
 .btn-register-edit{
   /* background-color: #ff0000;
   border-radius: 10px;
@@ -129,6 +136,13 @@
 
 .btn-register-status {
   background-color: #a4c639;
+  
+  
+}
+.submit{
+  margin-top: 50px;
+  position: relative;
+  left: 450px;
 }
 
 /* .patient-details-sidebar,

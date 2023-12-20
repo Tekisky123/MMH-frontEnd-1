@@ -13,7 +13,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
     });
 
     const handleConfirmation = () => {
-      return window.confirm("Are you sure to close application?");
+      return window.confirm("Are You Sure You Want To Close Case ?");
     };
   
     const handleSubmit = async (e) => {
@@ -72,13 +72,15 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           <tr>
               <td>Amount Saved</td>
               <td>
-                ₹
+                
                 <input
                   type="number"
                   name="amountSaved"
                   value={formData.amountSaved}
                   onChange={handleInputChange}
+                  placeholder=" ₹"
                 />
+                 
               </td>
             </tr>
             <tr>
@@ -104,7 +106,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               </td>
             </tr>
             <tr>
-              <td>Status</td>
+              <td>Status<span className="error-message">⁕</span></td>
               <td>
                 <select name="status"
               className="form-input"
@@ -134,7 +136,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           
           </tbody>
         </table>
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn-register-status btn-close-submit ">Submit</button>
       </div>
     </form>
   );

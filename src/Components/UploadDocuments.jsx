@@ -265,7 +265,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
         <button type="button" className="btn-docAdd" onClick={handleAddDocument}>
           Add Document
         </button>
-        <button type="submit" className="btn-docSubmit">
+        <button type="submit" className="btn-docSubmit" disabled = {!files.length > 0 }>
           Submit
         </button>
       </form>

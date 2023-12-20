@@ -46,6 +46,17 @@
     font-size: 1.3rem;
 }
 
+.logout-li{
+    border: 1px solid #038cc4;
+    padding: 6px;
+    border-radius: 17px;
+    margin: 3px!important;
+}
+.logout-li button{
+    border: none;
+    color: #038cc4;
+    background: transparent;
+}
 .navbar a{
     color: white;
     text-decoration: none;
