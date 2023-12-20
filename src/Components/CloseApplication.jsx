@@ -5,7 +5,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
     
   
     const [formData, setFormData] = useState({
-      amountsaved: "",
+      amountSaved: "",
       comments: "",
       patientfeedback: "",
       status: "",
@@ -75,8 +75,8 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                 ₹
                 <input
                   type="number"
-                  name="amountsaved"
-                  value={formData.amountsaved}
+                  name="amountSaved"
+                  value={formData.amountSaved}
                   onChange={handleInputChange}
                 />
               </td>
