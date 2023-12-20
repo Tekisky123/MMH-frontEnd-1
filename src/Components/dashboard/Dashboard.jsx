@@ -25,11 +25,12 @@ const Dashboard = () => {
         // Update state with API data
         setData({
           totalAmountSaved: json.totalAmountSaved,
-          monthlyAmountSaved: json.monthlyAmountSaved,
-          pendingCases: json.pendingCases,
+          monthAmountSaved: json.monthAmountSaved,
+          PendingCasesMoreThan5Days: json.PendingCasesMoreThan5Days,
           totalClosedCases: json.totalClosedCases,
-          totalApproach: json.totalApproach,
-          totalMonthApproach: json.totalMonthApproach,
+          totalClosedCasesInMonth: json.totalClosedCasesInMonth,
+          totalNumberOfApproach: json.totalNumberOfApproach,
+          totalNumberOfMonthApproach: json.totalNumberOfMonthApproach,
         });
       })
       .catch((error) => console.error("Error fetching data: ", error));
@@ -40,22 +41,22 @@ const Dashboard = () => {
       {/* First Row */}
       <div className="dashboard-card amount">
         <h1 className="monthly-amount-heading ">Monthly Amount Saved</h1>
-        <p className="card-value">₹ {data.monthlyAmountSaved}</p>
+        <p className="card-value">₹ {data.monthAmountSaved}</p>
       </div>
 
       <div className="dashboard-card total-closed-cases cards">
-        <h1 className="total-closed-cases-heading ">Total Closed Cases In Month</h1>
-        <p className="card-value">{data.totalClosedCases}</p>
+        <h1 className="total-closed-cases-heading ">Total Closed Cases In This Month</h1>
+        <p className="card-value">{data.totalClosedCasesInMonth}</p>
       </div>
 
       <div className="dashboard-card cards">
-        <h1 className="total-approach-heading ">Total Number of Approaches In Month</h1>
-        <p className="card-value">{data.totalApproach}</p>
+        <h1 className="total-approach-heading ">Total Number of Approaches In This Month</h1>
+        <p className="card-value">{data.totalNumberOfMonthApproach}</p>
       </div>
 
       <div className="dashboard-card pending-cases">
-        <h1 className="pending-cases-heading ">Pending cases for more than 5 days</h1>
-        <p className="card-value">{data.pendingCases}</p>
+        <h1 className="pending-cases-heading ">Pending Cases For More Than 5 Days</h1>
+        <p className="card-value">{data.PendingCasesMoreThan5Days}</p>
       </div>
 
       {/* Second Row */}
@@ -72,7 +73,7 @@ const Dashboard = () => {
 
         <div className="dashboard-card cards">
           <h1 className="total-approach-heading">Total Number of Approaches</h1>
-          <p className="card-value">{data.totalApproach}</p>
+          <p className="card-value">{data.totalNumberOfApproach}</p>
         </div>
       </div>
     </div>

@@ -7,13 +7,12 @@
   margin: 20px;
   background-image: url(../../Assets/Images//mainbodylogo.jpeg);
   background-size: cover;
-  
   background-repeat: no-repeat;
 }
 
 .dashboard-card,
 .dashboard-big-card {
-  background: #ffffffe5;
+  background: #ffffffef;
   border: 1.5px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -29,7 +28,7 @@
 }
 .amount{
   border: 2px solid #198754;
-  box-shadow: 2px 2px 15px #198754;
+  box-shadow: 2px 2px 20px #198754;
   color: #198754;
 }
 

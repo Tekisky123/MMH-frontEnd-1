@@ -195,7 +195,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
                       onChange={(e) => handleDocumentChange(index, e)}
                     >
                       <option value="">select document</option>
-                      <option value="Application Form">Application Form</option>
+                      <option value="Application Form">MMH-Form</option>
                       <option value="Aadhar Card">Aadhar Card</option>
                       <option value="PAN Card">PAN Card</option>
                       <option value="Election Card">Election Card</option>
