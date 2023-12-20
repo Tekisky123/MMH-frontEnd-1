@@ -15,10 +15,10 @@ const Header = () => {
   const closeLogoutModal = () => {
     setShowLogoutModal(false);
   };
-    const naam = false
+
   const handleLogout = () => {
     localStorage.clear();
-    localStorage.setItem("login",!naam)
+    localStorage.setItem("login",false)
     setShowLogoutModal(false);
     navigate('/')
   };
@@ -126,6 +126,11 @@ const Header = () => {
             >
               DashBoard
             </NavLink>
+          </li>
+          <li className="logout-li">
+            <button onClick={openLogoutModal}>
+              Logout
+            </button>
           </li>
         </ul>
         <h1 className="logo">{/* <img src={logo} alt="" /> */}</h1>
