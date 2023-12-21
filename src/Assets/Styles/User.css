@@ -47,12 +47,12 @@
 
 .delete-button {
   background-color: #DC4C64;
-  width: 100px;
+  width: 70px;
 }
 
 .edit-button {
   background-color: #a4c639;
-  width: 200px !important;
+  width: 70px !important;
   text-decoration: none;
 }
 

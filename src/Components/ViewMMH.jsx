@@ -117,7 +117,7 @@ const ViewMMH = ({ currentItem }) => {
             </tr>
             <tr>
               <td>
-                View of M.M.H.<span className="error-message">⁕</span>
+                View of M.M.H.
               </td>
               <td>
                 <textarea
@@ -133,7 +133,7 @@ const ViewMMH = ({ currentItem }) => {
             </tr>
             <tr>
               <td>
-                Advice by M.M.H.<span className="error-message">⁕</span>
+                Advice by M.M.H.
               </td>
               <td>
                 <textarea

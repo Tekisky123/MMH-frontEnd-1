@@ -190,8 +190,6 @@ const AddPatientDetails = () => {
     var requiredFields = [
       "full_name",
       "phoneNumber",
-      "aadharNumber",
-      "maritalStatus",
       "age",
       "state",
       "state",
@@ -1371,8 +1369,7 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="aadhar_number">Aadhar Number</span>
-                  <span className="error-message">⁕</span>
-                </div>
+             </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1441,7 +1438,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="marital-status">Marital Status</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <select
                   name="maritalStatus"

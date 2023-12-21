@@ -272,11 +272,13 @@ const RegisteredPatients = () => {
                 <div class="table-wrapper">
                   <table className="patient-table" style={{ border: "none" }}>
                     <tbody>
+                
                       <tr>
                         <td style={{ border: "none" }}>Patient ID:</td>
                         <td style={{ border: "none", width: "50%" }}>
                           {item.patientID}
                         </td>
+                        
                         <td style={{ border: "none", width: "20px" }}>
                           Status:
                         </td>
@@ -289,22 +291,23 @@ const RegisteredPatients = () => {
                         >
                           {item.status}
                         </td>
+                        <div style={{position:"absolute",left:"40%",top:"20%"}}>
+                        <span style={{ border: "none" }}>Disease Name:</span>
+                        <span className="diseaseName">
+                          {item.diseaseDetail.name}
+                        </span>
+                      </div>
                         {/* <span style={{marginLeft:"50px"}}>Status:</span>
                         <span>{item.status}</span> */}
                       </tr>
-
+                 
                       <tr>
                         <td style={{ border: "none" }}>Patient Name:</td>
                         <td style={{ border: "none" }}>
                           {item.patientDetails.name}
                         </td>
                       </tr>
-                      <tr>
-                        <td style={{ border: "none" }}>Disease Name:</td>
-                        <td style={{ border: "none" }}>
-                          {item.diseaseDetail.name}
-                        </td>
-                      </tr>
+               
                       <tr>
                         <td style={{ border: "none" }}>Care Taker Name:</td>
                         <td style={{ border: "none" }}>

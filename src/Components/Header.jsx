@@ -3,11 +3,12 @@ import "../Assets/Styles/Header.css";
 import logo from "../Assets/Images/logo-main.png"
 import Modal from "react-modal";
 import { useState } from "react";
+import { useAuth } from "./Auth";
 
 const Header = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
+  const auth = useAuth()
   const openLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -17,10 +18,12 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+
+    // auth.logout();
     localStorage.clear();
     localStorage.setItem("login",false)
     setShowLogoutModal(false);
-    navigate('/')
+    navigate("/")
   };
 
   return (
@@ -99,6 +102,21 @@ const Header = () => {
           </li>
           <li>
             <NavLink
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
+              to="/networkHospitals"
+            >
+              Network Hospitals
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
              style={({ isActive }) => ({
               color: isActive ? "#a4c639" : "",
               backgroundColor: isActive ? "white" : "",
@@ -127,11 +145,13 @@ const Header = () => {
               DashBoard
             </NavLink>
           </li>
-          {/* <li className="logout-li">
-            <button onClick={openLogoutModal}>
+          <li className="logout-li">
+            <a onClick={openLogoutModal}>
               Logout
-            </button>
-          </li> */}
+            </a>
+          </li>
+
+   
         </ul>
         <h1 className="logo">{/* <img src={logo} alt="" /> */}</h1>
       </div>
