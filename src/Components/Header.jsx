@@ -145,7 +145,7 @@ const Header = () => {
               DashBoard
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
              style={({ isActive }) => ({
               color: isActive ? "#a4c639" : "",
@@ -159,7 +159,7 @@ const Header = () => {
             >
               Reports
             </NavLink>
-          </li>
+          </li> */}
           <li className="logout-li">
             <a onClick={openLogoutModal}>
               Logout

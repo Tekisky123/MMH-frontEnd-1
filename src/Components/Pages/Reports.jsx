@@ -3,18 +3,25 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 
 const Reports = () => {
-  const [selectedTimeRange, setSelectedTimeRange] = useState('monthly');
-  const [dataToExport, setDataToExport] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
 
-  const fetchData = async (timeRange) => {
+  const fetchData = async () => {
     try {
-      const apiEndpoint = `http://13.126.14.109:4000/patient/getpatient?timeRange=${timeRange}`;
+      // Replace 'your_api_endpoint' with the actual API endpoint you are using
+      const apiEndpoint = 'http://13.126.14.109:4000/patient/getpatient';
       const response = await axios.get(apiEndpoint);
 
+      // Check if the API request was successful (status code 200)
       if (response.status === 200) {
-        const entries = response.data.result;
+        const entries = response.data.result;  // Replace 'entries' with the actual key containing your data
 
-        const formattedEntries = entries.map((entry, index) => ({
+        // Filter data based on the date range
+        const filteredEntries = filterDataByDateRange(entries, startDate, endDate);
+
+        // Add a 'Sr.No.' column and extract other desired fields from each entry
+        const formattedEntries = filteredEntries.map((entry, index) => ({
           'Sr.No.': index + 1,
           'Registered Date': entry.registeredDate,
           'Name of Patient': entry.patientDetails.name,
@@ -26,45 +33,47 @@ const Reports = () => {
           'Referred By': entry.referredBy,
         }));
 
-        setDataToExport(formattedEntries);
+        // Create a worksheet
+        const ws = XLSX.utils.json_to_sheet(formattedEntries);
+
+        // Create a workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet 1');
+
+        // Save the workbook to an Excel file
+        XLSX.writeFile(wb, 'patient_data.xlsx');
+        console.log('Data has been exported to patient_data.xlsx');
       } else {
         console.error(`Error: Unable to fetch data from the API. Status code: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error fetching data:', error.message);
+      console.error('Error:', error);
     }
   };
 
-  const handleTimeRangeChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedTimeRange(selectedValue);
+  // Function to filter data based on date range
+  const filterDataByDateRange = (data, startDate, endDate) => {
+    if (!startDate || !endDate) {
+      return data;
+    }
+
+    return data.filter((entry) => {
+      const entryDate = new Date(entry.registeredDate);
+      return entryDate >= startDate && entryDate <= endDate;
+    });
   };
-
-  const handleExportData = () => {
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet 1');
-
-    const fileName = `patient_data_${selectedTimeRange}.xlsx`;
-    XLSX.writeFile(wb, fileName);
-    console.log(`Data has been exported to ${fileName}`);
-  };
-
-  useEffect(() => {
-    fetchData(selectedTimeRange);
-  }, [selectedTimeRange]);
 
   return (
     <div>
-      <label htmlFor="timeRange">Select Time Range: </label>
-      <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
-        <option value="monthly">Monthly</option>
-        <option value="yearly">Yearly</option>
-      </select>
-
-      <button onClick={handleExportData}>Export Data</button>
-
-      {/* Your React component content */}
+      <div>
+        <label>Start Date:</label>
+        <input type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
+      </div>
+      <div>
+        <label>End Date:</label>
+        <input type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
+      </div>
+      <button onClick={() => fetchData()}>Export to Excel</button>
     </div>
   );
 };

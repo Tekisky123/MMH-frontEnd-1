@@ -234,7 +234,9 @@ const AddPatientDetails = () => {
       }
     });
     console.log("hasError", hasError);
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       setStatus(status + 1);
     }
@@ -273,7 +275,9 @@ const AddPatientDetails = () => {
     });
 
     console.log("hasError", hasError);
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       setStatus(status + 1);
     }
@@ -293,7 +297,9 @@ const AddPatientDetails = () => {
         hasError = true;
       }
     });
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       setStatus(status + 1);
     }
@@ -319,7 +325,9 @@ const AddPatientDetails = () => {
         hasError = true;
       }
     });
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       handleSubmit();
     }
