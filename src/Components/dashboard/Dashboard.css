@@ -51,18 +51,20 @@
 .pending-cases{
   border: 2px solid red;
   color: red;
-
+  text-align: center;
   box-shadow: 1px 1px 15px rgba(255, 0, 0, 0.603);
 }
 .total-closed-cases{
   border: 2px solid #a4c639;
   box-shadow: 1px 3px 20px #a4c639;
+  text-align: center;
   
 }
 .cards{
   border: 2px solid #a4c639;
   box-shadow: 1px 3px 20px #a4c639;
   color: #a4c639;
+  text-align: center;
 }
 
 .card-value {
@@ -70,7 +72,7 @@
   text-align: center;
   font-weight: bold;
   text-decoration: none;
-  color: #a4c639;
+  /* color: #a4c639; */
 }
 .card-pending-value {
   font-size: 54px;
