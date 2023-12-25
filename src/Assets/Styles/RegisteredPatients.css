@@ -353,6 +353,12 @@ thead{
 
 @media only screen and (max-width: 600px) {
 
+  .maincontainer{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
   .btn-download-pdf , .btn-register-status ,.btn-register-more{
     padding: 5px!important;
     font-size: 10px!important;
