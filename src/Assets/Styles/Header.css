@@ -52,6 +52,7 @@
     /* border-radius: 17px; */
     margin: 3px!important;
     margin-left: 20px;
+    cursor: pointer;
 }
 .logout-li a{
     border: none;

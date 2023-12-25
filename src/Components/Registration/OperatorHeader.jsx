@@ -158,18 +158,19 @@ const OperatorHeader = () => {
                        Are you sure you want to Logout ?
                     </p>
                     <button
+                      className="btn-login"
+                      onClick={handleLogout}
+                    >
+                      Yes
+                    </button>
+                    <button
                     style={{margin:"10px 0px"}}
                       className="btn-login"
                       onClick={closeLogoutModal}
                     >
                       No
                     </button>
-                    <button
-                      className="btn-login"
-                      onClick={handleLogout}
-                    >
-                      Yes
-                    </button>
+           
                   </div>
                 </Modal>
     </nav>

@@ -579,12 +579,12 @@ const RegisteredPatients = () => {
                       {item.documents.map((document, documentIndex) => (
                         <tr key={documentIndex}>
                           <td>{document.imageName}</td>
-                          <td style={{ width: "300px" }}>
+                          <td className="uploadedDocuments">
                             <a href={document.imageUrl}>Download </a>
                             <img
                               src={document.imageUrl}
                               alt=""
-                              style={{ width: "100px", marginLeft: "100px" }}
+                              style={{ width: "100px"}} 
                             />
                           </td>
                         </tr>
