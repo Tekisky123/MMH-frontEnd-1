@@ -20,6 +20,7 @@ import Loader from "./common/Loader";
 import Protected from "./Protected";
 import NetworkHospitals from "./Components/pages/NetworkHospitals";
 import OperatorDashboard from "./Components/dashboard/OperatorDashboard";
+import Reports from "./Components/pages/Reports";
 
 
 function App() {
@@ -69,14 +70,13 @@ function App() {
         <Route path="/dashboard/:number" element={<Protected><OperatorDashboard /></Protected>} />
 
 
-      {(!storedUserType === "Operator" ? "": (<>
-        <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
-      </>) 
-      )}
       {(storedUserType === "Operator" ? "": (<>
+        <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+        <Route path="/reports" element={<Protected><Reports /></Protected>} />
         <Route path="/user" element={<Protected><User /></Protected>} />
       </>) 
       )}
+
        
         <Route path="/edituser/:_id" element={<Protected><EditUser/></Protected>} />
         {/* <Route path="/signup" element={<Signup/>} /> */}

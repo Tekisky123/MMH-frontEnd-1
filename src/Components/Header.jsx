@@ -145,6 +145,21 @@ const Header = () => {
               DashBoard
             </NavLink>
           </li>
+          <li>
+            <NavLink
+             style={({ isActive }) => ({
+              color: isActive ? "#a4c639" : "",
+              backgroundColor: isActive ? "white" : "",
+              textDecoration: isActive ? "" : "",
+              // border: isActive ? "1px solid black" : "",
+              padding: isActive ? "8px" : "", // Add padding style here
+              borderRadius: isActive ? "10px" : "", // Add border radius style here
+            })}
+              to="/reports"
+            >
+              Reports
+            </NavLink>
+          </li>
           <li className="logout-li">
             <a onClick={openLogoutModal}>
               Logout
@@ -168,18 +183,19 @@ const Header = () => {
                        Are you sure you want to Logout ?
                     </p>
                     <button
+                      className="btn-login"
+                      onClick={handleLogout}
+                    >
+                      Yes
+                    </button>
+                    <button
                     style={{margin:"10px 0px"}}
                       className="btn-login"
                       onClick={closeLogoutModal}
                     >
                       No
                     </button>
-                    <button
-                      className="btn-login"
-                      onClick={handleLogout}
-                    >
-                      Yes
-                    </button>
+            
                   </div>
                 </Modal>
     </nav>

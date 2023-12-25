@@ -116,7 +116,8 @@ const AddPatientDetails = () => {
   
       // Update form data and errors accordingly
       setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
-      
+  
+      // Validate phone number
       const isValidNumber = /^\d{1,10}$/.test(truncatedValue);
   
       setErrors((prevErrors) => ({
@@ -124,14 +125,37 @@ const AddPatientDetails = () => {
         [name]: isValidNumber ? "" : "Please enter a valid number (up to 10 digits)",
       }));
     } else if (name === "aadharNumber" || name === "pincode" || name === "rationCardNo") {
-      // ... (rest of your existing code)
+      // Remove any non-digit characters
+      const numericValue = value.replace(/[^0-9]/g, '');
+  
+      // Check if the length does not exceed the specified limit
+      const maxLength = name === "aadharNumber" ? 12 : name === "pincode" ? 6 : 16;
+      const truncatedValue = numericValue.slice(0, maxLength);
+  
+      // Update form data with the truncated value
+      setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
     } else if (name === "age") {
-      // ... (rest of your existing code)
+      const ageValue = parseInt(value, 10);
+  
+      // Check if the value is within the desired range (1 to 120)
+      const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
+  
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isValidAge ? "" : "Age must be between 1 and 120",
+      }));
+  
+      // Update form data with the validated value
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: isValidAge ? ageValue : "",
+      }));
     } else {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
+  
   
   
   

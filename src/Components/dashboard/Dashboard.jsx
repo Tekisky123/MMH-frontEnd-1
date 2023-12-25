@@ -86,7 +86,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div style={{display:"flex",justifyContent:"space-around" , width:"100%"}}>
+      <div className="status-Section">
        <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Register Patients</h1>
         <p className="card-value">{data.registerPatients ? data.registerPatients : 0}</p>

@@ -95,11 +95,18 @@
   justify-content: space-around;
   width: 100%;
 }
-
+.status-Section{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
 
 @media only screen and (max-width: 600px) {
   .operaterCards{
     display: block;
     width: 100%;
+  }
+  .dashboard-big-card ,.status-Section{
+    display: block;
   }
 }
