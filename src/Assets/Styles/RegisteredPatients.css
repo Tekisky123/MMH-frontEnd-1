@@ -28,7 +28,7 @@
   font-size: 20px;
   width: 100%;
   margin: 10px 20px;
-
+  position: relative;
   
 }
 
@@ -82,11 +82,11 @@
   color: white;
   border: none;
   width: 20%;
-  padding: 8px 16px;
+  /* padding: 8px 16px; */
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 14px;
+  font-size: 20px;
   margin: 4px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
 }
@@ -244,8 +244,42 @@ thead{
 .patient-sign{
   border: none;
 }
+
+.DiseseaNameHighLight {
+  /* position: relative;
+  left: 45%; */
+  white-space: nowrap;
+
+}
+
+.cardStatus{
+  white-space: nowrap;
+}
 /* Additional styles for responsiveness */
 @media only screen and (max-width: 600px) {
+
+  .btn-download-pdf , .btn-register-status ,.btn-register-more{
+    padding: 5px!important;
+    font-size: 10px!important;
+  }
+  .patient-table{
+    margin: 0px;
+  }
+.patient-card{
+  padding: 15px;
+}
+  .cardStatus{
+    white-space: wrap;
+  }
+
+  .DiseseaNameHighLight span{
+    font-size: 12px;
+  }
+
+  tr td, tr th{
+    font-size: 10px;
+  
+  }
   .btn-register-more,
   .btn-register-status {
     padding: 6px 12px; /* Adjusted padding for smaller screens */
@@ -282,11 +316,11 @@ thead{
   color: white;
   border: none;
   width: 20%;
-  padding: 8px 16px;
+  padding: 8px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 14px;
+  font-size: 20px;
   margin: 4px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
 }
@@ -339,4 +373,10 @@ thead{
   fill: #9e9ea7;
   width: 1rem;
   height: 1rem;
+}
+.diseaseName,.careTakerNum{
+  font-size: 25px;
+  margin-left: 5px;
+  color: #a4c639;
+  font-weight: bold;
 }

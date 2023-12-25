@@ -8,6 +8,7 @@
   background-image: url(../../Assets/Images//mainbodylogo.jpeg);
   background-size: cover;
   background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .dashboard-card,
@@ -68,4 +69,28 @@
   font-size: 54px;
   text-align: center;
   font-weight: bold;
+  text-decoration: none;
+  color: #a4c639;
+}
+.card-pending-value {
+  font-size: 54px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  color: red;
+}
+
+
+.operaterCards{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .operaterCards{
+    display: block;
+    width: 100%;
+  }
 }

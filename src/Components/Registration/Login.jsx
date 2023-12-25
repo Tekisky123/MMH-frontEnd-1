@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
 import logo from "../../Assets/Images/logo-main.png"; // Import the logo image
 import { useEffect, useState } from "react"; // Import the useState hook for managing state
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios"; // Import Axios for API requests
 import Modal from "react-modal";
+import { useAuth } from "../Auth";
 
 // Functional component for the Login page
 const Login = ({ setUserType }) => {
+  const auth = useAuth();
   const [showContactAdminModal, setShowContactAdminModal] = useState(false);
   const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
   const openContactAdminModal = () => {
@@ -25,7 +27,6 @@ const Login = ({ setUserType }) => {
 
   // Functions to show toast notifications for login success and failure
   const notifyError = () => toast("Invalid Number or Password");
-  
 
   // State variables to store mobile number, password, and user type
   const [MobileNumber, setMobileNumber] = useState("");
@@ -35,14 +36,13 @@ const Login = ({ setUserType }) => {
   // Regular expression for validating the mobile number
   const mobileNumberRegex = /^[0-9]{10}$/;
 
-
-    useEffect(() => {
-     let login = localStorage.getItem('login'); 
-     navigate('/')
-     if (!login) {
-        navigate('/')
-     }
-    })
+  useEffect(() => {
+    let login = localStorage.getItem("login");
+    navigate("/");
+    if (!login) {
+      navigate("/");
+    }
+  });
 
   // Function to handle form submission
   const SubmitData = async (e) => {
@@ -64,19 +64,24 @@ const Login = ({ setUserType }) => {
           userType: userType,
         }
       );
-
+      console.log("response", response);
       console.log(response.data.data.userType);
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         // Save user type in local storage and update in the parent component
         localStorage.setItem("userType", response.data.data.userType);
         localStorage.setItem("mobileNumber", response.data.data.mobile);
-        localStorage.setItem("login",true)
+        localStorage.setItem("accessToken", response?.data?.token);
+        localStorage.setItem("login", true);
         setUserType(response.data.data.userType);
-
+        // auth.login(response.data.data.mobile)
         // Redirect to the dashboard after a delay
         setTimeout(() => {
-          navigate("/home");
+          response.data.data.userType === "Operator" ? (
+            <>{navigate("/dashboard/:number")}</>
+          ) : (
+            <>{navigate("/home")}</>
+          );
         }, 900);
       } else {
         setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
@@ -84,10 +89,11 @@ const Login = ({ setUserType }) => {
         notifyError();
         console.log("Error occurred");
         console.log(notifyError);
+        console.log("fault here");
       }
     } catch (error) {
       // Handle API call errors (e.g., network issues, server errors)
-      console.error("API call error:", error);
+      console.error("API call error:", error.message);
       notifyError();
     }
   };

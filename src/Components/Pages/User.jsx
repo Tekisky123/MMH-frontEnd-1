@@ -68,12 +68,13 @@ const User = ({ location }) => {
               <td>{user.userType}</td>
               <td>
                 {/* Button for editing user data */}
-                <Link
+                <button
                     className="edit-button"
-                    to={`/edituser/${user._id}`}
+                    // to={`/edituser/${user._id}`}
+                    onClick={`/edituser/${user._id}`}
                   >
                     Edit
-                  </Link>
+                  </button>
                 <button
                   className="delete-button"
                   onClick={() => DeleteData(user._id)}

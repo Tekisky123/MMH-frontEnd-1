@@ -23,7 +23,7 @@ const OperatorHeader = () => {
     localStorage.clear();
     localStorage.setItem("login",false)
     setShowLogoutModal(false);
-    navigate('/')
+    navigate("/")
   };
 
 
@@ -42,6 +42,21 @@ const OperatorHeader = () => {
         </div>
         {/* Menu items with NavLink for each page */}
         <ul className="menu-items">
+        <li>
+            <NavLink
+             style={({ isActive }) => ({
+              color: isActive ? "#a4c639" : "",
+              backgroundColor: isActive ? "white" : "",
+              textDecoration: isActive ? "" : "",
+              // border: isActive ? "1px solid black" : "",
+              padding: isActive ? "8px" : "", // Add padding style here
+              borderRadius: isActive ? "10px" : "", // Add border radius style here
+            })}
+              to="/dashboard/:number"
+            >
+              DashBoard
+            </NavLink>
+          </li>
           <li>
           <h1 className="logo-main"><img className="logo-main" src={logo} alt="" /></h1>
             <NavLink
@@ -104,11 +119,27 @@ const OperatorHeader = () => {
               Registered Patients
             </NavLink>
           </li>
-          {/* <li className="logout-li">
-            <button onClick={openLogoutModal}>
-              Logout
-            </button>
+          {/* <li>
+            <NavLink
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                // border: isActive ? "1px solid black" : "",
+                padding: isActive ? "8px" : "", // Add padding style here
+                borderRadius: isActive ? "10px" : "", // Add border radius style here
+              })}
+              to="networkHospitals"
+            >
+              Network Hospitals
+            </NavLink>
           </li> */}
+   
+          <li className="logout-li">
+            <a onClick={openLogoutModal}>
+              Logout
+            </a>
+          </li>
         </ul>
         <h1 className="logo">
           {/* Logo image can be added here */}

@@ -8,10 +8,15 @@ const Dashboard = () => {
   const [data, setData] = useState({
     totalAmountSaved: 0,
     monthlyAmountSaved: 0,
-    pendingCases: 0,
+    PendingCasesMoreThan5Days: 0,
     totalClosedCases: 0,
-    totalApproach: 0,
-    totalMonthApproach: 0,
+    totalNumberOfApproach: 0,
+    totalNumberOfMonthApproach: 0,
+    totalClosedCasesInMonth: 0,
+
+    registerPatients:0,
+    documentUploaded:0,
+    schemeAndHospitalSelected:0,
   });
 
   useEffect(() => {
@@ -25,12 +30,16 @@ const Dashboard = () => {
         // Update state with API data
         setData({
           totalAmountSaved: json.totalAmountSaved,
-          monthAmountSaved: json.monthAmountSaved,
+          monthlyAmountSaved: json.monthAmountSaved,
           PendingCasesMoreThan5Days: json.PendingCasesMoreThan5Days,
           totalClosedCases: json.totalClosedCases,
           totalClosedCasesInMonth: json.totalClosedCasesInMonth,
           totalNumberOfApproach: json.totalNumberOfApproach,
           totalNumberOfMonthApproach: json.totalNumberOfMonthApproach,
+
+          registerPatients: json.registerPatients,
+        documentUploaded: json.uploadDocumentsCount,
+        schemeAndHospitalSelected: json.hospitalAndSchemeDetails,
         });
       })
       .catch((error) => console.error("Error fetching data: ", error));
@@ -41,7 +50,7 @@ const Dashboard = () => {
       {/* First Row */}
       <div className="dashboard-card amount">
         <h1 className="monthly-amount-heading ">Monthly Amount Saved</h1>
-        <p className="card-value">₹ {data.monthAmountSaved}</p>
+        <p className="card-value">₹ {data.monthlyAmountSaved}</p>
       </div>
 
       <div className="dashboard-card total-closed-cases cards">
@@ -76,6 +85,23 @@ const Dashboard = () => {
           <p className="card-value">{data.totalNumberOfApproach}</p>
         </div>
       </div>
+
+      <div style={{display:"flex",justifyContent:"space-around" , width:"100%"}}>
+       <div className="dashboard-card cards">
+        <h1 className="total-approach-heading ">Register Patients</h1>
+        <p className="card-value">{data.registerPatients ? data.registerPatients : 0}</p>
+      </div>
+
+      <div className="dashboard-card cards">
+        <h1 className="total-approach-heading ">Document Uploaded</h1>
+        <p className="card-value">{data.documentUploaded ? data.documentUploaded : 0}</p>
+      </div>
+
+      <div className="dashboard-card cards">
+        <h1 className="total-approach-heading ">Sceme and Hospital Selected</h1>
+        <p className="card-value">{data.schemeAndHospitalSelected ? data.schemeAndHospitalSelected : 0}</p>
+      </div>
+       </div>
     </div>
   );
 };
