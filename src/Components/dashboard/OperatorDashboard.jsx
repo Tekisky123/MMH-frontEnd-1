@@ -90,39 +90,39 @@ const OperatorDashboard = () => {
       {/* First Row */}
       {/* <div className="dashboard-card amount">
         <h1 className="monthly-amount-heading ">Monthly Amount Saved</h1>
-        <p className="card-value">₹ {data.monthlyAmountSaved ? data.monthlyAmountSaved : 0}</p>
+        <p className="OPcard-value">₹ {data.monthlyAmountSaved ? data.monthlyAmountSaved : 0}</p>
       </div> */}
 
       {/* <div className="dashboard-card total-closed-cases cards">
         <h1 className="total-closed-cases-heading ">Total Closed Cases In This Month</h1>
-        <p className="card-value">{data.totalClosedCasesInMonth ? data.totalClosedCasesInMonth : 0}</p>
+        <p className="OPcard-value">{data.totalClosedCasesInMonth ? data.totalClosedCasesInMonth : 0}</p>
       </div> */}
 
       {/* <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Total Number of Approaches In This Month</h1>
-        <p className="card-value">{data.totalNumberOfMonthApproach ? data.totalNumberOfMonthApproach : 0}</p>
+        <p className="OPcard-value">{data.totalNumberOfMonthApproach ? data.totalNumberOfMonthApproach : 0}</p>
       </div> */}
 
       {/* <div className="dashboard-card pending-cases">
         <h1 className="pending-cases-heading ">Pending Cases For More Than 5 Days</h1>
-        <p className="card-value">{data.PendingCasesMoreThan5Days ? data.PendingCasesMoreThan5Days : 0}</p>
+        <p className="OPcard-value">{data.PendingCasesMoreThan5Days ? data.PendingCasesMoreThan5Days : 0}</p>
       </div> */}
 
       {/* Second Row */}
       {/* <div className="dashboard-big-card">
         <div className="dashboard-card amount">
           <h1 className="total-amount-heading ">Total Amount Saved</h1>
-          <p className="card-value">₹ {data.totalAmountSaved ? data.totalAmountSaved : 0}</p>
+          <p className="OPcard-value">₹ {data.totalAmountSaved ? data.totalAmountSaved : 0}</p>
         </div>
 
         <div className="dashboard-card cards">
           <h1 className="total-closed-cases-heading">Total Closed Cases</h1>
-          <p className="card-value">{data.totalClosedCases ? data.totalClosedCases : 0}</p>
+          <p className="OPcard-value">{data.totalClosedCases ? data.totalClosedCases : 0}</p>
         </div>
 
         <div className="dashboard-card cards">
           <h1 className="total-approach-heading">Total Number of Approaches</h1>
-          <p className="card-value">{data.totalNumberOfApproach ? data.totalNumberOfApproach : 0}</p>
+          <p className="OPcard-value">{data.totalNumberOfApproach ? data.totalNumberOfApproach : 0}</p>
         </div>
       </div> */}
 
@@ -130,17 +130,17 @@ const OperatorDashboard = () => {
 
        {/* <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Register Patients</h1>
-        <NavLink to="/registered-patients" className="card-value">{data.registerPatients ? data.registerPatients : 0}</NavLink>
+        <NavLink to="/registered-patients" className="OPcard-value">{data.registerPatients ? data.registerPatients : 0}</NavLink>
       </div> */}
 
       <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Document Uploaded</h1>
-        <NavLink to="/registered-patients/documentsUploaded" className="card-value">{data.documentUploaded ? data.documentUploaded : 0}</NavLink>
+        <NavLink to="/registered-patients/documentsUploaded" className="OPcard-value">{data.documentUploaded ? data.documentUploaded : 0}</NavLink>
       </div>
 
       <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Scheme and Hospital Selected</h1>
-        <NavLink to="/registered-patients/scheme&hospital" className="card-value">{data.schemeAndHospitalSelected ? data.schemeAndHospitalSelected : 0}</NavLink>
+        <NavLink to="/registered-patients/scheme&hospital" className="OPcard-value">{data.schemeAndHospitalSelected ? data.schemeAndHospitalSelected : 0}</NavLink>
       </div>
             <div className="dashboard-card pending-cases">
         <h1 className="pending-cases-heading ">Pending Cases For More Than 5 Days</h1>

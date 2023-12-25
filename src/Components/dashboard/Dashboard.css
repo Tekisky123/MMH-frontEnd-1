@@ -70,6 +70,13 @@
   text-align: center;
   font-weight: bold;
   text-decoration: none;
+  /* color: #a4c639; */
+}
+.OPcard-value {
+  font-size: 54px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
   color: #a4c639;
 }
 .card-pending-value {

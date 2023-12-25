@@ -64,11 +64,15 @@ function App() {
         <Route path="/createuser/:editId" element={<Protected><CreateUser/></Protected>} />
         <Route path="/registered-patients" element={<Protected><RegisteredPatients/></Protected>} />
         <Route path="/registered-patients/:cardStatus" element={<Protected><RegisteredPatients/></Protected>} />
-        <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+       
         <Route path="/networkHospitals" element={<Protected><NetworkHospitals /></Protected>} />
         <Route path="/dashboard/:number" element={<Protected><OperatorDashboard /></Protected>} />
 
 
+      {(!storedUserType === "Operator" ? "": (<>
+        <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+      </>) 
+      )}
       {(storedUserType === "Operator" ? "": (<>
         <Route path="/user" element={<Protected><User /></Protected>} />
       </>) 
