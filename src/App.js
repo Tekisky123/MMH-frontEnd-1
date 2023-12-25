@@ -19,6 +19,7 @@ import AddPatientDetails from "./Components/pages/newPatient/AddPatientDetails";
 import Loader from "./common/Loader";
 import Protected from "./Protected";
 import NetworkHospitals from "./Components/pages/NetworkHospitals";
+import OperatorDashboard from "./Components/dashboard/OperatorDashboard";
 
 
 function App() {
@@ -62,11 +63,14 @@ function App() {
         <Route path="/createuser" element={<Protected><CreateUser/></Protected>} />
         <Route path="/createuser/:editId" element={<Protected><CreateUser/></Protected>} />
         <Route path="/registered-patients" element={<Protected><RegisteredPatients/></Protected>} />
+        <Route path="/registered-patients/:cardStatus" element={<Protected><RegisteredPatients/></Protected>} />
         <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
         <Route path="/networkHospitals" element={<Protected><NetworkHospitals /></Protected>} />
+        <Route path="/dashboard/:number" element={<Protected><OperatorDashboard /></Protected>} />
+
+
       {(storedUserType === "Operator" ? "": (<>
         <Route path="/user" element={<Protected><User /></Protected>} />
-
       </>) 
       )}
        

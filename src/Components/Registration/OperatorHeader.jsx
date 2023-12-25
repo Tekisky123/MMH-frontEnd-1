@@ -52,7 +52,7 @@ const OperatorHeader = () => {
               padding: isActive ? "8px" : "", // Add padding style here
               borderRadius: isActive ? "10px" : "", // Add border radius style here
             })}
-              to="/dashboard"
+              to="/dashboard/:number"
             >
               DashBoard
             </NavLink>
@@ -119,7 +119,7 @@ const OperatorHeader = () => {
               Registered Patients
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
@@ -133,7 +133,7 @@ const OperatorHeader = () => {
             >
               Network Hospitals
             </NavLink>
-          </li>
+          </li> */}
    
           <li className="logout-li">
             <a onClick={openLogoutModal}>

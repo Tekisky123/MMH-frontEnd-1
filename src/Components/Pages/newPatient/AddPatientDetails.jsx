@@ -101,42 +101,40 @@ const AddPatientDetails = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
+  
     if (
       name === "phoneNumber" ||
       name === "careTakerNum1" ||
       name === "careTakerNum2" ||
       name === "hospitalNumber"
     ) {
-      const slicedValue = value.slice(0, 10);
-      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
-    } else if (name === "aadharNumber") {
-      const slicedValue = value.slice(0, 12);
-      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
-    } else if (name === "pincode") {
-      const slicedValue = value.slice(0, 6);
-      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
-    } else if (name === "age") {
-      const ageValue = parseInt(value, 10);
-
-      // Check if the value is within the desired range (1 to 120)
-      const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
-
+      // Remove any non-digit characters (except '-')
+      const numericValue = value.replace(/[^0-9-]/g, '');
+  
+      // Limit the input to a maximum of 10 digits
+      const truncatedValue = numericValue.slice(0, 10);
+  
+      // Update form data and errors accordingly
+      setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
+      
+      const isValidNumber = /^\d{1,10}$/.test(truncatedValue);
+  
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: isValidAge ? "" : "Age must be between 1 and 120",
+        [name]: isValidNumber ? "" : "Please enter a valid number (up to 10 digits)",
       }));
-
-      // Update form data with the validated value
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: isValidAge ? ageValue : "",
-      }));
+    } else if (name === "aadharNumber" || name === "pincode" || name === "rationCardNo") {
+      // ... (rest of your existing code)
+    } else if (name === "age") {
+      // ... (rest of your existing code)
     } else {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
-    };
+  };
+  
+  
+  
 
     
   const handleFamilyMemInputChange = (index, event) => {
@@ -1499,7 +1497,7 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Taluka">Taluka</span>
-                  <span className="error-message">⁕</span>
+                  {/* <span className="error-message">⁕</span> */}
                 </div>
                 <input
                   type="text"

@@ -4,7 +4,7 @@ import "../../Assets/Styles/RegisteredPatients.css";
 import check from "../../Assets/Images/check.png";
 import error from "../../Assets/Images/error.png";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png";
 import UploadDocuments from "../UploadDocuments";
 import ViewMMH from "../ViewMMH";
@@ -33,15 +33,15 @@ const RegisteredPatients = () => {
   const [refToDownload, setRefToDownload] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [imgView, setImgView] = useState();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [statusColor, setStatusColor] = useState("");
-
+  const {cardStatus} = useParams()
   const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
   const baseURL = "http://13.126.14.109:4000/patient/getpatient";
-
+  
   const pdfRef = useRef();
   const options = {
     orientation: "portrait",
@@ -59,20 +59,32 @@ const RegisteredPatients = () => {
   }, []);
 
   useEffect(() => {
+    // Set the initial search term based on the condition (params)
+    if (cardStatus === 'documentsUploaded') {
+      setSearchTerm('Documents Uploaded');
+    } else if (cardStatus === 'scheme&hospital') {
+      setSearchTerm('Scheme & Hospital Selected');
+    } else if (cardStatus === 'pending') {
+      setSearchTerm('Patient Registered');
+    }
+  }, [cardStatus]);
+  
+  useEffect(() => {
     // Update filtered data when search term changes
     const filteredResults = data.filter((item) => {
-      console.log("ghsdhfsagd", data);
-      console.log("fgfsg", searchTerm);
+      const searchTermLowerCase = searchTerm.toLowerCase();
+  
       return (
-        item.patientDetails.name.includes(searchTerm) ||
-        item.patientID.includes(searchTerm)
+        item.patientDetails.name.toLowerCase().includes(searchTermLowerCase) ||
+        item.patientID.toLowerCase().includes(searchTermLowerCase) ||
+        item.status.toLowerCase().includes(searchTermLowerCase)
+        // Add more fields to search if needed
+        // ...
       );
-      // Add more fields to search if needed
-      // ...
     });
+  
     setFilteredData(filteredResults);
   }, [searchTerm, data]);
-  console.log("dsfdgshd", searchTerm);
 
   const handleShowDetails = (index) => {
     // setShowDetails(!showDetails);
@@ -157,7 +169,6 @@ const RegisteredPatients = () => {
       setTimeout(() => {
         setIsDownloading(false);
       }, 10000);
-      
     }
   };
 
@@ -224,7 +235,7 @@ const RegisteredPatients = () => {
         </svg>
         <input
           type="text"
-          placeholder="Search by patient name or ID..."
+          placeholder="Search patient"
           value={searchTerm}
           className="input"
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -272,55 +283,61 @@ const RegisteredPatients = () => {
                 <div class="table-wrapper">
                   <table className="patient-table" style={{ border: "none" }}>
                     <tbody>
-                
                       <tr>
-                        <td style={{ border: "none" }}>Patient ID:</td>
-                        <td style={{ border: "none", width: "50%" }}>
-                          {item.patientID}
+                        <td style={{ border: "none", width: "25%" }}>
+                          Patient ID: {item.patientID}
                         </td>
-                        
-                        <td style={{ border: "none", width: "20px" }}>
+                        <td style={{ border: "none", width: "25%" }}></td>
+                        <td style={{ border: "none", width: "25%" }}>
                           Status:
                         </td>
                         <td
+                        className="cardStatus"
                           style={{
                             border: "none",
+                            width: "25%",
                             color: statusColor,
                             fontWeight: statusText,
                           }}
                         >
                           {item.status}
                         </td>
-                        <div style={{position:"absolute",left:"40%",top:"20%"}}>
-                        <span style={{ border: "none" }}>Disease Name:</span>
-                        <span className="diseaseName">
-                          {item.diseaseDetail.name}
-                        </span>
-                      </div>
-                        {/* <span style={{marginLeft:"50px"}}>Status:</span>
-                        <span>{item.status}</span> */}
                       </tr>
-                 
+
                       <tr>
-                        <td style={{ border: "none" }}>Patient Name:</td>
-                        <td style={{ border: "none" }}>
-                          {item.patientDetails.name}
-                        </td>
-                      </tr>
-               
-                      <tr>
-                        <td style={{ border: "none" }}>Care Taker Name:</td>
-                        <td style={{ border: "none" }}>
-                          {item.careTaker.name}{" "}
+                        <td style={{ border: "none", width: "100%" }}>
+                          <div className="DiseseaNameHighLight">
+                            <span style={{ border: "none",margin:"0px" }}>
+                              Disease Name:
+                            </span>
+                            <span className="diseaseName">
+                              {item.diseaseDetail.name}
+                            </span>
+                          </div>
                         </td>
                       </tr>
                       <tr>
                         <td style={{ border: "none" }}>
-                          Care Taker Mobile No:
+                          Patient Name: <span>{item.patientDetails.name}</span>
                         </td>
+
+                        {/* <td style={{ border: "none" }}>
+                          
+                        </td> */}
+                      </tr>
+
+                      <tr>
                         <td style={{ border: "none" }}>
-                          {item.careTaker.mobile1}
+                          Care Taker Name: <span> {item.careTaker.name}</span>
                         </td>
+                        <td style={{ border: "none" }}> </td>
+                      </tr>
+                      <tr>
+                        <td style={{ border: "none" }}>
+                          Care Taker Mobile No:{" "}
+                          <span className="careTakerNum">{item.careTaker.mobile1}</span>
+                        </td>
+                        <td style={{ border: "none" }}></td>
                       </tr>
                     </tbody>
                   </table>
@@ -382,7 +399,6 @@ const RegisteredPatients = () => {
                         >
                           Upload Documents
                         </button>
-                        
                       </>
                     )}
 
@@ -435,12 +451,17 @@ const RegisteredPatients = () => {
                   <h2 className="table-heading">Family Details</h2>
                   <table>
                     <thead>
-                      <th  style={{border: "1px solid black"}}>Sr.No.</th>
-                      <th style={{border: "1px solid black"}}> Family Member</th>
-                      <th  style={{border: "1px solid black"}}>Relation</th>
-                      <th  style={{border: "1px solid black"}}>Age</th>
-                      <th  style={{border: "1px solid black"}}>Occupation</th>
-                      <th  style={{border: "1px solid black"}}>Monthly Income</th>
+                      <th style={{ border: "1px solid black" }}>Sr.No.</th>
+                      <th style={{ border: "1px solid black" }}>
+                        {" "}
+                        Family Member
+                      </th>
+                      <th style={{ border: "1px solid black" }}>Relation</th>
+                      <th style={{ border: "1px solid black" }}>Age</th>
+                      <th style={{ border: "1px solid black" }}>Occupation</th>
+                      <th style={{ border: "1px solid black" }}>
+                        Monthly Income
+                      </th>
                     </thead>
                     <tbody>
                       {item.familyDetail.map((familyMember, familyIndex) => (
@@ -570,17 +591,20 @@ const RegisteredPatients = () => {
                     </tbody>
                   </table>
                   {item.schemeName ? (
-                    <MMH item={item} isDownloading={isDownloading} pdfRef={pdfRef} />
-                  ) :
-                  item.status !== "Closed-Patient Rejected" &&
+                    <MMH
+                      item={item}
+                      isDownloading={isDownloading}
+                      pdfRef={pdfRef}
+                    />
+                  ) : (
+                    item.status !== "Closed-Patient Rejected" &&
                     item.status !== "Closed-Civil" &&
                     item.status !== "Closed-Ayushman Bharat" &&
                     item.status !== "Closed-Private" &&
                     item.status !== "Closed-MJPJA" &&
-                    item.status !== "Closed-Other" && 
-                    (
-                    
-                    <ViewMMH currentItem={item._id} />
+                    item.status !== "Closed-Other" && (
+                      <ViewMMH currentItem={item._id} />
+                    )
                   )}
                 </div>
               )}

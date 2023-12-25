@@ -100,7 +100,7 @@ const Header = () => {
               Registered Patients
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
@@ -114,7 +114,7 @@ const Header = () => {
             >
               Network Hospitals
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
              style={({ isActive }) => ({

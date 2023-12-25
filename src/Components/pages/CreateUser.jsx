@@ -26,11 +26,24 @@ const CreateUser = () => {
 
   // Function to handle input changes and update form data
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    const truncatedValue = value.slice(0, 40);
+  const { name, value } = e.target;
+
+  // Apply validation only if the input is for the mobile field
+  if (name === "mobile") {
+    // Remove non-digit characters and limit the input to 10 digits
+    const truncatedValue = value.replace(/\D/g, '').slice(0, 10);
+
     setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
+
+    // Validate mobile number
+    const isValidMobile = /^\d{10}$/.test(truncatedValue);
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: isValidMobile ? "" : "Enter a valid 10-digit mobile number" }));
+  } else {
+    // For other fields, simply update the form data
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-  };
+  }
+};
 
   // Function to validate form inputs
   const validateForm = () => {
