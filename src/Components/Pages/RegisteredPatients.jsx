@@ -228,6 +228,7 @@ const RegisteredPatients = () => {
 
   return (
     <>
+    <div className="img-main"></div>
       <div className="search-bar group">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
           <g>
