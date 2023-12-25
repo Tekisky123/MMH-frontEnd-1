@@ -67,7 +67,7 @@ const Login = ({ setUserType }) => {
       console.log("response", response);
       console.log(response.data.data.userType);
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         // Save user type in local storage and update in the parent component
         localStorage.setItem("userType", response.data.data.userType);
         localStorage.setItem("mobileNumber", response.data.data.mobile);
@@ -76,13 +76,14 @@ const Login = ({ setUserType }) => {
         setUserType(response.data.data.userType);
         // auth.login(response.data.data.mobile)
         // Redirect to the dashboard after a delay
+       
         setTimeout(() => {
           response.data.data.userType === "Operator" ? (
             <>{navigate("/dashboard/:number")}</>
           ) : (
             <>{navigate("/home")}</>
           );
-        }, 900);
+        }, 200);
       } else {
         setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
         // Show error toast notification for invalid credentials
