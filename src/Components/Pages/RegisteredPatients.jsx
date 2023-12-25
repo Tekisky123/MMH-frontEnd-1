@@ -18,6 +18,7 @@ import html2canvas from "html2canvas";
 import MMH from "../MMH";
 import CloseApplication from "../CloseApplication";
 import DeletePatient from "../DeletePatient";
+import PDFDownload from "./PDFDownload";
 
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -371,7 +372,7 @@ const RegisteredPatients = () => {
                     </div>
                   )} */}
                 </p>
-
+                <PDFDownload item={item}  />
                 <div className="data-btn">
                   <button
                     className="btn-register-more"
@@ -402,12 +403,12 @@ const RegisteredPatients = () => {
                       </>
                     )}
 
-                  <button
+                  {/* <button
                     className="btn-download-pdf"
                     onClick={() => handleDownloadPDF(index, item.patientID)}
                   >
                     Download MMH-Form
-                  </button>
+                  </button> */}
                   {/* <DeletePatient currentItem={item._id}/> */}
                 </div>
               </div>
