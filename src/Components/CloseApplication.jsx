@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
-    
-  
+  const navigate =useNavigate()
     const [formData, setFormData] = useState({
       amountSaved: "",
       comments: "",
@@ -42,6 +42,8 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           // Handle errors
           console.error("Error submitting form");
         }
+           
+        navigate("/opRegistered-patients")
       } catch (error) {
         console.error("Error:", error);
       }

@@ -63,18 +63,23 @@ const Reports = () => {
     });
   };
 
-  return (
-    <div>
-      <div>
-        <label>Start Date:</label>
-        <input type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
+  return (<>
+        <div style={{margin:"0px"}} className="dashboard-heading">
+        <h3>Registered Patients Report</h3>
       </div>
-      <div>
-        <label>End Date:</label>
-        <input type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
+      <div  className="Download-excel">
+   <div className='inputDiv'>
+  <label htmlFor='dateFrom'>Patient Registered Date From:</label>
+  <input id='dateFrom' type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
+</div>
+      <div className='inputDiv'>
+        <label htmlFor='dateTo'>Patient Registered Date To :</label>
+        <input id='dateTo' type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
       </div>
-      <button onClick={() => fetchData()}>Export to Excel</button>
+      <button onClick={() => fetchData()}>Download Report</button>
     </div>
+  </>
+
   );
 };
 

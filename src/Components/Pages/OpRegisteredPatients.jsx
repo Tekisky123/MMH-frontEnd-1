@@ -69,7 +69,7 @@ const OpRegisteredPatients = () => {
     } else if (cardStatus === 'pending') {
       setSearchTerm('Patient Registered');
     }
-  }, [cardStatus]);
+  }, []);
   
   useEffect(() => {
     // Update filtered data when search term changes
@@ -92,7 +92,7 @@ const OpRegisteredPatients = () => {
     // setShowDetails(!showDetails);
     // console.log("index", _id);
     setShowStatus(false);
-    setActivePatientId(data[index].patientDetails._id);
+    setActivePatientId(filteredData[index].patientDetails._id);
     setActiveStatusId(null);
     setActiveCardIndex(index);
     setActiveDocumentId(null);
@@ -102,7 +102,7 @@ const OpRegisteredPatients = () => {
     setShowStatus(!showStatus);
     // setShowDetails(false);
     setActivePatientId(null);
-    setActiveStatusId(data[index]._id);
+    setActiveStatusId(filteredData[index]._id);
     setActiveDocumentId(null);
     setActiveCardIndex(index);
   };
@@ -111,7 +111,7 @@ const OpRegisteredPatients = () => {
     // setShowDetails(false);
     setActivePatientId(null);
     setActiveStatusId(null);
-    setActiveDocumentId(data[index]._id);
+    setActiveDocumentId(filteredData[index]._id);
     setActiveCardIndex(index);
   };
 

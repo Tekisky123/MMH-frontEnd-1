@@ -121,7 +121,7 @@ const PDFDownload = ({ item }) => {
         `,
         ],
         [
-          `2) Any service or help/offer/referral/suggestions/advice ete given by MMH is purely a help. either to accept or reject is at sole discretion of applicant/patient. If in case of any loss or damage or injury MMIl shall not be held responsible.`,
+          `2) Any service or help/offer/referral/suggestions/advice ete given by MMH is purely a help. either to accept or reject is at sole discretion of applicant/patient. If in case of any loss or damage or injury MMH shall not be held responsible.`,
         ],
         [
           `3) MMH is just a platform that eases the patient to get information and help in regard with various Government Trust Private Hospitals and other information in respect of disease and offer help with information in connected with various hospitals, schemes.`,

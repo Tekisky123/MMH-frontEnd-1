@@ -54,7 +54,7 @@ const OperatorHeader = () => {
             })}
               to="/dashboard/:number"
             >
-              DashBoard
+              Dashboard
             </NavLink>
           </li>
           <li>

@@ -104,11 +104,11 @@
 
 .Download-excel{
   display: flex;
-  justify-content: end;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  position: relative;
-  top: 20px;
-  right: 20px;
+  height: 70vh;
+  gap: 20px;
 }
 .Download-excel button{
   background-color: rgb(164, 198, 57);
@@ -117,27 +117,33 @@
     border-radius: 8px;
     border: none;
     margin-top: 4px;
-    font-size: 15px;
+    font-size: 25px;
     height: fit-content;
+    width: 50vw;
 }
-.Download-excel div{
+.Download-excel .inputDiv{
   padding: 5px;
   margin: 10px;
   display: flex;
   flex-direction: column;
-  border: 1px solid lightgrey;
+  border: 2px solid #a4c639;
+  box-shadow: 1px 3px 20px #a4c639;
   border-radius: 5px;
-  width: 20%;
+  width: 50%;
   font-weight: bold;
 }
-.Download-excel div label{
+.Download-excel .inputDiv label{
  margin: 0px;
+ font-size: 25px;
 }
-.Download-excel div input{
+.Download-excel .inputDiv input{
   border: none;
+  font-size: 30px;
 }
-
-
+.dashboard-heading h3{
+  margin: 50px 0px 0px 50px;
+    color: #B2CF57;
+}
 @media only screen and (max-width: 600px) {
   .operaterCards{
     display: block;

@@ -1282,7 +1282,7 @@ const AddPatientDetails = () => {
         toast.success("Patient Created Successfully");
 
         setTimeout(() => {
-          navigate("/registered-patients");
+          navigate("/opRegistered-patients");
         }, 3000);
       } else {
         toast.error("Error While Creating Patient...");
