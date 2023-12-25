@@ -21,6 +21,7 @@ import Protected from "./Protected";
 import NetworkHospitals from "./Components/pages/NetworkHospitals";
 import OperatorDashboard from "./Components/dashboard/OperatorDashboard";
 import Reports from "./Components/pages/Reports";
+import OpRegisteredPatients from "./Components/pages/OpRegisteredPatients";
 
 
 function App() {
@@ -63,14 +64,15 @@ function App() {
         <Route path="/yojna" element={<Protected><Yojna /></Protected>} />
         <Route path="/createuser" element={<Protected><CreateUser/></Protected>} />
         <Route path="/createuser/:editId" element={<Protected><CreateUser/></Protected>} />
-        <Route path="/registered-patients" element={<Protected><RegisteredPatients/></Protected>} />
-        <Route path="/registered-patients/:cardStatus" element={<Protected><RegisteredPatients/></Protected>} />
-       
+        <Route path="/opRegistered-patients" element={<Protected><OpRegisteredPatients/></Protected>} />
+        <Route path="/opRegistered-patients/:cardStatus" element={<Protected><OpRegisteredPatients/></Protected>} />
         <Route path="/networkHospitals" element={<Protected><NetworkHospitals /></Protected>} />
         <Route path="/dashboard/:number" element={<Protected><OperatorDashboard /></Protected>} />
 
 
       {(storedUserType === "Operator" ? "": (<>
+        <Route path="/registered-patients" element={<Protected><RegisteredPatients/></Protected>} />
+        <Route path="/registered-patients/:cardStatus" element={<Protected><RegisteredPatients/></Protected>} />
         <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
         <Route path="/reports" element={<Protected><Reports /></Protected>} />
         <Route path="/user" element={<Protected><User /></Protected>} />

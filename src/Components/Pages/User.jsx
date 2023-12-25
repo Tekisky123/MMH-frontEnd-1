@@ -71,7 +71,9 @@ const User = ({ location }) => {
                 <button
                     className="edit-button"
                     // to={`/edituser/${user._id}`}
-                    onClick={`/edituser/${user._id}`}
+                    // onClick={`/edituser/${user._id}`}
+                    onClick={() => navigate(`/edituser/${user._id}`)}
+
                   >
                     Edit
                   </button>

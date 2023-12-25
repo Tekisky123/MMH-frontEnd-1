@@ -114,7 +114,7 @@ const OperatorHeader = () => {
                 padding: isActive ? "8px" : "", // Add padding style here
                 borderRadius: isActive ? "10px" : "", // Add border radius style here
               })}
-              to="/registered-patients"
+              to="/opRegistered-patients"
             >
               Registered Patients
             </NavLink>

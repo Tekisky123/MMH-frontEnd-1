@@ -135,16 +135,16 @@ const OperatorDashboard = () => {
 
       <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Document Uploaded</h1>
-        <NavLink to="/registered-patients/documentsUploaded" className="OPcard-value">{data.documentUploaded ? data.documentUploaded : 0}</NavLink>
+        <NavLink to="/opRegistered-patients/documentsUploaded" className="OPcard-value">{data.documentUploaded ? data.documentUploaded : 0}</NavLink>
       </div>
 
       <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Scheme and Hospital Selected</h1>
-        <NavLink to="/registered-patients/scheme&hospital" className="OPcard-value">{data.schemeAndHospitalSelected ? data.schemeAndHospitalSelected : 0}</NavLink>
+        <NavLink to="/opRegistered-patients/scheme&hospital" className="OPcard-value">{data.schemeAndHospitalSelected ? data.schemeAndHospitalSelected : 0}</NavLink>
       </div>
             <div className="dashboard-card pending-cases">
         <h1 className="pending-cases-heading ">Pending Cases For More Than 5 Days</h1>
-        <NavLink to="/registered-patients/pending" className="card-pending-value">{data.PendingCasesMoreThan5Days ? data.PendingCasesMoreThan5Days : 0}</NavLink>
+        <NavLink to="/opRegistered-patients/pending" className="card-pending-value">{data.PendingCasesMoreThan5Days ? data.PendingCasesMoreThan5Days : 0}</NavLink>
       </div>
        </div>
 
