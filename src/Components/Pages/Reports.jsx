@@ -91,7 +91,7 @@ console.log('Data has been exported to patient_data.xlsx');
   return (
     <>
       <div style={{ margin: "0px" }} className="dashboard-heading">
-        <h3> Patients Report</h3>
+        <h3>Registered Patients Report</h3>
       </div>
       <div className="Download-excel">
         <div className="inputDiv">
@@ -110,7 +110,10 @@ console.log('Data has been exported to patient_data.xlsx');
             onChange={(e) => setEndDate(new Date(e.target.value))}
           />
         </div>
-        <button onClick={() => fetchData()}>Download Report</button>
+        {/* <button onClick={() => fetchData()}>Download Report</button> */}
+        <button onClick={() => fetchData()} disabled={!startDate || !endDate}>
+          Download Report
+        </button>
       </div>
     </>
   );
