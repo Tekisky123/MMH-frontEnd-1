@@ -1,8 +1,26 @@
 import React from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { FaFileDownload } from "react-icons/fa";
+import "../../Assets/Styles/RegisteredPatients.css"
 
 const PDFDownload = ({ item }) => {
+  const registeredDate = new Date(item.registeredDate);
+
+  const day = registeredDate.getDate();
+  const month = registeredDate.getMonth() + 1; // Month is zero-based
+  const year = registeredDate.getFullYear();
+
+  const formattedDate = `${day}-${month}-${year}`;
+
+  const diagnoseDate = new Date(item.diseaseDetail.diagnoseDate);
+
+  const dayDiagnose = diagnoseDate.getDate();
+  const monthDiagnose = diagnoseDate.getMonth() + 1; // Month is zero-based
+  const yearDiagnose = diagnoseDate.getFullYear();
+
+  const formattedDiagnoseDate = `${dayDiagnose}-${monthDiagnose}-${yearDiagnose}`;
+
   const generatePdf = () => {
     const pdf = new jsPDF();
 
@@ -85,7 +103,7 @@ const PDFDownload = ({ item }) => {
       head: [["Disease Details", ""]],
       body: [
         ["Disease Name", item.diseaseDetail.name],
-        ["Diagnose Date", item.diseaseDetail.diagnoseDate],
+        ["Diagnose Date", formattedDiagnoseDate],
         ["Diagnose by Dr", item.diseaseDetail.diagnoseBy],
         ["Investigation Done 1", item.diseaseDetail.investigationDone1],
         ["Investigation Done 2", item.diseaseDetail.investigationDone2],
@@ -110,7 +128,7 @@ const PDFDownload = ({ item }) => {
     pdf.autoTable({
       head: [["Other Details", ""]],
       body: [
-        ["Registered Date", item.registeredDate],
+        ["Registered Date", formattedDate],
         ["Created by", item.createdBy],
         ["Status", item.status],
       ],
@@ -162,19 +180,14 @@ const PDFDownload = ({ item }) => {
 
   return (
     <div>
-      <button
+      <button className="pdf-download-btn"
         onClick={generatePdf}
         style={{
-          backgroundColor: "#a4c639",
-          color: "white",
-          padding: "7px",
-          borderRadius: "8px",
-          border: "none",
-          marginTop: "4px",
-          fontSize: "15px",
+
+         
         }}
       >
-        Download MMH Form
+        <FaFileDownload />
       </button>
     </div>
   );

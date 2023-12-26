@@ -336,8 +336,15 @@ thead{
   align-items: center;
 }
 
-
-
+.pdf-download-btn{
+ background-color: transparent;
+ color: #a4c639;
+ position: relative;
+ left: 1070px;
+ bottom: 200px;
+ font-size: 40px;
+ border: none;
+}
 
 
 
@@ -371,6 +378,11 @@ thead{
 }
   .cardStatus{
     white-space: wrap;
+  }
+  .pdf-download-btn{
+    left: 290px;
+    top: -150px;
+    font-size: 30px;
   }
 
   .DiseseaNameHighLight span , .careTakerNum{
