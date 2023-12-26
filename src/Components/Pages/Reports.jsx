@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import * as XLSX from "xlsx";
-import "../../Components/dashboard/Dashboard.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import * as XLSX from 'xlsx';
+import "../../Components/dashboard/Dashboard.css"
+import countries from '../../common/CommonObj';
 
 const Reports = () => {
   const [startDate, setStartDate] = useState(null);
@@ -27,27 +28,43 @@ const Reports = () => {
 
         // Add a 'Sr.No.' column and extract other desired fields from each entry
         const formattedEntries = filteredEntries.map((entry, index) => ({
-          "Sr.No.": index + 1,
-          "Registered Date": entry.registeredDate,
-          "Name of Patient": entry.patientDetails.name,
-          Age: entry.patientDetails.age,
-          Gender: entry.patientDetails.sex,
-          Address: entry.patientDetails.address,
-          Contact: entry.patientDetails.mobile,
-          Disease: entry.disease,
-          "Referred By": entry.referredBy,
+          'SR.NO.': index + 1,
+          'REGISTERED DATE5': entry.registeredDate,
+          'NAME OF PATIENT': entry.patientDetails.name,
+          'AGE': entry.patientDetails.age,
+          'GENDER': entry.patientDetails.sex,
+          'ADDRESS': entry.patientDetails.address,
+          'TALUKA': entry.patientDetails.talukha,
+          'DISTRICT': entry.patientDetails.district,
+          'STATE': getStateName(entry.patientDetails.state),
+          'CONTACT NO.': entry.patientDetails.mobile,
+          'INVESTIGATION': entry.diseaseDetail.investigationDone1,
+          'DISEASE': entry.disease,
+          'REFERRED BY': entry.referredBy,
+          'OPD/IPD': "",
+          'HOSPITAL': "",
+          'TASK COMPLETED PENDING': "",
+          'REMARK': "",
+          'RATION CARD': entry.patientDetails.rationcardnumber,
         }));
 
         // Create a worksheet
         const ws = XLSX.utils.json_to_sheet(formattedEntries);
 
-        // Create a workbook
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
+// Make the heading row bold
+const boldHeaderStyle = { font: { bold: true } };
+Object.keys(formattedEntries[0]).forEach((key, colIndex) => {
+  const headerCell = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+  ws[headerCell] = { ...ws[headerCell], ...boldHeaderStyle };
+});
 
-        // Save the workbook to an Excel file
-        XLSX.writeFile(wb, "patient_data.xlsx");
-        console.log("Data has been exported to patient_data.xlsx");
+// Create a workbook
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, 'Sheet 1');
+
+// Save the workbook to an Excel file
+XLSX.writeFile(wb, 'patient_data.xlsx');
+console.log('Data has been exported to patient_data.xlsx');
       } else {
         console.error(
           `Error: Unable to fetch data from the API. Status code: ${response.status}`
@@ -70,10 +87,16 @@ const Reports = () => {
     });
   };
 
-  return (
-    <>
-      <div style={{ margin: "0px" }} className="dashboard-heading">
-        <h3> Patients Report</h3>
+  const getStateName = (index) => {
+    if (index >= 0 && index < countries.length) {
+      return countries[index].state;
+    }
+    return ''; // Return an empty string or any default value if the index is out of bounds
+  };
+
+  return (<>
+        <div style={{margin:"0px"}} className="dashboard-heading">
+        <h3>Registered Patients Report</h3>
       </div>
       <div className="Download-excel">
         <div className="inputDiv">

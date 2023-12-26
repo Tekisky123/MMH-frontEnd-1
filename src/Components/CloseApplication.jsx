@@ -3,59 +3,74 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
-  const navigate =useNavigate()
-    const [formData, setFormData] = useState({
-      amountSaved: "",
-      comments: "",
-      patientfeedback: "",
-      status: "",
-      closedate: new Date().toLocaleDateString()
-    });
+  const [files, setFiles] = useState(null);
 
-    const handleConfirmation = () => {
-      return window.confirm("Are You Sure You Want To Close Case ?");
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    amountSaved: "",
+    amountGivenByMMH: "",
+    comments: "",
+    patientfeedback: "",
+    status: "",
+    closedate: new Date().toLocaleDateString(),
+    // Remove 'files' from here
+  });
 
-      if (!handleConfirmation()) {
-        return; // User canceled submission
+  const handleConfirmation = () => {
+    return window.confirm("Are You Sure You Want To Close Case?");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!handleConfirmation()) {
+      return; // User canceled submission
+    }
+
+    const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
+
+    try {
+      const formDataWithImage = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataWithImage.append(key, value);
+      });
+      formDataWithImage.append("files", files); // Ensure correct handling for files
+
+      const response = await axios.put(updateUrl, formDataWithImage, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          // Add any other headers you need, such as authorization headers
+        },
+      });
+
+      // Assuming a successful response is status code 2xx
+      if (response.status >= 200 && response.status < 300) {
+        // Handle successful submission
+        console.log("Form submitted successfully!");
+        window.location.reload();
+      } else {
+        // Handle errors
+        console.error("Error submitting form");
       }
 
-      const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
-  
-      try {
-        const response = await axios.put(updateUrl, formData, {
-          headers: {
-            "Content-Type": "application/json",
-            // Add any other headers you need, such as authorization headers
-          },
-        });
-  
-        // Assuming a successful response is status code 2xx
-        if (response.status >= 200 && response.status < 300) {
-          // Handle successful submission
-          console.log("Form submitted successfully!");
-          window.location.reload();
-        } else {
-          // Handle errors
-          console.error("Error submitting form");
-        }
-           
-        navigate("/opRegistered-patients")
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    };
+      navigate("/opRegistered-patients");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    setFiles(selectedImage);
+  };
   
 
 
@@ -72,13 +87,27 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           </thead>
           <tbody>
           <tr>
-              <td>Amount Saved</td>
+              <td>Amount Saved By Yojna</td>
               <td>
                 
                 <input
                   type="number"
                   name="amountSaved"
                   value={formData.amountSaved}
+                  onChange={handleInputChange}
+                  placeholder=" ₹"
+                />
+                 
+              </td>
+            </tr>
+          <tr>
+              <td>Amount Given By M.M.H.</td>
+              <td>
+                
+                <input
+                  type="number"
+                  name="amountGivenByMMH"
+                  value={formData.amountGivenByMMH}
                   onChange={handleInputChange}
                   placeholder=" ₹"
                 />
@@ -108,6 +137,16 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               </td>
             </tr>
             <tr>
+        <td>Upload Image</td>
+        <td>
+          <input
+            type="file"
+            name="files"
+            onChange={handleImageChange}
+          />
+        </td>
+      </tr>
+            <tr>
               <td>Status<span className="error-message">⁕</span></td>
               <td>
                 <select name="status"
@@ -125,14 +164,14 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
                 </select>
                 <br />
                 {formData.status === "Closed-Other" && (
-              <input
-                type="text"
-                name="otherType"
-                placeholder="Type here..."
-                value={formData.otherType || ""}
-                onChange={handleInputChange}
-              />
-            )}
+            <input
+              type="text"
+              name="otherType"
+              placeholder="Type here..."
+              value={formData.otherType || ""}
+              onChange={handleInputChange}
+            />
+          )}
               </td>
             </tr>
           
