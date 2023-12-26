@@ -179,11 +179,11 @@ const PDFDownload = ({ item }) => {
   };
 
   return (
-    <div>
+    <>
       <button className="pdf-download-btn" onClick={generatePdf} style={{}} title="Download MMH Form">
         <FaFileDownload />
       </button>
-    </div>
+    </>
   );
 };
 

@@ -120,19 +120,7 @@ const OperatorDashboard = () => {
                 : 0}
             </NavLink>
           </div>
-          <div className="dashboard-card pending-cases">
-            <h1 className="pending-cases-heading ">
-             Cases closed in this month
-            </h1>
-            <NavLink
-              to="/opRegistered-patients/pending"
-              className="card-pending-value"
-            >
-              {data.closePatientDetailsCount
-                ? data.closePatientDetailsCount
-                : 0}
-            </NavLink>
-          </div>
+
           <div className="dashboard-card pending-cases">
             <h1 className="pending-cases-heading ">
               Registered Patients
@@ -143,6 +131,26 @@ const OperatorDashboard = () => {
             >
               {data.PendingCasesMoreThan5Days
                 ? data.PendingCasesMoreThan5Days
+                : 0}
+            </NavLink>
+          </div>
+        </div>
+      </div>
+      <div className="dashboard-heading">
+        <h3>Cases Closed</h3>
+      </div>
+      <div className="dashbord-main">
+        <div className="operaterCards2">
+        <div className="dashboard-card pending-cases">
+            <h1 className="pending-cases-heading ">
+             Cases closed in this month
+            </h1>
+            <NavLink
+              to="/opRegistered-patients/closed"
+              className="card-pending-value"
+            >
+              {data.closePatientDetailsCount
+                ? data.closePatientDetailsCount
                 : 0}
             </NavLink>
           </div>

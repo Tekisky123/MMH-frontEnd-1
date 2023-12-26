@@ -9,7 +9,7 @@
   background-color: rgba(255, 255, 255, 0.5);
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .dashboard-card,
@@ -36,7 +36,7 @@
 
 .dashboard-big-card {
   width: 1300px;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   display: flex;
   justify-content: space-around;
 }
@@ -93,8 +93,13 @@
 
 .operaterCards{
   display: flex;
-  justify-content: space-around;
-  width: 100%;
+  justify-content:space-between;
+  width: 80%;
+}
+.operaterCards2{
+  display: flex;
+  justify-content:space-between;
+  width: 80%;
 }
 .status-Section{
   display: flex;
@@ -120,29 +125,40 @@
     font-size: 25px;
     height: fit-content;
     width: 50vw;
+    cursor: pointer;
+}
+.Download-excel button:disabled{
+  background-color: lightgray;
 }
 .Download-excel .inputDiv{
   padding: 5px;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #a4c639;
-  box-shadow: 1px 3px 20px #a4c639;
-  border-radius: 5px;
-  width: 50%;
-  font-weight: bold;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    width: 61%;
+    font-weight: bold;
 }
 .Download-excel .inputDiv label{
  margin: 0px;
  font-size: 25px;
+ width: 50%;
 }
 .Download-excel .inputDiv input{
-  border: none;
-  font-size: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid #a4c639;
+  box-shadow: 1px 3px 20px #a4c639;
+  font-size: 25px;
+  width: 50%;
 }
 .dashboard-heading h3{
   margin: 50px 0px 0px 50px;
-    color: #B2CF57;
+  color: #fff;
+  background-color: #B2CF57;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
 }
 /* dkjfhvjdbvgskdgvdcvkjb */
 @media only screen and (max-width: 600px) {

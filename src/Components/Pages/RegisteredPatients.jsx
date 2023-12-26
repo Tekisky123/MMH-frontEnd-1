@@ -252,7 +252,7 @@ const RegisteredPatients = () => {
                   </table>
                 </div>
 
-                <p>
+                <p style={{marginBottom:"0px"}}>
                   {/* {files.length > 0 ? (
                     <div className="file-upload-or-not">
                       <img
