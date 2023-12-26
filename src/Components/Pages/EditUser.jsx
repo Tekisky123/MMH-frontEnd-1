@@ -42,9 +42,24 @@ const EditData = () => {
   };
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
+  const { name, value } = e.target;
 
+  // Apply validation only if the input is for the mobile field
+  if (name === "mobile") {
+    // Remove non-digit characters and limit the input to 10 digits
+    const truncatedValue = value.replace(/\D/g, '').slice(0, 10);
+
+    setData((prevData) => ({ ...prevData, [name]: truncatedValue }));
+
+    // Validate mobile number
+    const isValidMobile = /^\d{10}$/.test(truncatedValue);
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: isValidMobile ? "" : "Enter a valid 10-digit mobile number" }));
+  } else {
+    // For other fields, simply update the form data
+    setData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  }
+};
   const validationRegex = {
     name: /^[a-zA-Z\s]+$/,
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
