@@ -2,7 +2,7 @@ import React from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { FaFileDownload } from "react-icons/fa";
-import "../../Assets/Styles/RegisteredPatients.css"
+import "../../Assets/Styles/RegisteredPatients.css";
 
 const PDFDownload = ({ item }) => {
   const registeredDate = new Date(item.registeredDate);
@@ -180,13 +180,7 @@ const PDFDownload = ({ item }) => {
 
   return (
     <div>
-      <button className="pdf-download-btn"
-        onClick={generatePdf}
-        style={{
-
-         
-        }}
-      >
+      <button className="pdf-download-btn" onClick={generatePdf} style={{}} title="Download MMH Form">
         <FaFileDownload />
       </button>
     </div>
