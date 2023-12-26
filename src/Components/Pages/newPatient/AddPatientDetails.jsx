@@ -110,19 +110,22 @@ const AddPatientDetails = () => {
     ) {
       // Remove any non-digit characters (except '-')
       const numericValue = value.replace(/[^0-9-]/g, '');
+
+      // Ensure the length does not exceed 10 digits
+      const maxLength = 10;
+      const truncatedValue = numericValue.slice(0, maxLength);
   
-      // Limit the input to a maximum of 10 digits
-      const truncatedValue = numericValue.slice(0, 10);
+      // Parse the numeric value as an integer
+      const intValue = parseInt(truncatedValue, 10);
+  
+      // Check if the parsed value is a positive number
+      const isValidNumber = !isNaN(intValue) && intValue >= 0;
   
       // Update form data and errors accordingly
-      setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
-  
-      // Validate phone number
-      const isValidNumber = /^\d{1,10}$/.test(truncatedValue);
-  
+      setFormData((prevData) => ({ ...prevData, [name]: isValidNumber ? truncatedValue : "" }));
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: isValidNumber ? "" : "Please enter a valid number (up to 10 digits)",
+        [name]: isValidNumber ? "" : "Please enter a valid 10-digit number",
       }));
     } else if (name === "aadharNumber" || name === "pincode" || name === "rationCardNo") {
       // Remove any non-digit characters
@@ -156,11 +159,7 @@ const AddPatientDetails = () => {
     }
   };
   
-  
-  
-  
-
-    
+ 
   const handleFamilyMemInputChange = (index, event) => {
     const { name, value } = event.target;
     const newFamilyMembers = [...familyMembers];
