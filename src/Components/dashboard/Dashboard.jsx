@@ -7,6 +7,18 @@ import axios from 'axios';
 
 
 const Dashboard = () => {
+  function formatAmount(amount) {
+    if (amount >= 1000000000) {
+      return (amount / 1000000000).toFixed(1) + "B";
+    } else if (amount >= 1000000) {
+      return (amount / 1000000).toFixed(1) + "M";
+    } else if (amount >= 1000) {
+      return (amount / 1000).toFixed(1) + "K";
+    } else {
+      return amount.toString();
+    }
+  }
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
@@ -115,7 +127,7 @@ const Dashboard = () => {
      
       <div className="dashboard-card amount">
         <h1 className="monthly-amount-heading ">Monthly Amount Saved</h1>
-        <p className="card-value">₹ {data.monthlyAmountSaved}</p>
+        <p className="card-value">₹ {formatAmount(data.monthlyAmountSaved)}</p>
       </div>
 
       <div className="dashboard-card total-closed-cases cards">
@@ -137,7 +149,7 @@ const Dashboard = () => {
       <div className="dashboard-big-card">
         <div className="dashboard-card amount">
           <h1 className="total-amount-heading ">Total Amount Saved</h1>
-          <p className="card-value">₹ {data.totalAmountSaved}</p>
+          <p className="card-value">₹ {formatAmount(data.totalAmountSaved)}</p>
         </div>
 
         <div className="dashboard-card cards">
