@@ -3,6 +3,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { FaFileDownload } from "react-icons/fa";
 import "../../Assets/Styles/RegisteredPatients.css";
+import countries from "../../common/CommonObj";
 
 const PDFDownload = ({ item }) => {
   const registeredDate = new Date(item.registeredDate);
@@ -23,9 +24,14 @@ const PDFDownload = ({ item }) => {
 
   const generatePdf = () => {
     const pdf = new jsPDF();
-
+    const getStateName = (index) => {
+      if (index >= 0 && index < countries.length) {
+        return countries[index].state;
+      }
+      return ''; // Return an empty string or any default value if the index is out of bounds
+    };
     const imgData = require("../../Assets/Images/MMH-PDF.jpeg");
-    pdf.addImage(imgData, "JPEG", -18, 10, 250, 30);
+    pdf.addImage(imgData, "JPEG", -18, 10, 230, 30);
 
     // Add content to the PDF
     // const contentStartY = 70;
@@ -54,7 +60,7 @@ const PDFDownload = ({ item }) => {
         ["Residential Address", item.patientDetails.address],
         ["Taluka", item.patientDetails.talukha],
         ["Dist", item.patientDetails.district],
-        ["State", item.patientDetails.state],
+        ["State", getStateName(item.patientDetails.state)],
       ],
       startY: 60,
     });
