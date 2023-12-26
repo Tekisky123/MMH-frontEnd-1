@@ -23,6 +23,7 @@ import PDFDownload from "./PDFDownload";
 import countries from "../../common/CommonObj";
 
 const RegisteredPatients = () => {
+  
   const [files, setFiles] = useState([]);
   const [document, setDocument] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -44,7 +45,7 @@ const RegisteredPatients = () => {
 
   const pdfRefs = data.map(() => React.createRef());
   const baseURL = "http://13.126.14.109:4000/patient/getpatient";
-  
+ 
   const pdfRef = useRef();
   const options = {
     orientation: "portrait",

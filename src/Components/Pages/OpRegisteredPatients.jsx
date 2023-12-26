@@ -19,6 +19,7 @@ import MMH from "../MMH";
 import CloseApplication from "../CloseApplication";
 import DeletePatient from "../DeletePatient";
 import PDFDownload from "./PDFDownload";
+import countries from "../../common/CommonObj";
 
 const OpRegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -228,6 +229,13 @@ const OpRegisteredPatients = () => {
   //     }).from(pdfElement).save();
   //   }
   // };
+
+  const getStateName = (index) => {
+  if (index >= 0 && index < countries.length) {
+    return countries[index].state;
+  }
+  return ''; // Return an empty string or any default value if the index is out of bounds
+};
 
   return (
     <>
@@ -447,7 +455,7 @@ const OpRegisteredPatients = () => {
                       </tr>
                       <tr>
                         <td>State</td>
-                        <td>{item.patientDetails.state}</td>
+                        <td>{getStateName(item.patientDetails.state)}</td>
                       </tr>
                     </tbody>
                   </table>

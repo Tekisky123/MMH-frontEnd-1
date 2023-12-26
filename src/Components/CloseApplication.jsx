@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
   const [files, setFiles] = useState(null);
-
+  const storedUserType = localStorage.getItem("userType");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     amountSaved: "",
@@ -52,8 +52,8 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
         // Handle errors
         console.error("Error submitting form");
       }
-
-      navigate("/opRegistered-patients");
+      {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
+      
     } catch (error) {
       console.error("Error:", error);
     }
