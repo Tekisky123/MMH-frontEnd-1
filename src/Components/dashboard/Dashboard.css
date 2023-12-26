@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
   margin: 20px;
-  background-image: url(../../Assets/Images//mainbodylogo.jpeg);
+  /* background-image: url(../../Assets/Images//mainbodylogo.jpeg); */
   background-color: rgba(255, 255, 255, 0.5);
   background-size: cover;
   background-repeat: no-repeat;
@@ -104,11 +104,11 @@
 
 .Download-excel{
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
-  height: 70vh;
-  gap: 20px;
+  position: relative;
+  top: 20px;
+  right: 20px;
 }
 .Download-excel button{
   background-color: rgb(164, 198, 57);
@@ -117,33 +117,27 @@
     border-radius: 8px;
     border: none;
     margin-top: 4px;
-    font-size: 25px;
+    font-size: 15px;
     height: fit-content;
-    width: 50vw;
 }
-.Download-excel .inputDiv{
+.Download-excel div{
   padding: 5px;
   margin: 10px;
   display: flex;
   flex-direction: column;
-  border: 2px solid #a4c639;
-  box-shadow: 1px 3px 20px #a4c639;
+  border: 1px solid lightgrey;
   border-radius: 5px;
-  width: 50%;
+  width: 20%;
   font-weight: bold;
 }
-.Download-excel .inputDiv label{
+.Download-excel div label{
  margin: 0px;
- font-size: 25px;
 }
-.Download-excel .inputDiv input{
+.Download-excel div input{
   border: none;
-  font-size: 30px;
 }
-.dashboard-heading h3{
-  margin: 50px 0px 0px 50px;
-    color: #B2CF57;
-}
+
+
 @media only screen and (max-width: 600px) {
   .operaterCards{
     display: block;

@@ -8,7 +8,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   gap: 20px;
-  background-image: url('../../Assets//Images/mainbodylogo.jpeg' );
+  /* background-image: url('../../Assets//Images/mainbodylogo.jpeg' ); */
   /* opacity: 1.5; */
   background-size: cover;
   background-attachment: fixed; /* This ensures that the background remains fixed */

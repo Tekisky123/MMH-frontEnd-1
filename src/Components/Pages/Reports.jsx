@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
+import "../../Components/dashboard/Dashboard.css"
 
 const Reports = () => {
   const [startDate, setStartDate] = useState(null);
