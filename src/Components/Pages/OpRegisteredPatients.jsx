@@ -20,7 +20,7 @@ import CloseApplication from "../CloseApplication";
 import DeletePatient from "../DeletePatient";
 import PDFDownload from "./PDFDownload";
 
-const RegisteredPatients = () => {
+const OpRegisteredPatients = () => {
   const [files, setFiles] = useState([]);
   const [document, setDocument] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -41,7 +41,8 @@ const RegisteredPatients = () => {
   const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
-  const baseURL = "http://13.126.14.109:4000/patient/getpatient";
+  const mobileNum =localStorage.getItem("mobileNumber")
+  const baseURL = "http://13.126.14.109:4000/mmh/dashboard/operator?phoneNumber=";
   
   const pdfRef = useRef();
   const options = {
@@ -49,11 +50,11 @@ const RegisteredPatients = () => {
     // Add other options as needed
   };
   useEffect(() => {
-    axios.get(baseURL).then((responce) => {
-      console.log(responce.data.result);
-
-      setData(responce.data.result);
-      setFilteredData(responce.data.result.reverse());
+    axios.get(baseURL+mobileNum).then((responce) => {
+      console.log("responce.data.details.allDataResponse",responce.data.details.allDataResponse);
+ 
+      setData(responce.data.details.allDataResponse);
+      setFilteredData(responce.data.details.allDataResponse.reverse());
     });
 
     // getData();
@@ -68,7 +69,7 @@ const RegisteredPatients = () => {
     } else if (cardStatus === 'pending') {
       setSearchTerm('Patient Registered');
     }
-  }, [cardStatus]);
+  }, []);
   
   useEffect(() => {
     // Update filtered data when search term changes
@@ -88,17 +89,14 @@ const RegisteredPatients = () => {
   }, [searchTerm, data]);
 
   const handleShowDetails = (index) => {
-    console.log("Clicked More Info button for index:", index);
-    console.log("Patient ID:", filteredData[index].patientDetails._id);
-    // ... other relevant log statements
-  
+    // setShowDetails(!showDetails);
+    // console.log("index", _id);
     setShowStatus(false);
     setActivePatientId(filteredData[index].patientDetails._id);
     setActiveStatusId(null);
     setActiveCardIndex(index);
     setActiveDocumentId(null);
   };
-  
 
   const handleShowStatus = (index) => {
     setShowStatus(!showStatus);
@@ -231,7 +229,6 @@ const RegisteredPatients = () => {
 
   return (
     <>
-    <div className="img-main"></div>
       <div className="search-bar group">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
           <g>
@@ -255,7 +252,7 @@ const RegisteredPatients = () => {
           const isCardActive = activeCardIndex === index;
           const cardBackgroundColor = isCardActive ? "#transform" : "";
           const cardBorder = isCardActive ? "3px solid #a4c639" : "";
-          console.log("isDetailsActive", isDetailsActive);
+
           const statusColor =
             item.status === "Documents Uploaded"
               ? "green"
@@ -636,4 +633,4 @@ const RegisteredPatients = () => {
   );
 };
 
-export default RegisteredPatients;
+export default OpRegisteredPatients;

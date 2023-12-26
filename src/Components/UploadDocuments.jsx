@@ -4,8 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 import "../Assets/Styles/UploadDocuments.css";
 import check from "../Assets/Images/check.png";
 import error from "../Assets/Images/error.png";
+import { useNavigate } from "react-router-dom";
 
 const UploadDocuments = ({ currentItem, onClose }) => {
+
+  const navigate =useNavigate()
   console.log("Top", currentItem);
   const [files, setFiles] = useState([]);
   const [status, setStatus] = useState("");
@@ -145,6 +148,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
         setAddSuccess(false);
         showToast("Failed to upload documents.", "error");
       }
+      navigate("/opRegistered-patients")
     } catch (error) {
       setUploadSuccess(false);
       setAddSuccess(false);

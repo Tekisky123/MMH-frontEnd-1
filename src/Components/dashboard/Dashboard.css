@@ -6,8 +6,10 @@
   justify-content: space-around;
   margin: 20px;
   background-image: url(../../Assets/Images//mainbodylogo.jpeg);
+  background-color: rgba(255, 255, 255, 0.5);
   background-size: cover;
   background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .dashboard-card,
@@ -50,22 +52,104 @@
 .pending-cases{
   border: 2px solid red;
   color: red;
-
+  text-align: center;
   box-shadow: 1px 1px 15px rgba(255, 0, 0, 0.603);
 }
 .total-closed-cases{
   border: 2px solid #a4c639;
   box-shadow: 1px 3px 20px #a4c639;
+  text-align: center;
   
 }
 .cards{
   border: 2px solid #a4c639;
   box-shadow: 1px 3px 20px #a4c639;
   color: #a4c639;
+  text-align: center;
 }
 
 .card-value {
   font-size: 54px;
   text-align: center;
   font-weight: bold;
+  text-decoration: none;
+  /* color: #a4c639; */
+}
+.OPcard-value {
+  font-size: 54px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  color: #a4c639;
+}
+.card-pending-value {
+  font-size: 54px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  color: red;
+}
+
+
+.operaterCards{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+.status-Section{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.Download-excel{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  gap: 20px;
+}
+.Download-excel button{
+  background-color: rgb(164, 198, 57);
+    color: white;
+    padding: 7px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 4px;
+    font-size: 25px;
+    height: fit-content;
+    width: 50vw;
+}
+.Download-excel .inputDiv{
+  padding: 5px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #a4c639;
+  box-shadow: 1px 3px 20px #a4c639;
+  border-radius: 5px;
+  width: 50%;
+  font-weight: bold;
+}
+.Download-excel .inputDiv label{
+ margin: 0px;
+ font-size: 25px;
+}
+.Download-excel .inputDiv input{
+  border: none;
+  font-size: 30px;
+}
+.dashboard-heading h3{
+  margin: 50px 0px 0px 50px;
+    color: #B2CF57;
+}
+@media only screen and (max-width: 600px) {
+  .operaterCards{
+    display: block;
+    width: 100%;
+  }
+  .dashboard-big-card ,.status-Section{
+    display: block;
+  }
 }

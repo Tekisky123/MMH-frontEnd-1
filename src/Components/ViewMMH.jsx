@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const ViewMMH = ({ currentItem }) => {
+  const navigate =useNavigate()
   const [schemeName, setSchemeName] = useState("");
   const [hospital, setHospital] = useState("");
   const [viewByMhh, setViewByMhh] = useState("");
@@ -32,8 +34,6 @@ const ViewMMH = ({ currentItem }) => {
       var requiredFields = [
         "schemeName",
         "hospital",
-        "viewByMhh",
-        "adviceByMhh",
         "proposeHelpByMhh",
       ];
 
@@ -42,8 +42,6 @@ const ViewMMH = ({ currentItem }) => {
         if (
         !schemeName ||
         !hospital ||
-        !viewByMhh ||
-        !adviceByMhh ||
         !proposeHelpByMhh
       ) {
         setErrors((prevErrors) => ({
@@ -74,6 +72,7 @@ const ViewMMH = ({ currentItem }) => {
         console.log("API Response:", response.data);
         window.location.reload();
       }
+      navigate("/opRegistered-patients")
     } catch (error) {
       console.error("Error sending data to API:", error);
     }
@@ -117,7 +116,7 @@ const ViewMMH = ({ currentItem }) => {
             </tr>
             <tr>
               <td>
-                View of M.M.H.<span className="error-message">⁕</span>
+                View of M.M.H.
               </td>
               <td>
                 <textarea
@@ -133,7 +132,7 @@ const ViewMMH = ({ currentItem }) => {
             </tr>
             <tr>
               <td>
-                Advice by M.M.H.<span className="error-message">⁕</span>
+              Advice by Doctor
               </td>
               <td>
                 <textarea

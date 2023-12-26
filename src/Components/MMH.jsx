@@ -44,12 +44,8 @@ const MMH = ({ item, isDownloading, pdfRef }) => {
             <td>{item.viewByMhh}</td>
           </tr>
           <tr>
-            <td>Advice by M.M.H.</td>
+            <td>Advice by Doctor</td>
             <td>{item.adviceByMhh}</td>
-          </tr>
-          <tr>
-            <td>Propose Help by M.M.H</td>
-            <td>{item.proposeHelpByMhh}</td>
           </tr>
           <tr>
             <td>Propose Help by M.M.H</td>

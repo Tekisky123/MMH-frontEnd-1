@@ -8,11 +8,13 @@
   flex-direction: column;
   flex-wrap: wrap;
   gap: 20px;
-  background-image: url('../../Assets//Images/mainbodylogo.jpeg');
+  background-image: url('../../Assets//Images/mainbodylogo.jpeg' );
+  /* opacity: 1.5; */
   background-size: cover;
   background-attachment: fixed; /* This ensures that the background remains fixed */
 
 }
+
 
 .patient-card {
   border-radius: 8px;
@@ -28,7 +30,7 @@
   font-size: 20px;
   width: 100%;
   margin: 10px 20px;
-
+  position: relative;
   
 }
 
@@ -82,11 +84,11 @@
   color: white;
   border: none;
   width: 20%;
-  padding: 8px 16px;
+  padding: 8px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 14px;
+  font-size: 20px;
   margin: 4px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
 }
@@ -244,49 +246,30 @@ thead{
 .patient-sign{
   border: none;
 }
+
+.DiseseaNameHighLight {
+  /* position: relative;
+  left: 45%; */
+  white-space: nowrap;
+
+}
+
+.cardStatus{
+  white-space: nowrap;
+}
 /* Additional styles for responsiveness */
-@media only screen and (max-width: 600px) {
-  .btn-register-more,
-  .btn-register-status {
-    padding: 6px 12px; /* Adjusted padding for smaller screens */
-    font-size: 12px; /* Adjusted font size for smaller screens */
-  }
 
-  .data-btn {
-    flex-direction: row; /* Stack buttons horizontally on smaller screens */
-    justify-content: space-around; /* Adjust spacing for smaller screens */
-  }
-}
-
-/* Add responsive adjustments for larger screens */
-@media screen and (min-width: 768px) {
-  .patient-card {
-    flex-direction: row; /* Adjusted for larger screens */
-  }
-
-  .patient-card .patient-details-sidebar {
-    left: 0; /* Bring sidebar back to the screen for larger screens */
-  }
-}
-
-/* Add additional styles for responsiveness as needed */
-
-@media only screen and (max-width: 900px) {
-  .patient-card {
-    min-width: 100%;
-  }
-}
 .btn-download-pdf{
   background-color: #a4c639;
   border-radius: 10px;
   color: white;
   border: none;
   width: 20%;
-  padding: 8px 16px;
+  padding: 8px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 14px;
+  font-size: 20px;
   margin: 4px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
 }
@@ -339,4 +322,105 @@ thead{
   fill: #9e9ea7;
   width: 1rem;
   height: 1rem;
+}
+.diseaseName,.careTakerNum{
+  font-size: 25px;
+  margin-left: 5px;
+  color: #a4c639;
+  font-weight: bold;
+}
+.uploadedDocuments{
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 600px) {
+
+  .maincontainer{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .btn-download-pdf , .btn-register-status ,.btn-register-more{
+    padding: 5px!important;
+    font-size: 10px!important;
+  }
+  .patient-table{
+    margin: 0px;
+  }
+.patient-card{
+  padding: 15px;
+}
+  .cardStatus{
+    white-space: wrap;
+  }
+
+  .DiseseaNameHighLight span , .careTakerNum{
+    font-size: 15px;
+  }
+
+  tr td, tr ,th{
+    font-size: 10px;
+  }
+  .form-input{
+    width: 280px;
+  }
+  .submit {
+    left: 270px;
+  }
+  .uploadedDocuments{
+    width: 180px;
+    display: flex;
+    align-items: center;
+  }
+  .uploadedDocuments a ,.uploadedDocuments img{
+   margin: 0px;
+  }
+  .btn-register-more,
+  .btn-register-status {
+    padding: 6px 12px; /* Adjusted padding for smaller screens */
+    font-size: 12px; /* Adjusted font size for smaller screens */
+  }
+
+  .data-btn {
+    flex-direction: row; /* Stack buttons horizontally on smaller screens */
+    justify-content: space-around; /* Adjust spacing for smaller screens */
+  }
+}
+
+/* Add responsive adjustments for larger screens */
+@media screen and (min-width: 768px) {
+  .patient-card {
+    flex-direction: row; /* Adjusted for larger screens */
+  }
+
+  .patient-card .patient-details-sidebar {
+    left: 0; /* Bring sidebar back to the screen for larger screens */
+  }
+}
+
+/* Add additional styles for responsiveness as needed */
+
+@media only screen and (max-width: 900px) {
+  .patient-card {
+    min-width: 100%;
+  }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const UploadDoc = () => {
+const UploadDocument = () => {
   const [document, setDocument] = useState([]);
    
 

@@ -59,7 +59,7 @@
 .card img {
   width: 380px;
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .card h6 {
@@ -103,5 +103,14 @@
   .aside-bar {
     max-width: 100%;
     right: 0; /* Display the sidebar on smaller screens */
+  }
+}
+@media only screen and (max-width: 600px) {
+  .card img{
+  width: 330px;
+  }
+  .cards-container{
+    gap: 20px;
+    background-color: #fff;
   }
 }

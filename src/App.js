@@ -17,7 +17,12 @@ import EditUser from "./Components/pages/EditUser";
 import OperatorHeader from "./Components/Registration/OperatorHeader";
 import AddPatientDetails from "./Components/pages/newPatient/AddPatientDetails";
 import Loader from "./common/Loader";
-import ProtectedRout from "./ProtectedRout";
+import Protected from "./Protected";
+import NetworkHospitals from "./Components/pages/NetworkHospitals";
+import OperatorDashboard from "./Components/dashboard/OperatorDashboard";
+import Reports from "./Components/pages/Reports";
+import OpRegisteredPatients from "./Components/pages/OpRegisteredPatients";
+
 
 function App() {
   // Get the current location using the useLocation hook
@@ -55,27 +60,34 @@ function App() {
         <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Login setUserType={handleSetUserType} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<ProtectedRout Component={Home} />} />
-        <Route path="/yojna" element={<ProtectedRout Component={Yojna} />} />
-        <Route path="/createuser" element={<ProtectedRout Component={CreateUser} />} />
-        <Route path="/createuser/:editId" element={<ProtectedRout Component={CreateUser} />} />
-        <Route path="/registered-patients" element={<ProtectedRout Component={RegisteredPatients} />} />
+        <Route path="/home" element={<Protected><Home/></Protected>} />
+        <Route path="/yojna" element={<Protected><Yojna /></Protected>} />
+        <Route path="/createuser" element={<Protected><CreateUser/></Protected>} />
+        <Route path="/createuser/:editId" element={<Protected><CreateUser/></Protected>} />
+        <Route path="/opRegistered-patients" element={<Protected><OpRegisteredPatients/></Protected>} />
+        <Route path="/opRegistered-patients/:cardStatus" element={<Protected><OpRegisteredPatients/></Protected>} />
+        <Route path="/networkHospitals" element={<Protected><NetworkHospitals /></Protected>} />
+        <Route path="/dashboard/:number" element={<Protected><OperatorDashboard /></Protected>} />
+
+
       {(storedUserType === "Operator" ? "": (<>
-        <Route path="/user" element={<ProtectedRout Component={User} />} />
-        <Route path="/dashboard" element={<ProtectedRout Component={Dashboard} />} />
+        <Route path="/registered-patients" element={<Protected><RegisteredPatients/></Protected>} />
+        <Route path="/registered-patients/:cardStatus" element={<Protected><RegisteredPatients/></Protected>} />
+        <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+        <Route path="/reports" element={<Protected><Reports /></Protected>} />
+        <Route path="/user" element={<Protected><User /></Protected>} />
       </>) 
       )}
+
        
-
-
-        <Route path="/edituser/:_id" element={<ProtectedRout Component={EditUser} />} />
+        <Route path="/edituser/:_id" element={<Protected><EditUser/></Protected>} />
         {/* <Route path="/signup" element={<Signup/>} /> */}
         {/* <Route path="/home" element={<Home/>} /> */}
         {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
         {/* <Route path="/register" element={<RegisteredPatients/>} /> */}
         {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
         {/* <Route path="/addPatient" element={<NewPatientDetails />} /> */}
-        <Route path="/addPatient" element={<ProtectedRout Component={AddPatientDetails} />} />
+        <Route path="/addPatient" element={<Protected><AddPatientDetails /></Protected>} />
       </Routes>
       </Loader>
     </div>

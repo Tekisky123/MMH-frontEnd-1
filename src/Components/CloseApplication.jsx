@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
-    
-  
+  const navigate =useNavigate()
     const [formData, setFormData] = useState({
       amountSaved: "",
       comments: "",
@@ -42,6 +42,8 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
           // Handle errors
           console.error("Error submitting form");
         }
+           
+        navigate("/opRegistered-patients")
       } catch (error) {
         console.error("Error:", error);
       }
@@ -115,9 +117,9 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               onChange={handleInputChange}>
                   <option value="">select</option>
                   <option value="Closed-Patient Rejected">Closed-Patient Rejected</option>
-                  <option value="Closed-Civil">Closed-Civil</option>
+                  <option value="Closed-Civil">Closed-Civil Hospital</option>
                   <option value="Closed-Ayushman Bharat">Closed-Ayushman Bharat</option>
-                  <option value="Closed-Private">Closed-Private</option>
+                  <option value="Closed-Private">Closed-Private Hospital</option>
                   <option value="Closed-MJPJA">Closed-MJPJA</option>
                   <option value="Closed-Other">Closed-Other</option>
                 </select>

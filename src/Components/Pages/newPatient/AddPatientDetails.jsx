@@ -101,32 +101,50 @@ const AddPatientDetails = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
+  
     if (
       name === "phoneNumber" ||
       name === "careTakerNum1" ||
       name === "careTakerNum2" ||
       name === "hospitalNumber"
     ) {
-      const slicedValue = value.slice(0, 10);
-      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
-    } else if (name === "aadharNumber") {
-      const slicedValue = value.slice(0, 12);
-      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
-    } else if (name === "pincode") {
-      const slicedValue = value.slice(0, 6);
-      setFormData((prevData) => ({ ...prevData, [name]: slicedValue }));
+      // Remove any non-digit characters (except '-')
+      const numericValue = value.replace(/[^0-9-]/g, '');
+  
+      // Limit the input to a maximum of 10 digits
+      const truncatedValue = numericValue.slice(0, 10);
+  
+      // Update form data and errors accordingly
+      setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
+  
+      // Validate phone number
+      const isValidNumber = /^\d{1,10}$/.test(truncatedValue);
+  
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isValidNumber ? "" : "Please enter a valid number (up to 10 digits)",
+      }));
+    } else if (name === "aadharNumber" || name === "pincode" || name === "rationCardNo") {
+      // Remove any non-digit characters
+      const numericValue = value.replace(/[^0-9]/g, '');
+  
+      // Check if the length does not exceed the specified limit
+      const maxLength = name === "aadharNumber" ? 12 : name === "pincode" ? 6 : 16;
+      const truncatedValue = numericValue.slice(0, maxLength);
+  
+      // Update form data with the truncated value
+      setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
     } else if (name === "age") {
       const ageValue = parseInt(value, 10);
-
+  
       // Check if the value is within the desired range (1 to 120)
       const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
-
+  
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: isValidAge ? "" : "Age must be between 1 and 120",
       }));
-
+  
       // Update form data with the validated value
       setFormData((prevData) => ({
         ...prevData,
@@ -136,7 +154,11 @@ const AddPatientDetails = () => {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
-    };
+  };
+  
+  
+  
+  
 
     
   const handleFamilyMemInputChange = (index, event) => {
@@ -190,8 +212,6 @@ const AddPatientDetails = () => {
     var requiredFields = [
       "full_name",
       "phoneNumber",
-      "aadharNumber",
-      "maritalStatus",
       "age",
       "state",
       "state",
@@ -214,7 +234,9 @@ const AddPatientDetails = () => {
       }
     });
     console.log("hasError", hasError);
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       setStatus(status + 1);
     }
@@ -253,7 +275,9 @@ const AddPatientDetails = () => {
     });
 
     console.log("hasError", hasError);
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       setStatus(status + 1);
     }
@@ -273,7 +297,9 @@ const AddPatientDetails = () => {
         hasError = true;
       }
     });
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       setStatus(status + 1);
     }
@@ -299,7 +325,9 @@ const AddPatientDetails = () => {
         hasError = true;
       }
     });
-
+    if (hasError) {
+      alert("Mandatory fields are required")
+    }
     if (!hasError) {
       handleSubmit();
     }
@@ -1254,7 +1282,7 @@ const AddPatientDetails = () => {
         toast.success("Patient Created Successfully");
 
         setTimeout(() => {
-          navigate("/registered-patients");
+          navigate("/opRegistered-patients");
         }, 3000);
       } else {
         toast.error("Error While Creating Patient...");
@@ -1371,8 +1399,7 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="aadhar_number">Aadhar Number</span>
-                  <span className="error-message">⁕</span>
-                </div>
+             </div>
                 <input
                   type="number"
                   className="form-input"
@@ -1441,7 +1468,6 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="marital-status">Marital Status</span>
-                  <span className="error-message">⁕</span>
                 </div>
                 <select
                   name="maritalStatus"
@@ -1503,7 +1529,7 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Taluka">Taluka</span>
-                  <span className="error-message">⁕</span>
+                  {/* <span className="error-message">⁕</span> */}
                 </div>
                 <input
                   type="text"
