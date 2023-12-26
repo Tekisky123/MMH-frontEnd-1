@@ -29,6 +29,10 @@ const PDFDownload = ({ item }) => {
       head: [["Patient Details", ""]],
       body: [
         ["Patient Name", item.patientDetails.name],
+        ["Gender", item.patientDetails.sex],
+        ["Age", item.patientDetails.age],
+        ["Mobile No.", item.patientDetails.mobile],
+        ["Aadhar No.", item.patientDetails.aadhar],
         ["Residential Address", item.patientDetails.address],
         ["Taluka", item.patientDetails.talukha],
         ["Dist", item.patientDetails.district],
