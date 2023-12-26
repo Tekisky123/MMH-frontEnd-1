@@ -61,34 +61,38 @@ const RegisteredPatients = () => {
   useEffect(() => {
     // Update filtered data when search term changes
     const filteredResults = data.filter((item) => {
-      console.log("ghsdhfsagd", data);
-      console.log("fgfsg", searchTerm);
+      const searchTermLowerCase = searchTerm.toLowerCase();
+  
       return (
-        item.patientDetails.name.includes(searchTerm) ||
-        item.patientID.includes(searchTerm)
+        item.patientDetails.name.toLowerCase().includes(searchTermLowerCase) ||
+        item.patientID.toLowerCase().includes(searchTermLowerCase) ||
+        item.status.toLowerCase().includes(searchTermLowerCase)
+        // Add more fields to search if needed
+        // ...
       );
-      // Add more fields to search if needed
-      // ...
     });
+  
     setFilteredData(filteredResults);
   }, [searchTerm, data]);
-  console.log("dsfdgshd", searchTerm);
 
   const handleShowDetails = (index) => {
-    // setShowDetails(!showDetails);
-    // console.log("index", _id);
+    console.log("Clicked More Info button for index:", index);
+    console.log("Patient ID:", filteredData[index].patientDetails._id);
+    // ... other relevant log statements
+  
     setShowStatus(false);
-    setActivePatientId(data[index].patientDetails._id);
+    setActivePatientId(filteredData[index].patientDetails._id);
     setActiveStatusId(null);
     setActiveCardIndex(index);
     setActiveDocumentId(null);
   };
+  
 
   const handleShowStatus = (index) => {
     setShowStatus(!showStatus);
     // setShowDetails(false);
     setActivePatientId(null);
-    setActiveStatusId(data[index]._id);
+    setActiveStatusId(filteredData[index]._id);
     setActiveDocumentId(null);
     setActiveCardIndex(index);
   };
@@ -97,7 +101,7 @@ const RegisteredPatients = () => {
     // setShowDetails(false);
     setActivePatientId(null);
     setActiveStatusId(null);
-    setActiveDocumentId(data[index]._id);
+    setActiveDocumentId(filteredData[index]._id);
     setActiveCardIndex(index);
   };
 
@@ -239,7 +243,7 @@ const RegisteredPatients = () => {
           const isCardActive = activeCardIndex === index;
           const cardBackgroundColor = isCardActive ? "#transform" : "";
           const cardBorder = isCardActive ? "3px solid #a4c639" : "";
-
+          console.log("isDetailsActive", isDetailsActive);
           const statusColor =
             item.status === "Documents Uploaded"
               ? "green"
