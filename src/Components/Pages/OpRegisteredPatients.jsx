@@ -68,6 +68,8 @@ const OpRegisteredPatients = () => {
       setSearchTerm('Scheme & Hospital Selected');
     } else if (cardStatus === 'pending') {
       setSearchTerm('Patient Registered');
+    } else if (cardStatus === 'closed') {
+      setSearchTerm('closed');
     }
   }, []);
   
@@ -345,7 +347,7 @@ const OpRegisteredPatients = () => {
                   </table>
                 </div>
 
-                <p>
+                <p style={{marginBottom:"0px"}}>
                   {/* {files.length > 0 ? (
                     <div className="file-upload-or-not">
                       <img

@@ -120,7 +120,9 @@ const Dashboard = () => {
 
   return (
     <>
-
+   <div className="dashboard-heading">
+        <h3>Monthly Status</h3>
+      </div>
 
     <div className="dashbord-main">
       {/* First Row */}
@@ -145,6 +147,13 @@ const Dashboard = () => {
         <p className="card-value">{data.PendingCasesMoreThan5Days}</p>
       </div>
 
+
+    </div>
+{/* <hr/> */}
+    <div className="dashboard-heading">
+        <h3>Overall Status</h3>
+      </div>
+    <div className="dashbord-main">
       {/* Second Row */}
       <div className="dashboard-big-card">
         <div className="dashboard-card amount">
@@ -163,7 +172,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="dashboard-big-card">
+      {/* <div className="dashboard-big-card">
        <div className="dashboard-card cards">
         <h1 className="total-approach-heading ">Registered Patients</h1>
         <p className="card-value">{data.registerPatients ? data.registerPatients : 0}</p>
@@ -178,7 +187,7 @@ const Dashboard = () => {
         <h1 className="total-approach-heading ">Sceme and Hospital Selected</h1>
         <p className="card-value">{data.schemeAndHospitalSelected ? data.schemeAndHospitalSelected : 0}</p>
       </div>
-       </div>
+       </div> */}
     </div>
     </>
   

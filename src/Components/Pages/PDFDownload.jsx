@@ -179,7 +179,7 @@ const PDFDownload = ({ item }) => {
   };
 
   return (
-    <div>
+    <>
       <button className="pdf-download-btn"
         onClick={generatePdf}
         style={{
@@ -189,7 +189,7 @@ const PDFDownload = ({ item }) => {
       >
         <FaFileDownload />
       </button>
-    </div>
+    </>
   );
 };
 
