@@ -126,109 +126,6 @@ const RegisteredPatients = () => {
     setActiveCardIndex("");
   };
 
-  const handleCancelFile = (index) => {
-    const updatedFiles = [...files];
-    updatedFiles.splice(index, 1);
-    setFiles(updatedFiles);
-  };
-
-  const handleDownloadPDF = async (index, id) => {
-    try {
-      setIsDownloading(true);
-
-      // Create a new jsPDF instance
-      const doc = new jsPDF();
-
-      // Get the reference to the specific card using the ref
-      const cardRef = pdfRefs[index].current;
-
-      // Check if the card reference is available
-      if (cardRef) {
-        // Use html2canvas to capture the card content as an image
-        const canvas = await html2canvas(cardRef);
-
-        // Convert the canvas to a data URL
-        const imgData = canvas.toDataURL("image/png");
-        console.log(imgData);
-        setImgView(imgData);
-
-        // Add the image to the PDF
-        doc.addImage(
-          imgData,
-          "PNG",
-          0,
-          0,
-          doc.internal.pageSize.width,
-          doc.internal.pageSize.height
-        );
-
-        // Save the PDF with a specific filename
-        doc.save(`${id}_patient_details.pdf`);
-      } else {
-        console.error("Unable to get the target element.");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    } finally {
-      setTimeout(() => {
-        setIsDownloading(false);
-      }, 10000);
-    }
-  };
-
-  // const handleDownloadPDF = (index) => {
-  //   const doc = new jsPDF();
-  //   const pdfElement = pdfRefs[index].current;
-
-  //   // Ensure that the content is ready before trying to generate PDF
-  //   if (pdfElement) {
-  //     // Calculate width and height based on content size
-  //     const contentWidth = pdfElement.clientWidth;
-  //     const contentHeight = pdfElement.clientHeight;
-
-  //     // Set PDF dimensions
-  //     doc.internal.pageSize.setWidth(contentWidth);
-  //     doc.internal.pageSize.setHeight(contentHeight);
-
-  //     // Generate PDF
-  //     doc.html(pdfElement, {
-  //       callback: function (pdf) {
-  //         pdf.save("patient_details.pdf");
-  //       },
-  //       x: 0,
-  //       y: 0,
-  //     });
-  //   }
-  // };
-
-  // const handleDownloadPDF = (index) => {
-  //   const customPageSize = { width: 300, height: 400 }; // Set your custom page size here
-  //   const pdfElement = pdfRefs[index].current;
-
-  //   // Ensure that the content is ready before trying to generate PDF
-  //   if (pdfElement) {
-  //     // Calculate content dimensions
-  //     const contentWidth = pdfElement.clientWidth;
-  //     const contentHeight = pdfElement.clientHeight;
-
-  //     // Calculate scale factor to fit content within the page
-  //     const scaleFactor = Math.min(customPageSize.width / contentWidth, customPageSize.height / contentHeight);
-
-  //     // Set PDF dimensions
-  //     const pdfWidth = contentWidth * scaleFactor;
-  //     const pdfHeight = contentHeight * scaleFactor;
-
-  //     // Convert HTML content to a data array using html2pdf
-  //     html2pdf(pdfElement, {
-  //       margin: 10,
-  //       filename: "patient_details.pdf",
-  //       image: { type: "jpeg", quality: 0.98 },
-  //       html2canvas: { scale: 2 },
-  //       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-  //     }).from(pdfElement).save();
-  //   }
-  // };
-
   return (
     <>
     <div className="img-main"></div>
@@ -433,6 +330,22 @@ const RegisteredPatients = () => {
                       <tr>
                         <td>Patient Name</td>
                         <td>{item.patientDetails.name} </td>
+                      </tr>
+                      <tr>
+                        <td>Gender</td>
+                        <td>{item.patientDetails.sex} </td>
+                      </tr>
+                      <tr>
+                        <td>Age</td>
+                        <td>{item.patientDetails.age} </td>
+                      </tr>
+                      <tr>
+                        <td>Mobile No.</td>
+                        <td>{item.patientDetails.mobile} </td>
+                      </tr>
+                      <tr>
+                        <td>Aadhar No.</td>
+                        <td>{item.patientDetails.aadhar} </td>
                       </tr>
                       <tr>
                         <td>Residencial Address</td>
