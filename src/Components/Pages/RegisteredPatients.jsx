@@ -20,6 +20,8 @@ import CloseApplication from "../CloseApplication";
 import DeletePatient from "../DeletePatient";
 import PDFDownload from "./PDFDownload";
 
+import countries from "../../common/CommonObj";
+
 const RegisteredPatients = () => {
   const [files, setFiles] = useState([]);
   const [document, setDocument] = useState([]);
@@ -125,7 +127,12 @@ const RegisteredPatients = () => {
     setActiveDocumentId(false);
     setActiveCardIndex("");
   };
-
+  const getStateName = (index) => {
+  if (index >= 0 && index < countries.length) {
+    return countries[index].state;
+  }
+  return ''; // Return an empty string or any default value if the index is out of bounds
+};
   return (
     <>
     <div className="img-main"></div>
@@ -361,7 +368,7 @@ const RegisteredPatients = () => {
                       </tr>
                       <tr>
                         <td>State</td>
-                        <td>{item.patientDetails.state}</td>
+                        <td>{getStateName(item.patientDetails.state)}</td>
                       </tr>
                     </tbody>
                   </table>
