@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddPatientDetails = () => {
   //   const updateData = useData();
+  const storedUserType = localStorage.getItem("userType");
   const CreatedBy = localStorage.getItem("mobileNumber");
 
   const [familyMembers, setFamilyMembers] = useState([
@@ -403,7 +404,7 @@ const AddPatientDetails = () => {
         toast.success("Patient Created Successfully");
 
         setTimeout(() => {
-          navigate("/opRegistered-patients");
+          {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
         }, 3000);
       } else {
         toast.error("Error While Creating Patient...");
