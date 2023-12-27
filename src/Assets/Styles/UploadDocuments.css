@@ -80,3 +80,12 @@
   border-radius: 5px;
   border: 2px solid lightgrey;
 }
+
+
+
+@media only screen and (max-width: 600px) {
+.btn-docAdd{
+  width: 25%;
+  font-size: 11px;
+}
+}

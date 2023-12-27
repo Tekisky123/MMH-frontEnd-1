@@ -178,6 +178,14 @@
 }
 /* dkjfhvjdbvgskdgvdcvkjb */
 @media only screen and (max-width: 600px) {
+
+  .Download-excel .inputDiv{
+    width: 100%;
+    flex-direction: column;
+  }
+  .Download-excel .inputDiv input ,.Download-excel .inputDiv label{
+    width: 100%;
+  }
   .operaterCards{
     display: block;
     width: 100%;

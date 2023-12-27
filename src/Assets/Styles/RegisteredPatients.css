@@ -360,6 +360,10 @@ thead{
 
 @media only screen and (max-width: 600px) {
 
+  .file-upload-logo , .card-file-not-found{
+    right: 0px;
+  }
+
   .maincontainer{
     background-size: contain;
     background-repeat: no-repeat;
