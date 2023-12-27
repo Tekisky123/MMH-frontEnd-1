@@ -9,7 +9,7 @@ const ViewMMH = ({ currentItem }) => {
   const [viewByMhh, setViewByMhh] = useState("");
   const [adviceByMhh, setAdviceByMhh] = useState("");
   const [proposeHelpByMhh, setProposeHelpByMhh] = useState("");
-
+  const storedUserType = localStorage.getItem("userType");
   const [errors, setErrors] = useState({
     schemeName: "",
     hospital: "",
@@ -72,7 +72,7 @@ const ViewMMH = ({ currentItem }) => {
         console.log("API Response:", response.data);
         window.location.reload();
       }
-      navigate("/opRegistered-patients")
+      {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
     } catch (error) {
       console.error("Error sending data to API:", error);
     }

@@ -160,6 +160,22 @@
   padding: 10px;
   border-radius: 5px;
 }
+@media only screen and (max-width: 768px) {
+  .operaterCards,
+  .operaterCards2,
+  .status-Section,
+  .Download-excel {
+    width: 100%; /* Adjust width for smaller screens */
+  }
+
+  .Download-excel .inputDiv {
+    width: 100%; /* Make inputDiv full width on smaller screens */
+  }
+
+  .dashboard-heading h3 {
+    margin: 20px 0 0 0; /* Adjust margin for smaller screens */
+  }
+}
 /* dkjfhvjdbvgskdgvdcvkjb */
 @media only screen and (max-width: 600px) {
   .operaterCards{

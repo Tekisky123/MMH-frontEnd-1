@@ -24,7 +24,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
   const [isUploadSuccess, setUploadSuccess] = useState(false);
   const [isAddSuccess, setAddSuccess] = useState(false);
   const [refresh, setRefresh]= useState(false)
-
+  const storedUserType = localStorage.getItem("userType");
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
   };
@@ -148,7 +148,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
         setAddSuccess(false);
         showToast("Failed to upload documents.", "error");
       }
-      navigate("/opRegistered-patients")
+      {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
     } catch (error) {
       setUploadSuccess(false);
       setAddSuccess(false);

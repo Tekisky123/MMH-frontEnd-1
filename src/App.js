@@ -36,7 +36,8 @@ function App() {
   };
 
   // Define routes where the header should be hidden
-  const routesToHideHeader = ["/", "/createuser" , <EditUser />];
+ const routesToHideHeader = ["/", "/createuser", "/edituser/:_id"];
+
 
   // Retrieve the stored user type from local storage
   const storedUserType = localStorage.getItem("userType");
@@ -57,10 +58,9 @@ function App() {
 
       {/* Define routes for the application */}
       <Routes>
-        <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Login setUserType={handleSetUserType} />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Protected><Home/></Protected>} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/yojna" element={<Protected><Yojna /></Protected>} />
         <Route path="/createuser" element={<Protected><CreateUser/></Protected>} />
         <Route path="/createuser/:editId" element={<Protected><CreateUser/></Protected>} />
@@ -88,6 +88,7 @@ function App() {
         {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
         {/* <Route path="/addPatient" element={<NewPatientDetails />} /> */}
         <Route path="/addPatient" element={<Protected><AddPatientDetails /></Protected>} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       </Loader>
     </div>

@@ -1,18 +1,25 @@
 // Import necessary dependencies
 import { Link, useNavigate } from "react-router-dom";
-import "../../Assets/Styles/Login.css"; // Import the CSS file for styling
-import logo from "../../Assets/Images/logo-main.png"; // Import the logo image
-import { useEffect, useState } from "react"; // Import the useState hook for managing state
+import "../../Assets/Styles/Login.css";
+import logo from "../../Assets/Images/logo-main.png";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios"; // Import Axios for API requests
+import axios from "axios";
 import Modal from "react-modal";
 import { useAuth } from "../Auth";
+import Loader from "../../common/Loader";
+
+// Placeholder for LoaderComponent (adjust as needed)
+const LoaderComponent = () => {
+  return <div className="loader2"><Loader/></div>;
+};
 
 // Functional component for the Login page
 const Login = ({ setUserType }) => {
   const auth = useAuth();
   const [showContactAdminModal, setShowContactAdminModal] = useState(false);
   const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
+  const [loading, setLoading] = useState(false); // New state for loader
   const openContactAdminModal = () => {
     setShowContactAdminModal(true);
   };
@@ -22,18 +29,14 @@ const Login = ({ setUserType }) => {
     setShowContactAdminModal(false);
   };
 
-  // Initialize the navigation hook from React Router
   const navigate = useNavigate();
 
-  // Functions to show toast notifications for login success and failure
   const notifyError = () => toast("Invalid Number or Password");
 
-  // State variables to store mobile number, password, and user type
   const [MobileNumber, setMobileNumber] = useState("");
   const [Password, setPassword] = useState("");
   const [userType, setuserType] = useState("");
 
-  // Regular expression for validating the mobile number
   const mobileNumberRegex = /^[0-9]{10}$/;
 
   useEffect(() => {
@@ -42,20 +45,19 @@ const Login = ({ setUserType }) => {
     if (!login) {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
-  // Function to handle form submission
   const SubmitData = async (e) => {
     e.preventDefault();
 
-    // Validate mobile number using the regular expression
     if (!mobileNumberRegex.test(MobileNumber)) {
       toast.error("Invalid mobile number format");
       return;
     }
 
     try {
-      // Make an API call to the login endpoint with user credentials
+      setLoading(true); // Show loader while making API call
+
       const response = await axios.post(
         "http://13.126.14.109:4000/user/login",
         {
@@ -63,43 +65,39 @@ const Login = ({ setUserType }) => {
           password: Password,
           userType: userType,
         }
+        
       );
-      console.log("response", response);
-      console.log(response.data.data.userType);
+      
+
+      setLoading(false); // Hide loader after API call
 
       if (response.status === 200) {
-        // Save user type in local storage and update in the parent component
+        
         localStorage.setItem("userType", response.data.data.userType);
         localStorage.setItem("mobileNumber", response.data.data.mobile);
         localStorage.setItem("accessToken", response?.data?.token);
         localStorage.setItem("login", true);
         setUserType(response.data.data.userType);
-        // auth.login(response.data.data.mobile)
-        // Redirect to the dashboard after a delay
-       
+        
+        toast.success("Login successful!");
         setTimeout(() => {
-          response.data.data.userType === "Operator" ? (
-            <>{navigate("/dashboard/:number")}</>
-          ) : (
-            <>{navigate("/home")}</>
-          );
-        }, 200);
+          response.data.data.userType === "Operator"
+            ? navigate("/dashboard/:number")
+            : navigate("/home");
+        }, 1000);
       } else {
         setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
-        // Show error toast notification for invalid credentials
         notifyError();
         console.log("Error occurred");
         console.log(notifyError);
         console.log("fault here");
       }
     } catch (error) {
-      // Handle API call errors (e.g., network issues, server errors)
       console.error("API call error:", error.message);
       notifyError();
     }
   };
 
-  // JSX rendering for the Login component
   return (
     <div className="Main-container">
       <ToastContainer
@@ -114,16 +112,14 @@ const Login = ({ setUserType }) => {
         pauseOnHover
         theme="colored"
       />
-      {/* Container for displaying toast notifications */}
       <section className="section">
         <div className="logo">
-          <img src={logo} className="logo" alt="" /> {/* Display the logo */}
+          <img src={logo} className="logo" alt="" />
         </div>
         <div className="form-box">
           <div className="form-value">
             <form onSubmit={SubmitData}>
               <h2 className="heading">Login</h2>
-              {/* Input fields for mobile number and password */}
               <div className="input-box">
                 <input
                   type="text"
@@ -145,24 +141,24 @@ const Login = ({ setUserType }) => {
                 />
                 <label>Password</label>
               </div>
-              {/* Submit button for the login form */}
               <button type="submit" className="btn-login">
                 Log in
               </button>
-              {/* Link to the registration page */}
+
+              {loading && <LoaderComponent />} {/* Loader component */}
+
               <div className="register">
                 <p>
                   Don't have an account{" "}
                   <Link onClick={openContactAdminModal}>Contact Admins</Link>
                 </p>
-                {/* Contact Admin Modal */}
                 <Modal
                   isOpen={showContactAdminModal}
                   onRequestClose={closeContactAdminModal}
                   contentLabel="Contact Admin Modal"
                   ariaHideApp={false}
-                  className="custom-modal" // Apply custom-modal class for styling
-                  overlayClassName="custom-overlay" // Apply custom-overlay class for styling
+                  className="custom-modal"
+                  overlayClassName="custom-overlay"
                 >
                   <div className="modal-content">
                     <h2>Contact Admins</h2>
@@ -194,4 +190,4 @@ const Login = ({ setUserType }) => {
   );
 };
 
-export default Login; // Export the Login component as the default export
+export default Login;
