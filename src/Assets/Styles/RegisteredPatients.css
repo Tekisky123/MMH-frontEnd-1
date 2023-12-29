@@ -421,15 +421,18 @@ thead{
     justify-content: space-around; /* Adjust spacing for smaller screens */
   }
 }
+@media only screen and (max-width: 768px) {
+  .pdf-download-btn{
+    left: 650px;
+  }
+}
 
 /* Add responsive adjustments for larger screens */
 @media screen and (min-width: 768px) {
   .card-file-upload, .card-file-not-found {
     right: 0px;
   }
-  .pdf-download-btn{
-    left: 650px;
-  }
+
   .patient-card {
     flex-direction: row; /* Adjusted for larger screens */
   }
