@@ -64,7 +64,7 @@ const ViewMMH = ({ currentItem }) => {
 
         // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
         const response = await axios.put(
-          "http://13.126.14.109:4000/patient/" + currentItem,
+          "https://mmh-jajh.onrender.com/patient/" + currentItem,
           data
         );
 

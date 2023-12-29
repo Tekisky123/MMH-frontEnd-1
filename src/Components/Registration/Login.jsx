@@ -59,7 +59,7 @@ const Login = ({ setUserType }) => {
       setLoading(true); // Show loader while making API call
 
       const response = await axios.post(
-        "http://13.126.14.109:4000/user/login",
+        "https://mmh-jajh.onrender.com/user/login",
         {
           mobile: MobileNumber,
           password: Password,

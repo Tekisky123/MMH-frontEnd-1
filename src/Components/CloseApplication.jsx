@@ -27,7 +27,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
       return; // User canceled submission
     }
 
-    const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
+    const updateUrl = "https://mmh-jajh.onrender.com/patient/" + currentItem;
 
     try {
       const formDataWithImage = new FormData();
@@ -156,7 +156,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
               onChange={handleInputChange}>
                   <option value="">select</option>
                   <option value="Closed-Patient Rejected">Closed-Patient Rejected</option>
-                  <option value="Closed-Civil">Closed-Civil Hospital</option>
+                  <option value="Closed-Civil Hospital">Closed-Civil Hospital</option>
                   <option value="Closed-Ayushman Bharat">Closed-Ayushman Bharat</option>
                   <option value="Closed-Private">Closed-Private Hospital</option>
                   <option value="Closed-MJPJA">Closed-MJPJA</option>

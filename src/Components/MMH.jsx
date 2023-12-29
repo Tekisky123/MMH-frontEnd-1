@@ -17,7 +17,7 @@ const MMH = ({ item, isDownloading, pdfRef }) => {
   //       };
 
   //       // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
-  //       const response = await axios.get("http://13.126.14.109:4000/patient/getpatient/", data);
+  //       const response = await axios.get("https://mmh-jajh.onrender.com/patient/getpatient/", data);
 
   //       // Handle the response from the API if needed
   //       console.log("API Response:", response.data);

@@ -39,7 +39,7 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       // Replace 'your_api_endpoint' with the actual API endpoint you are using
-      const apiEndpoint = 'http://13.126.14.109:4000/patient/getpatient';
+      const apiEndpoint = 'https://mmh-jajh.onrender.com/patient/getpatient';
       const response = await axios.get(apiEndpoint);
 
       // Check if the API request was successful (status code 200)
@@ -94,7 +94,7 @@ const Dashboard = () => {
   };
   useEffect(() => {
     // Dummy API URL (Replace this with your actual API endpoint)
-    const apiUrl = "http://13.126.14.109:4000/mmh/dashboard";
+    const apiUrl = "https://mmh-jajh.onrender.com/mmh/dashboard";
 
     // Fetch data from the API
     fetch(apiUrl)

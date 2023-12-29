@@ -84,6 +84,17 @@
 
 
 @media only screen and (max-width: 600px) {
+  .upload-input-tr{
+    display: flex;
+    flex-direction: column;
+  }
+  .upload-input-tr td{
+    border: none;
+   width: 100%;
+  }
+  .upload-input-tr td .btn-docDelete{
+   width: 30%;
+  }
 .btn-docAdd{
   width: 25%;
   font-size: 11px;
