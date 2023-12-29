@@ -103,7 +103,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
     
     
     
-    const updateUrl = "http://13.126.14.109:4000/patient/" + currentItem;
+    const updateUrl = "https://mmh-jajh.onrender.com/patient/" + currentItem;
 
     try {
       const formData = new FormData();
@@ -190,7 +190,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
             {console.log("sjkdhsaj", doc.type)}
             <div className="patient-documents-sidebar">
               <table>
-                <tr>
+                <tr className="upload-input-tr">
                   <td className="form-div">
                     <select
                       className="form-input1"

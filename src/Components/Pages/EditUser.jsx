@@ -8,7 +8,7 @@ const EditData = () => {
   const navigate = useNavigate();
   const { _id } = useParams();
 
-  const baseURL = `http://13.126.14.109:4000/user/updateuser`;
+  const baseURL = `https://mmh-jajh.onrender.com/user/updateuser`;
 
   const [data, setData] = useState({
     firstName: "",
@@ -29,7 +29,7 @@ const EditData = () => {
 
   const getData = async () => {
     try {
-      const result = await axios.get(`http://13.126.14.109:4000/user/${_id}`);
+      const result = await axios.get(`https://mmh-jajh.onrender.com/user/${_id}`);
       console.log(result);
 
       const { firstName, lastName, email, password, mobile, userType } =

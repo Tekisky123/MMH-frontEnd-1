@@ -100,7 +100,7 @@ const CreateUser = () => {
     if (validateForm()) {
       // Make API call to register a new user
       axios
-        .post("http://13.126.14.109:4000/user/register", formData)
+        .post("https://mmh-jajh.onrender.com/user/register", formData)
         .then((response) => {
           // Handle success response
           if (response.status === 200) {

@@ -43,7 +43,7 @@ const OpRegisteredPatients = () => {
 
   const pdfRefs = data.map(() => React.createRef());
   const mobileNum =localStorage.getItem("mobileNumber")
-  const baseURL = "http://13.126.14.109:4000/mmh/dashboard/operator?phoneNumber=";
+  const baseURL = "https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=";
   
   const pdfRef = useRef();
   const options = {
@@ -269,7 +269,7 @@ const OpRegisteredPatients = () => {
               : "" ||
                 item.status === "Application Closed" ||
                 item.status === "Closed-Patient Rejected" ||
-                item.status === "Closed-Civil" ||
+                item.status === "Closed-Civil Hospital" ||
                 item.status === "Closed-Ayushman Bharat" ||
                 item.status === "Closed-Private" ||
                 item.status === "Closed-MJPJA" ||

@@ -394,7 +394,7 @@ const AddPatientDetails = () => {
         status: "Patient Registered",
         referredBy: formData.referredBy,
       };
-      const url = "http://13.126.14.109:4000/patient/create";
+      const url = "https://mmh-jajh.onrender.com/patient/create";
       const response = await axios.post(url, payload);
 
       if (

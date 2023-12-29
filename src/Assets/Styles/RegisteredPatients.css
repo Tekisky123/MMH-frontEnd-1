@@ -360,7 +360,7 @@ thead{
 
 @media only screen and (max-width: 600px) {
 
-  .file-upload-logo , .card-file-not-found{
+  .file-upload-logo , .card-file-not-found ,.card-file-upload{
     right: 0px;
   }
 
@@ -424,6 +424,12 @@ thead{
 
 /* Add responsive adjustments for larger screens */
 @media screen and (min-width: 768px) {
+  .card-file-upload, .card-file-not-found {
+    right: 0px;
+  }
+  .pdf-download-btn{
+    left: 650px;
+  }
   .patient-card {
     flex-direction: row; /* Adjusted for larger screens */
   }
@@ -436,7 +442,14 @@ thead{
 /* Add additional styles for responsiveness as needed */
 
 @media only screen and (max-width: 900px) {
+  .card-file-upload, .card-file-not-found {
+    right: 0px;
+  }
   .patient-card {
     min-width: 100%;
+
+  }
+  .pdf-download-btn{
+    left: 700px;
   }
 }

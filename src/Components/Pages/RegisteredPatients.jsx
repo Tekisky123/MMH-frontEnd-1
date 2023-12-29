@@ -44,7 +44,7 @@ const RegisteredPatients = () => {
   const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
-  const baseURL = "http://13.126.14.109:4000/patient/getpatient";
+  const baseURL = "https://mmh-jajh.onrender.com/patient/getpatient";
  
   const pdfRef = useRef();
   const options = {
@@ -167,7 +167,7 @@ const RegisteredPatients = () => {
               : "" ||
                 item.status === "Application Closed" ||
                 item.status === "Closed-Patient Rejected" ||
-                item.status === "Closed-Civil" ||
+                item.status === "Closed-Civil Hospital" ||
                 item.status === "Closed-Ayushman Bharat" ||
                 item.status === "Closed-Private" ||
                 item.status === "Closed-MJPJA" ||
