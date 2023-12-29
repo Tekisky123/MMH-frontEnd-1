@@ -134,17 +134,24 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.loader2{
+.show-hide{
+  background-color: transparent;
+  border: none;
   font-size: 25px;
-  color: red;
-  text-align: center;
+  position: relative;
+  left: 250px;
+  bottom: 78px;
 }
+
 
 /* Responsive styles */
 
 @media (max-width: 768px) {
   .form-box {
     width: 80%; /* Adjust the width for smaller screens */
+  }
+  .show-hide{
+    bottom: 85px;
   }
 }
 

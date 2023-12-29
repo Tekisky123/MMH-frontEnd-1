@@ -4,22 +4,23 @@ import "../../Assets/Styles/Login.css";
 import logo from "../../Assets/Images/logo-main.png";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { IoEyeSharp } from "react-icons/io5";
+import { BsEyeSlashFill } from "react-icons/bs";
 import axios from "axios";
 import Modal from "react-modal";
 import { useAuth } from "../Auth";
-import Loader from "../../common/Loader";
+import Spinner from "react-bootstrap/Spinner";
 
 // Placeholder for LoaderComponent (adjust as needed)
-const LoaderComponent = () => {
-  return <div className="loader2"><Loader/></div>;
-};
 
 // Functional component for the Login page
 const Login = ({ setUserType }) => {
   const auth = useAuth();
   const [showContactAdminModal, setShowContactAdminModal] = useState(false);
   const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
-  const [loading, setLoading] = useState(false); // New state for loader
+  const [isloading, setLoading] = useState(false); // New state for loader
+  const [isPassShow, setIsPassShow] = useState(false);
   const openContactAdminModal = () => {
     setShowContactAdminModal(true);
   };
@@ -65,20 +66,17 @@ const Login = ({ setUserType }) => {
           password: Password,
           userType: userType,
         }
-        
       );
-      
 
       setLoading(false); // Hide loader after API call
 
       if (response.status === 200) {
-        
         localStorage.setItem("userType", response.data.data.userType);
         localStorage.setItem("mobileNumber", response.data.data.mobile);
         localStorage.setItem("accessToken", response?.data?.token);
         localStorage.setItem("login", true);
         setUserType(response.data.data.userType);
-        
+
         toast.success("Login successful!");
         setTimeout(() => {
           response.data.data.userType === "Operator"
@@ -132,21 +130,39 @@ const Login = ({ setUserType }) => {
                 />
                 <label>Mobile Number</label>
               </div>
+
               <div className="input-box">
+                
                 <input
-                  type="password"
+                  type={isPassShow ? "text" : "password"}
                   required
                   value={Password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <label>Password</label>
+               
               </div>
+              <button className="show-hide"
+                  type="button"
+                  onClick={() => setIsPassShow(!isPassShow)}
+                >
+                  {isPassShow ? <IoEyeSharp /> : <BsEyeSlashFill />}
+                </button>
+
               <button type="submit" className="btn-login">
+                {isloading && (
+                  <Spinner
+                    className="me-2"
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
                 Log in
               </button>
-
-              {loading && <LoaderComponent />} {/* Loader component */}
-
+              {/* Loader component */}
               <div className="register">
                 <p>
                   Don't have an account{" "}
