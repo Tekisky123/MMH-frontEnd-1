@@ -340,7 +340,7 @@ thead{
  background-color: transparent;
  color: #a4c639;
  position: relative;
- left: 1070px;
+  left: 1070px;
  bottom: 200px;
  font-size: 40px;
  border: none;
@@ -427,9 +427,9 @@ thead{
   .card-file-upload, .card-file-not-found {
     right: 0px;
   }
-  .pdf-download-btn{
+  /* .pdf-download-btn{
     left: 650px;
-  }
+  } */
   .patient-card {
     flex-direction: row; /* Adjusted for larger screens */
   }
@@ -450,6 +450,6 @@ thead{
 
   }
   .pdf-download-btn{
-    left: 700px;
+    left: 300px;
   }
 }
