@@ -8,6 +8,9 @@ import { Link, useParams } from "react-router-dom";
 import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png";
 import UploadDocuments from "../UploadDocuments";
 import ViewMMH from "../ViewMMH";
+import { MdDelete } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
+
 import { Document, Page, pdfjs } from "react-pdf";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -21,9 +24,9 @@ import DeletePatient from "../DeletePatient";
 import PDFDownload from "./PDFDownload";
 
 import countries from "../../common/CommonObj";
+import { Dropdown } from "react-bootstrap";
 
 const RegisteredPatients = () => {
-  
   const [files, setFiles] = useState([]);
   const [document, setDocument] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -37,47 +40,52 @@ const RegisteredPatients = () => {
   const [refToDownload, setRefToDownload] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [imgView, setImgView] = useState();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [statusColor, setStatusColor] = useState("");
-  const {cardStatus} = useParams()
+  const { cardStatus } = useParams();
   const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
   const baseURL = "https://mmh-jajh.onrender.com/patient/getpatient";
- 
+
   const pdfRef = useRef();
   const options = {
     orientation: "portrait",
     // Add other options as needed
   };
   useEffect(() => {
-    axios.get(baseURL).then((responce) => {
-      console.log(responce.data.result);
+    let isMounted = true;
 
-      setData(responce.data.result);
-      setFilteredData(responce.data.result.reverse());
+    axios.get(baseURL).then((response) => {
+      if (isMounted) {
+        console.log(response.data.result);
+        setData(response.data.result);
+        setFilteredData(response.data.result.reverse());
+      }
     });
 
-    // getData();
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [cardStatus]); // Include cardStatus as a dependency
 
   useEffect(() => {
     // Set the initial search term based on the condition (params)
-    if (cardStatus === 'documentsUploaded') {
-      setSearchTerm('Documents Uploaded');
-    } else if (cardStatus === 'scheme&hospital') {
-      setSearchTerm('Scheme & Hospital Selected');
-    } else if (cardStatus === 'pending') {
-      setSearchTerm('Patient Registered');
+    if (cardStatus === "documentsUploaded") {
+      setSearchTerm("Documents Uploaded");
+    } else if (cardStatus === "scheme&hospital") {
+      setSearchTerm("Scheme & Hospital Selected");
+    } else if (cardStatus === "pending") {
+      setSearchTerm("Patient Registered");
     }
   }, [cardStatus]);
-  
+
   useEffect(() => {
     // Update filtered data when search term changes
     const filteredResults = data.filter((item) => {
       const searchTermLowerCase = searchTerm.toLowerCase();
-  
+
       return (
         item.patientDetails.name.toLowerCase().includes(searchTermLowerCase) ||
         item.patientID.toLowerCase().includes(searchTermLowerCase) ||
@@ -86,7 +94,7 @@ const RegisteredPatients = () => {
         // ...
       );
     });
-  
+
     setFilteredData(filteredResults);
   }, [searchTerm, data]);
 
@@ -94,14 +102,13 @@ const RegisteredPatients = () => {
     console.log("Clicked More Info button for index:", index);
     console.log("Patient ID:", filteredData[index].patientDetails._id);
     // ... other relevant log statements
-  
+
     setShowStatus(false);
     setActivePatientId(filteredData[index].patientDetails._id);
     setActiveStatusId(null);
     setActiveCardIndex(index);
     setActiveDocumentId(null);
   };
-  
 
   const handleShowStatus = (index) => {
     setShowStatus(!showStatus);
@@ -129,14 +136,58 @@ const RegisteredPatients = () => {
     setActiveCardIndex("");
   };
   const getStateName = (index) => {
-  if (index >= 0 && index < countries.length) {
-    return countries[index].state;
-  }
-  return ''; // Return an empty string or any default value if the index is out of bounds
-};
+    if (index >= 0 && index < countries.length) {
+      return countries[index].state;
+    }
+    return ""; // Return an empty string or any default value if the index is out of bounds
+  };
+
+  //delete patient logic
+  const handleDeletePatient = async (patientId) => {
+    // Display a confirmation dialog
+    const isConfirmed = window.confirm("⚠️Are you sure you want to delete this patient?");
+  
+    // Check if the user confirmed the deletion
+    if (isConfirmed) {
+      try {
+        // Make an HTTP request to delete the patient
+        const response = await axios.delete(
+          `https://mmh-jajh.onrender.com/patient/${patientId}`
+        );
+  
+        // Log the response or handle it based on your requirements
+        console.log("Delete Patient Response:", response.data);
+  
+        // After successful deletion, update the state without making another request
+        setData((prevData) =>
+          prevData.filter((patient) => patient._id !== patientId)
+        );
+  
+        // Optionally, you can also update the filtered data
+        setFilteredData((prevFilteredData) =>
+          prevFilteredData.filter((patient) => patient._id !== patientId)
+        );
+      } catch (error) {
+        console.error("Error deleting patient:", error);
+        // Handle the error, show a message, etc.
+      }
+    } else {
+      // The user clicked "Cancel", do nothing or show a message
+      console.log("Deletion canceled");
+    }
+  };
+  
+  console.log(data);
+
+  const handleEditPatient = (patientId) => {
+    // Handle edit patient logic (e.g., navigate to edit page)
+    console.log("Edit Patient ID:", patientId);
+    window.location.href = `/editPatient/${patientId}`;
+  };
+
   return (
     <>
-    <div className="img-main"></div>
+      <div className="img-main"></div>
       <div className="search-bar group">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
           <g>
@@ -202,7 +253,7 @@ const RegisteredPatients = () => {
                           Status:
                         </td>
                         <td
-                        className="cardStatus"
+                          className="cardStatus"
                           style={{
                             border: "none",
                             width: "25%",
@@ -217,7 +268,7 @@ const RegisteredPatients = () => {
                       <tr>
                         <td style={{ border: "none", width: "100%" }}>
                           <div className="DiseseaNameHighLight">
-                            <span style={{ border: "none",margin:"0px" }}>
+                            <span style={{ border: "none", margin: "0px" }}>
                               Disease Name:
                             </span>
                             <span className="diseaseName">
@@ -245,7 +296,9 @@ const RegisteredPatients = () => {
                       <tr>
                         <td style={{ border: "none" }}>
                           Care Taker Mobile No:{" "}
-                          <span className="careTakerNum">{item.careTaker.mobile1}</span>
+                          <span className="careTakerNum">
+                            {item.careTaker.mobile1}
+                          </span>
                         </td>
                         <td style={{ border: "none" }}></td>
                       </tr>
@@ -253,7 +306,7 @@ const RegisteredPatients = () => {
                   </table>
                 </div>
 
-                <p style={{marginBottom:"0px"}}>
+                <p style={{ marginBottom: "0px" }}>
                   {/* {files.length > 0 ? (
                     <div className="file-upload-or-not">
                       <img
@@ -281,7 +334,28 @@ const RegisteredPatients = () => {
                     </div>
                   )} */}
                 </p>
-                <PDFDownload item={item}  />
+
+                <div className="dots">
+                  <Dropdown>
+                    <Dropdown.Toggle variant="light" id={`dropdown-${index}`}>
+                      <BsThreeDotsVertical className="droupdown-main" />
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        onClick={() => handleDeletePatient(item._id)}
+                      >
+                        Delete Patient
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => handleEditPatient(item._id)}
+                      >
+                        Edit Patient
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <PDFDownload item={item} />
                 <div className="data-btn">
                   <button
                     className="btn-register-more"
@@ -509,7 +583,7 @@ const RegisteredPatients = () => {
                             <img
                               src={document.imageUrl}
                               alt=""
-                              style={{ width: "100px"}} 
+                              style={{ width: "100px" }}
                             />
                           </td>
                         </tr>

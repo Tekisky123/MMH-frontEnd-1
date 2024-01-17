@@ -10,10 +10,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AddPatientDetails = () => {
+
+
+  
   //   const updateData = useData();
   const storedUserType = localStorage.getItem("userType");
   const CreatedBy = localStorage.getItem("mobileNumber");
-
+  const [loading, setLoading] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [familyMembers, setFamilyMembers] = useState([
     {
       familyMemberName: "",
@@ -337,6 +341,10 @@ const AddPatientDetails = () => {
 
   const handleSubmit = async () => {
     // e.preventDefault();
+    if (formSubmitted) {
+      return; // If the form has already been submitted, exit the function
+    }
+    setLoading(true);
 
     try {
       const patientDetails = {
@@ -403,17 +411,22 @@ const AddPatientDetails = () => {
       ) {
         toast.success("Patient Created Successfully");
 
-        setTimeout(() => {
-          {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
-        }, 3000);
-      } else {
-        toast.error("Error While Creating Patient...");
-      }
-    } catch (error) {
-      console.error("API call error:", error);
-      //   notifyError();
+         setTimeout(() => {
+        storedUserType === "Operator"
+          ? navigate("/opRegistered-patients")
+          : navigate("/registered-patients");
+      }, 3000);
+      setFormSubmitted(true);
+    } else {
+      toast.error("Error While Creating Patient...");
     }
-  };
+  } catch (error) {
+    console.error("API call error:", error);
+    // notifyError();
+  } finally {
+    setLoading(false); // Set loading back to false after the request is completed
+  }
+};
 
   const renderProgressBar = () => {
     const steps = [
@@ -1107,10 +1120,11 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
+                    disabled={formSubmitted}
                   className="nextBtn form-input"
                   onClick={handleNext4}
                 >
-                  Submit
+                   {loading ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </>
