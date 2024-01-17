@@ -12,7 +12,6 @@
   /* opacity: 1.5; */
   background-size: cover;
   background-attachment: fixed; /* This ensures that the background remains fixed */
-
 }
 
 
@@ -335,7 +334,10 @@ thead{
   justify-content: space-between;
   align-items: center;
 }
+.icon-btns{
+  display: flex;
 
+}
 .pdf-download-btn{
  background-color: transparent;
  color: #a4c639;
@@ -345,7 +347,28 @@ thead{
  font-size: 40px;
  border: none;
 }
+.dots{
+  /* position: relative;
+  right: -1070px;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+ bottom: 200px;
+ font-size: 40px;
+ border: none; */
+}
 
+.droupdown{
+  position: relative;
+  right: -1070px;
+ bottom: 200px;
+ font-size: 40px;
+ border: none;
+}
+.droupdown-main{
+  color: black;
+  font-size: 20px;
+}
 
 
 

@@ -7,17 +7,51 @@ import "../../../Assets/Styles/Patientdashboard.css";
 import "../../../Assets/Styles/NewPatient.css";
 import countries from "../../../common/CommonObj";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddPatientDetails = () => {
+const EditPatientDetails = () => {
+  const { id } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://mmh-jajh.onrender.com/patient/${id}`
+        );
 
+        if (response.status === 200) {
+          const patientData = response.data; // Assuming the API returns patient data in the expected format
 
-  
+          // Set form data with retrieved values
+          setFormData((prevData) => ({
+            ...prevData,
+            full_name: patientData.name,
+            phoneNumber: patientData.mobile,
+            aadharNumber: patientData.aadhar,
+            // ... Populate other fields similarly
+          }));
+
+          // Set family members data if available
+          if (patientData.familyDetail && patientData.familyDetail.length > 0) {
+            setFamilyMembers(patientData.familyDetail);
+          }
+
+          // ... Set other data similarly
+        } else {
+          toast.error("Error fetching patient details");
+        }
+      } catch (error) {
+        console.error("API call error:", error);
+        toast.error("Error fetching patient details");
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
   //   const updateData = useData();
   const storedUserType = localStorage.getItem("userType");
   const CreatedBy = localStorage.getItem("mobileNumber");
-  const [loading, setLoading] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+
   const [familyMembers, setFamilyMembers] = useState([
     {
       familyMemberName: "",
@@ -341,10 +375,6 @@ const AddPatientDetails = () => {
 
   const handleSubmit = async () => {
     // e.preventDefault();
-    if (formSubmitted) {
-      return; // If the form has already been submitted, exit the function
-    }
-    setLoading(true);
 
     try {
       const patientDetails = {
@@ -411,22 +441,17 @@ const AddPatientDetails = () => {
       ) {
         toast.success("Patient Created Successfully");
 
-         setTimeout(() => {
-        storedUserType === "Operator"
-          ? navigate("/opRegistered-patients")
-          : navigate("/registered-patients");
-      }, 3000);
-      setFormSubmitted(true);
-    } else {
-      toast.error("Error While Creating Patient...");
+        setTimeout(() => {
+          {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
+        }, 3000);
+      } else {
+        toast.error("Error While Creating Patient...");
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+      //   notifyError();
     }
-  } catch (error) {
-    console.error("API call error:", error);
-    // notifyError();
-  } finally {
-    setLoading(false); // Set loading back to false after the request is completed
-  }
-};
+  };
 
   const renderProgressBar = () => {
     const steps = [
@@ -1120,11 +1145,10 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
-                    disabled={formSubmitted}
                   className="nextBtn form-input"
                   onClick={handleNext4}
                 >
-                   {loading ? "Submitting..." : "Submit"}
+                  Submit
                 </button>
               </div>
             </>
@@ -1137,4 +1161,4 @@ const AddPatientDetails = () => {
   );
 };
 
-export default AddPatientDetails;
+export default EditPatientDetails;
