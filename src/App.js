@@ -89,7 +89,7 @@ function App() {
         {/* <Route path="/addPatient" element={<PatientDetails/>} /> */}
         {/* <Route path="/addPatient" element={<NewPatientDetails />} /> */}
         <Route path="/addPatient" element={<Protected><AddPatientDetails /></Protected>} />
-        <Route path="/editPatient/:patientId" element={<Protected><EditPatientDetails /></Protected>} />
+        <Route path="/editPatient/:Id" element={<Protected><EditPatientDetails /></Protected>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       </Loader>

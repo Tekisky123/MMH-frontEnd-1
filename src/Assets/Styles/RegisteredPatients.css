@@ -453,7 +453,7 @@ thead{
 /* Add responsive adjustments for larger screens */
 @media screen and (min-width: 768px) {
   .card-file-upload, .card-file-not-found {
-    right:100px;
+    right:200px;
   }
 
   .patient-card {
