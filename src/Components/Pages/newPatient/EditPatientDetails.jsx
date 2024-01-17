@@ -10,29 +10,63 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditPatientDetails = () => {
-  const { id } = useParams();
+  const { Id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://mmh-jajh.onrender.com/patient/${id}`
+          `https://mmh-jajh.onrender.com/patient/${Id}`
         );
 
-        if (response.status === 200) {
-          const patientData = response.data; // Assuming the API returns patient data in the expected format
+        if (response?.status === 200) {
+          const patientData = response?.data?.pateint; // Assuming the API returns patient data in the expected format
 
           // Set form data with retrieved values
           setFormData((prevData) => ({
             ...prevData,
-            full_name: patientData.name,
-            phoneNumber: patientData.mobile,
-            aadharNumber: patientData.aadhar,
-            // ... Populate other fields similarly
+            full_name: patientData.patientDetails.name,
+            phoneNumber: patientData.patientDetails.mobile,
+            aadharNumber: patientData.patientDetails.aadhar || "", 
+            gender: patientData.patientDetails.sex || "empty", 
+            age: patientData.patientDetails.age.toString(), 
+            maritalStatus: patientData.patientDetails.maritalstatus || "empty", 
+            rationCardNo: "", 
+            state: patientData.patientDetails.state || "empty", 
+            district: patientData.patientDetails.district || "empty", 
+            taluka: patientData.patientDetails.talukha || "", 
+            pincode: patientData.patientDetails.pin || "", 
+            fullAddress: patientData.patientDetails.address || "", 
+          
+            careTakerName: patientData.careTaker.name || "",
+            careTakerNum1: patientData.careTaker.mobile1 || "",
+            careTakerNum2: patientData.careTaker.mobile2 || "",
+            particulars: patientData.careTaker.particulars || "",
+          
+            diseaseName: patientData.disease || "",
+            diagnoseDate: patientData.diseaseDetail.diagnoseDate || "",
+            diagnoseBy: patientData.diseaseDetail.diagnoseBy || "",
+            investigation1: patientData.diseaseDetail.investigationDone1 || "",
+            investigation2: patientData.diseaseDetail.investigationDone2 || "",
+            investigation3: patientData.diseaseDetail.investigationDone3 || "",
+            currentHospitalName: patientData.diseaseDetail.currentHospitalName || "",
+            currentHospitalAddress: patientData.diseaseDetail.currentHospitalAddress || "",
+            hospitalNumber: patientData.diseaseDetail.currentHospitalContactNo || "",
+            currentTreatmentDetails: patientData.diseaseDetail.currentTreatmentDetail || "",
+            doctorAdvice: patientData.diseaseDetail.doctorAdviceForFurtherProcess || "",
+          
+            createdBy: patientData.createdBy || "",
+            referredBy: patientData.referredBy || "None",
           }));
 
           // Set family members data if available
           if (patientData.familyDetail && patientData.familyDetail.length > 0) {
-            setFamilyMembers(patientData.familyDetail);
+            setFamilyMembers(patientData.familyDetail.map(member => ({
+              familyMemberName: member.name || "",
+              familyMemberRelation: member.relation || "",
+              familyMemberAge: member.age.toString() || "",
+              occupation: member.occupation || "",
+              monthlyIncome: member.monthlyIncome.toString() || "",
+            })));
           }
 
           // ... Set other data similarly
@@ -46,7 +80,7 @@ const EditPatientDetails = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [Id]);
 
   //   const updateData = useData();
   const storedUserType = localStorage.getItem("userType");
@@ -432,14 +466,14 @@ const EditPatientDetails = () => {
         status: "Patient Registered",
         referredBy: formData.referredBy,
       };
-      const url = "https://mmh-jajh.onrender.com/patient/create";
-      const response = await axios.post(url, payload);
+      const url = "https://mmh-jajh.onrender.com/patient/"+ Id;
+      const response = await axios.put(url, payload);
 
       if (
         (response && response.status === 200) ||
         response.data.success === true
       ) {
-        toast.success("Patient Created Successfully");
+        toast.success("Patient Update Successfully");
 
         setTimeout(() => {
           {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
