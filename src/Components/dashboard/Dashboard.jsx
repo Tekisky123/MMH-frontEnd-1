@@ -1,5 +1,3 @@
-// Dashboard.js
-
 import React, { useState, useEffect } from "react";
 import "../../Components/dashboard/Dashboard.css";
 import * as XLSX from "xlsx";
@@ -23,8 +21,13 @@ const Dashboard = () => {
   }
 
   const [startDate, setStartDate] = useState(null);
+  const [selectedOperator, setSelectedOperator] = useState(null);
+
   const [endDate, setEndDate] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [operatorDetails, setOperatorDetails] = useState([]); // Declare operatorDetails state
+
   const [data, setData] = useState({
     totalAmountSaved: 0,
     monthlyAmountSaved: 0,
@@ -33,32 +36,22 @@ const Dashboard = () => {
     totalNumberOfApproach: 0,
     totalNumberOfMonthApproach: 0,
     totalClosedCasesInMonth: 0,
-
     registerPatients: 0,
     documentUploaded: 0,
     schemeAndHospitalSelected: 0,
   });
 
-  // Function to filter data based on date range
-  const filterDataByDateRange = (data, startDate, endDate) => {
-    if (!startDate || !endDate) {
-      return data;
-    }
-
-    return data.filter((entry) => {
-      const entryDate = new Date(entry.registeredDate);
-      return entryDate >= startDate && entryDate <= endDate;
-    });
-  };
-
   useEffect(() => {
-    const apiUrl = "https://mmh-jajh.onrender.com/mmh/dashboard";
+    let isMounted = true;
 
-    // Fetch data from the API
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        const json = response.data;
+    const fetchData = async () => {
+      try {
+        // Fetch data from the main dashboard API
+        const dashboardApiResponse = await axios.get(
+          "https://mmh-jajh.onrender.com/mmh/dashboard"
+        );
+        const json = dashboardApiResponse.data;
+
         // Handle empty string case and parse numbers
         setData({
           totalAmountSaved: parseFloat(json.totalAmountSaved) || 0,
@@ -75,66 +68,78 @@ const Dashboard = () => {
           schemeAndHospitalSelected:
             parseInt(json.hospitalAndSchemeDetails) || 0,
         });
-      })
-      .catch((error) => console.error("Error fetching data: ", error));
+
+        // Fetch data from the operator API
+        const operatorsApiResponse = await axios.get(
+          "https://mmh-jajh.onrender.com/user/getuser"
+        );
+        const operators = operatorsApiResponse.data.data.filter(
+          (user) => user.userType === "Operator"
+        );
+        const operatorDetails = operators.map((operator) => ({
+          firstName: operator.firstName,
+          lastName: operator.lastName,
+          mobile: operator.mobile,
+        }));
+
+        // Update state with operator details
+        setOperatorDetails(operatorDetails);
+        setLoading(false);
+
+        // Fetch additional data for each operator
+        const fetchDataForOperators = async () => {
+          try {
+            const promises = operatorDetails.map(async (operator) => {
+              console.log(`Fetching data for operator: ${operator.mobile}`);
+              try {
+                const operatorApiResponse = await axios.get(
+                  `https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=${operator.mobile}`
+                );
+                const additionalData = operatorApiResponse.data.details;
+                console.log(
+                  `Data received for operator: ${operator.mobile}`,
+                  additionalData
+                );
+                return { ...operator, additionalData };
+              } catch (error) {
+                console.error(
+                  `Error fetching data for operator: ${operator.mobile}`,
+                  error
+                );
+                return { ...operator, additionalData: null };
+              }
+            });
+
+            const updatedFilteredData = await Promise.all(promises);
+
+            // Check if the component is still mounted before updating the state
+            if (isMounted) {
+              setFilteredData(updatedFilteredData);
+              setLoading(false);
+            }
+          } catch (error) {
+            console.error("Error fetching data for operators: ", error);
+          }
+        };
+
+        // Call the fetchDataForOperators only when filteredData changes
+        if (loading && operatorDetails.length > 0) {
+          fetchDataForOperators();
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData(); // Call the fetchData function when the component mounts
+
+
+    return () => {
+      // Set isMounted to false when the component is unmounted
+      isMounted = false;
+    };
   }, []);
 
-  useEffect(() => {
-    const apiUserUrl = "https://mmh-jajh.onrender.com/user/getuser";
-  
-    // Fetch operator numbers from the API
-    axios.get(apiUserUrl)
-      .then((response) => {
-        const operatorData = response.data.data.filter(user => user.userType === "Operator");
-        const operatorNumbers = operatorData.map(operator => operator.mobile);
-  
-        // Fetch data for each operator
-        const fetchDataForOperators = async () => {
-          const operatorDataPromises = operatorNumbers.map(async (operatorNumber) => {
-            const operatorApiUrl = `https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=${operatorNumber}`;
-            try {
-              const operatorResponse = await axios.get(operatorApiUrl);
-              return operatorResponse.data.details;
-            } catch (error) {
-              console.error(`Error fetching operator data for ${operatorNumber}:`, error);
-              return null;
-            }
-          });
-  
-          // Wait for all operator data to be fetched
-          const operatorData = await Promise.all(operatorDataPromises);
-  
-          // Update state with operator data
-          setFilteredData(operatorData.filter((data) => data !== null));
-        };
-  
-        // Fetch overall dashboard data
-        const apiUrl = "https://mmh-jajh.onrender.com/mmh/dashboard";
-        axios.get(apiUrl)
-          .then((response) => {
-            const json = response.data;
-            // Handle empty string case and parse numbers
-            setData({
-              totalAmountSaved: parseFloat(json.totalAmountSaved) || 0,
-              monthlyAmountSaved: parseFloat(json.monthAmountSaved) || 0,
-              PendingCasesMoreThan5Days: parseInt(json.PendingCasesMoreThan5Days) || 0,
-              totalClosedCases: parseInt(json.totalClosedCases) || 0,
-              totalClosedCasesInMonth: parseInt(json.totalClosedCasesInMonth) || 0,
-              totalNumberOfApproach: parseInt(json.totalNumberOfApproach) || 0,
-              totalNumberOfMonthApproach: parseInt(json.totalNumberOfMonthApproach) || 0,
-              registerPatients: parseInt(json.registerPatients) || 0,
-              documentUploaded: parseInt(json.uploadDocumentsCount) || 0,
-              schemeAndHospitalSelected: parseInt(json.hospitalAndSchemeDetails) || 0,
-            });
-          })
-          .catch((error) => console.error("Error fetching data: ", error));
-  
-        // Fetch data for operators
-        fetchDataForOperators();
-      })
-      .catch((error) => console.error("Error fetching operator numbers: ", error));
-  }, []);
-  
 
   return (
     <>
@@ -217,40 +222,59 @@ const Dashboard = () => {
           <h3>Operators Monthly Status</h3>
         </div>
 
+        {filteredData.map((operator, index) => {
+            console.log("Operator data:", operator);
 
-{filteredData.map((operator, index) => (
-  <div key={index} className="dashboard-big-card">
-    {/* Display operator name and mobile number */}
-    <div className="dashboard-card operator-info">
-      <h1 className="operator-name">{operator.firstName}</h1>
-      <p className="operator-mobile">Mobile: {operator.mobile}</p>
-    </div>
+          return (
+            <div key={index} className="dashboard-big-card">
+              {/* Display operator name and mobile number */}
+              <div className="dashboard-card operator-info">
+                <p>
+                  Name: {operator.firstName} {operator.lastName}
+                </p>
+                <p>Mobile: {operator.mobile}</p>
+              </div>
 
-    {/* Display operator data in cards */}
-    <div className="dashboard-card amount">
-      <h1 className="monthly-amount-heading">Monthly Amount Saved</h1>
-      <p className="card-value">₹ {formatAmount(operator.monthAmountSaved || 0)}</p>
-    </div>
+              {/* Display operator data in cards */}
+              <div className="dashboard-card amount">
+                <h1 className="monthly-amount-heading">Monthly Amount Saved</h1>
+                <p className="card-value">
+  ₹ {formatAmount(
+    operator?.additionalData?.allDataResponse?.[0]?.amountSaved || 0
+  )}
+</p>
+              </div>
 
-    <div className="dashboard-card pending-cases">
-      <h1 className="pending-cases-heading">Pending Cases For More Than 5 Days</h1>
-      <p className="card-value">{operator.PendingCasesMoreThan5Days || 0}</p>
-    </div>
+              <div className="dashboard-card pending-cases">
+                <h1 className="pending-cases-heading">
+                  Pending Cases For More Than 5 Days
+                </h1>
+                <p className="card-value">
+                  {operator?.additionalData?.pendingPatientsCount || 0}
+                </p>
+              </div>
 
-    <div className="dashboard-card total-closed-cases cards">
-      <h1 className="total-closed-cases-heading">Total Closed Cases In This Month</h1>
-      <p className="card-value">{operator.totalClosedCasesInMonth || 0}</p>
-    </div>
+              <div className="dashboard-card total-closed-cases cards">
+                <h1 className="total-closed-cases-heading">
+                  Total Closed Cases In This Month
+                </h1>
+                <p className="card-value">
+                  {operator?.additionalData?.closePatientDetailsCount || 0}
+                </p>
+              </div>
 
-    <div className="dashboard-card cards">
-      <h1 className="total-approach-heading">Total Number of Approaches In This Month</h1>
-      <p className="card-value">{operator.totalNumberOfMonthApproach || 0}</p>
-    </div>
-  </div>
-))}
-
-
-
+              <div className="dashboard-card cards">
+                <h1 className="total-approach-heading">
+                  Total Number of Approaches In This Month
+                </h1>
+                <p className="card-value">
+                  {operator?.additionalData?.allDataResponse?.length ||
+                    0}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );
