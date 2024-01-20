@@ -20,6 +20,8 @@ import CloseApplication from "../CloseApplication";
 import DeletePatient from "../DeletePatient";
 import PDFDownload from "./PDFDownload";
 import countries from "../../common/CommonObj";
+import { Dropdown } from "react-bootstrap";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const OpRegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -35,25 +37,29 @@ const OpRegisteredPatients = () => {
   const [refToDownload, setRefToDownload] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [imgView, setImgView] = useState();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [statusColor, setStatusColor] = useState("");
-  const {cardStatus} = useParams()
+  const { cardStatus } = useParams();
   const doc = new jsPDF();
 
   const pdfRefs = data.map(() => React.createRef());
-  const mobileNum =localStorage.getItem("mobileNumber")
-  const baseURL = "https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=";
-  
+  const mobileNum = localStorage.getItem("mobileNumber");
+  const baseURL =
+    "https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=";
+
   const pdfRef = useRef();
   const options = {
     orientation: "portrait",
     // Add other options as needed
   };
   useEffect(() => {
-    axios.get(baseURL+mobileNum).then((responce) => {
-      console.log("responce.data.details.allDataResponse",responce.data.details.allDataResponse);
- 
+    axios.get(baseURL + mobileNum).then((responce) => {
+      console.log(
+        "responce.data.details.allDataResponse",
+        responce.data.details.allDataResponse
+      );
+
       setData(responce.data.details.allDataResponse);
       setFilteredData(responce.data.details.allDataResponse.reverse());
     });
@@ -63,22 +69,22 @@ const OpRegisteredPatients = () => {
 
   useEffect(() => {
     // Set the initial search term based on the condition (params)
-    if (cardStatus === 'documentsUploaded') {
-      setSearchTerm('Documents Uploaded');
-    } else if (cardStatus === 'scheme&hospital') {
-      setSearchTerm('Scheme & Hospital Selected');
-    } else if (cardStatus === 'pending') {
-      setSearchTerm('Patient Registered');
-    } else if (cardStatus === 'closed') {
-      setSearchTerm('closed');
+    if (cardStatus === "documentsUploaded") {
+      setSearchTerm("Documents Uploaded");
+    } else if (cardStatus === "scheme&hospital") {
+      setSearchTerm("Scheme & Hospital Selected");
+    } else if (cardStatus === "pending") {
+      setSearchTerm("Patient Registered");
+    } else if (cardStatus === "closed") {
+      setSearchTerm("closed");
     }
   }, []);
-  
+
   useEffect(() => {
     // Update filtered data when search term changes
     const filteredResults = data.filter((item) => {
       const searchTermLowerCase = searchTerm.toLowerCase();
-  
+
       return (
         item.patientDetails.name.toLowerCase().includes(searchTermLowerCase) ||
         item.patientID.toLowerCase().includes(searchTermLowerCase) ||
@@ -87,7 +93,7 @@ const OpRegisteredPatients = () => {
         // ...
       );
     });
-  
+
     setFilteredData(filteredResults);
   }, [searchTerm, data]);
 
@@ -173,7 +179,7 @@ const OpRegisteredPatients = () => {
     } finally {
       setTimeout(() => {
         setIsDownloading(false);
-      }, 10000);
+      }, 800);
     }
   };
 
@@ -229,13 +235,56 @@ const OpRegisteredPatients = () => {
   //     }).from(pdfElement).save();
   //   }
   // };
+  const handleDeletePatient = async (patientId) => {
+    // Display a confirmation dialog
+    const isConfirmed = window.confirm(
+      "⚠️Are you sure you want to delete this patient?"
+    );
+
+    // Check if the user confirmed the deletion
+    if (isConfirmed) {
+      try {
+        // Make an HTTP request to delete the patient
+        const response = await axios.delete(
+          `https://mmh-jajh.onrender.com/patient/${patientId}`
+        );
+
+        // Log the response or handle it based on your requirements
+        console.log("Delete Patient Response:", response.data);
+
+        // After successful deletion, update the state without making another request
+        setData((prevData) =>
+          prevData.filter((patient) => patient._id !== patientId)
+        );
+
+        // Optionally, you can also update the filtered data
+        setFilteredData((prevFilteredData) =>
+          prevFilteredData.filter((patient) => patient._id !== patientId)
+        );
+      } catch (error) {
+        console.error("Error deleting patient:", error);
+        // Handle the error, show a message, etc.
+      }
+    } else {
+      // The user clicked "Cancel", do nothing or show a message
+      console.log("Deletion canceled");
+    }
+  };
+
+  console.log(data);
+
+  const handleEditPatient = (patientId) => {
+    // Handle edit patient logic (e.g., navigate to edit page)
+    console.log("Edit Patient ID:", patientId);
+    window.location.href = `/editPatient/${patientId}`;
+  };
 
   const getStateName = (index) => {
-  if (index >= 0 && index < countries.length) {
-    return countries[index].state;
-  }
-  return ''; // Return an empty string or any default value if the index is out of bounds
-};
+    if (index >= 0 && index < countries.length) {
+      return countries[index].state;
+    }
+    return ""; // Return an empty string or any default value if the index is out of bounds
+  };
 
   return (
     <>
@@ -297,14 +346,14 @@ const OpRegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td style={{ border: "none", width: "25%" }}>
-                          Patient ID: {item.patientID}
+                        Patient ID: <span className="diseaseName">{item.patientID}</span>
                         </td>
                         <td style={{ border: "none", width: "25%" }}></td>
                         <td style={{ border: "none", width: "25%" }}>
                           Status:
                         </td>
                         <td
-                        className="cardStatus"
+                          className="cardStatus"
                           style={{
                             border: "none",
                             width: "25%",
@@ -319,7 +368,7 @@ const OpRegisteredPatients = () => {
                       <tr>
                         <td style={{ border: "none", width: "100%" }}>
                           <div className="DiseseaNameHighLight">
-                            <span style={{ border: "none",margin:"0px" }}>
+                            <span style={{ border: "none", margin: "0px" }}>
                               Disease Name:
                             </span>
                             <span className="diseaseName">
@@ -347,7 +396,9 @@ const OpRegisteredPatients = () => {
                       <tr>
                         <td style={{ border: "none" }}>
                           Care Taker Mobile No:{" "}
-                          <span className="careTakerNum">{item.careTaker.mobile1}</span>
+                          <span className="careTakerNum">
+                            {item.careTaker.mobile1}
+                          </span>
                         </td>
                         <td style={{ border: "none" }}></td>
                       </tr>
@@ -355,7 +406,7 @@ const OpRegisteredPatients = () => {
                   </table>
                 </div>
 
-                <p style={{marginBottom:"0px"}}>
+                <p style={{ marginBottom: "0px" }}>
                   {/* {files.length > 0 ? (
                     <div className="file-upload-or-not">
                       <img
@@ -383,7 +434,27 @@ const OpRegisteredPatients = () => {
                     </div>
                   )} */}
                 </p>
-                <PDFDownload item={item}  />
+                <div className="dots">
+                  <Dropdown>
+                    <Dropdown.Toggle variant="light" id={`dropdown-${index}`}>
+                      <BsThreeDotsVertical className="droupdown-main" />
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        onClick={() => handleDeletePatient(item._id)}
+                      >
+                        Delete Patient
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => handleEditPatient(item._id)}
+                      >
+                        Edit Patient
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <PDFDownload item={item} />
                 <div className="data-btn">
                   <button
                     className="btn-register-more"
@@ -401,15 +472,15 @@ const OpRegisteredPatients = () => {
                       <>
                         <button
                           className="btn-register-status"
-                          onClick={() => handleShowStatus(index)}
-                        >
-                          Close Application
-                        </button>
-                        <button
-                          className="btn-register-status"
                           onClick={() => handleShowDocument(index)}
                         >
                           Upload Documents
+                        </button>
+                        <button
+                          className="btn-register-status"
+                          onClick={() => handleShowStatus(index)}
+                        >
+                          Close Application
                         </button>
                       </>
                     )}
@@ -440,6 +511,26 @@ const OpRegisteredPatients = () => {
                       <tr>
                         <td>Patient Name</td>
                         <td>{item.patientDetails.name} </td>
+                      </tr>
+                      <tr>
+                        <td>Gender</td>
+                        <td>{item.patientDetails.sex} </td>
+                      </tr>
+                      <tr>
+                        <td>Age</td>
+                        <td>{item.patientDetails.age} </td>
+                      </tr>
+                      <tr>
+                        <td>Mobile No.</td>
+                        <td>{item.patientDetails.mobile} </td>
+                      </tr>
+                      <tr>
+                        <td>Aadhar No.</td>
+                        <td>{item.patientDetails.aadhar} </td>
+                      </tr>
+                      <tr>
+                        <td>RationCard No.</td>
+                        <td> <h6 className="diseaseName">{item.patientDetails.rationcardnumber} </h6></td>
                       </tr>
                       <tr>
                         <td>Residencial Address</td>
@@ -595,7 +686,7 @@ const OpRegisteredPatients = () => {
                             <img
                               src={document.imageUrl}
                               alt=""
-                              style={{ width: "100px"}} 
+                              style={{ width: "100px" }}
                             />
                           </td>
                         </tr>

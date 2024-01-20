@@ -10,6 +10,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditPatientDetails = () => {
+  const [loading, setLoading] = useState(false); // State to manage loading
+
   const { Id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +29,7 @@ const EditPatientDetails = () => {
             full_name: patientData.patientDetails.name,
             phoneNumber: patientData.patientDetails.mobile,
             aadharNumber: patientData.patientDetails.aadhar || "", 
+            rationcardnumber : patientData.patientDetails.rationcardnumber  || "", 
             gender: patientData.patientDetails.sex || "empty", 
             age: patientData.patientDetails.age.toString(), 
             maritalStatus: patientData.patientDetails.maritalstatus || "empty", 
@@ -102,6 +105,7 @@ const EditPatientDetails = () => {
     full_name: "",
     phoneNumber: "",
     aadharNumber: "",
+    rationcardnumber : "",
     gender: "empty",
     age: "",
     maritalStatus: "empty",
@@ -200,7 +204,7 @@ const EditPatientDetails = () => {
         ...prevErrors,
         [name]: isValidNumber ? "" : "Please enter a valid 10-digit number",
       }));
-    } else if (name === "aadharNumber" || name === "pincode" || name === "rationCardNo") {
+    } else if (name === "aadharNumber" || name === "pincode" || name === "rationcardnumber") {
       // Remove any non-digit characters
       const numericValue = value.replace(/[^0-9]/g, '');
   
@@ -288,7 +292,7 @@ const EditPatientDetails = () => {
       "state",
       "state",
       "district",
-      "pincode",
+      // "pincode",
       "fullAddress",
     ];
 
@@ -409,6 +413,8 @@ const EditPatientDetails = () => {
 
   const handleSubmit = async () => {
     // e.preventDefault();
+    setLoading(true);
+
 
     try {
       const patientDetails = {
@@ -424,7 +430,7 @@ const EditPatientDetails = () => {
         state: formData.state,
         maritalstatus: formData.maritalStatus,
 
-        rationCardNo: formData.rationCardNo,
+        rationcardnumber: formData.rationcardnumber,
       };
       const familyDetails = familyMembers.map((member, index) => ({
         id: index + 1,
@@ -477,7 +483,7 @@ const EditPatientDetails = () => {
 
         setTimeout(() => {
           {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
-        }, 3000);
+        }, 800);
       } else {
         toast.error("Error While Creating Patient...");
       }
@@ -512,6 +518,14 @@ const EditPatientDetails = () => {
   };
 
   return (
+    <>
+      {loading && (
+  <div className="loader-overlay">
+    <div className="spinner-container">
+      <div className="spinner"></div>
+    </div>
+  </div>
+)}
     <div>
       <ToastContainer
         position="top-right"
@@ -611,11 +625,11 @@ const EditPatientDetails = () => {
                   {/* <span className="error-message">⁕</span> */}
                 </div>
                 <input
-                  type="number"
+                  type="text"
                   className="form-input"
                   placeholder="Ration Card Number"
-                  name="rationCardNo"
-                  value={formData.rationCardNo}
+                  name="rationcardnumber"
+                  value={formData.rationcardnumber}
                   onChange={handleInputChange}
                 />
                 {/* <div className="error-message">{errors.rationCardNo}</div> */}
@@ -739,7 +753,7 @@ const EditPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Pincode">Pincode</span>
-                  <span className="error-message">⁕</span>
+                  {/* <span className="error-message">⁕</span> */}
                 </div>
                 <input
                   type="number"
@@ -749,7 +763,7 @@ const EditPatientDetails = () => {
                   value={formData.pincode}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.pincode}</div>
+                {/* <div className="error-message">{errors.pincode}</div> */}
               </div>
 
               <div className="form-div">
@@ -1192,6 +1206,7 @@ const EditPatientDetails = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

@@ -57,6 +57,7 @@ const PDFDownload = ({ item }) => {
         ["Age", item.patientDetails.age],
         ["Mobile No.", item.patientDetails.mobile],
         ["Aadhar No.", item.patientDetails.aadhar],
+        ["RationCard No.", item.patientDetails.rationcardnumber],
         ["Residential Address", item.patientDetails.address],
         ["Taluka", item.patientDetails.talukha],
         ["Dist", item.patientDetails.district],

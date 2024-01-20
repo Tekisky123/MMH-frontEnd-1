@@ -82,7 +82,7 @@ const Login = ({ setUserType }) => {
           response.data.data.userType === "Operator"
             ? navigate("/dashboard/:number")
             : navigate("/home");
-        }, 1000);
+        }, 800);
       } else {
         setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
         notifyError();

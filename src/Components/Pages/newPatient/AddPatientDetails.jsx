@@ -10,9 +10,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AddPatientDetails = () => {
-
-
-  
   //   const updateData = useData();
   const storedUserType = localStorage.getItem("userType");
   const CreatedBy = localStorage.getItem("mobileNumber");
@@ -62,12 +59,13 @@ const AddPatientDetails = () => {
     doctorAdvice: "",
 
     createdBy: "",
-    referredBy: "None",
+    referredBy: "",
   });
   const [errors, setErrors] = useState({
     full_name: "",
     phoneNumber: "",
     aadharNumber: "",
+    rationcardnumber: "",
     gender: "empty",
     age: "",
     maritalStatus: "empty",
@@ -106,7 +104,7 @@ const AddPatientDetails = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-  
+
     if (
       name === "phoneNumber" ||
       name === "careTakerNum1" ||
@@ -114,45 +112,53 @@ const AddPatientDetails = () => {
       name === "hospitalNumber"
     ) {
       // Remove any non-digit characters (except '-')
-      const numericValue = value.replace(/[^0-9-]/g, '');
+      const numericValue = value.replace(/[^0-9-]/g, "");
 
       // Ensure the length does not exceed 10 digits
       const maxLength = 10;
       const truncatedValue = numericValue.slice(0, maxLength);
-  
+
       // Parse the numeric value as an integer
       const intValue = parseInt(truncatedValue, 10);
-  
+
       // Check if the parsed value is a positive number
       const isValidNumber = !isNaN(intValue) && intValue >= 0;
-  
+
       // Update form data and errors accordingly
-      setFormData((prevData) => ({ ...prevData, [name]: isValidNumber ? truncatedValue : "" }));
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: isValidNumber ? truncatedValue : "",
+      }));
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: isValidNumber ? "" : "Please enter a valid 10-digit number",
       }));
-    } else if (name === "aadharNumber" || name === "pincode" || name === "rationCardNo") {
+    } else if (
+      name === "aadharNumber" ||
+      name === "pincode" ||
+      name === "rationcardnumber"
+    ) {
       // Remove any non-digit characters
-      const numericValue = value.replace(/[^0-9]/g, '');
-  
+      const numericValue = value.replace(/[^0-9]/g, "");
+
       // Check if the length does not exceed the specified limit
-      const maxLength = name === "aadharNumber" ? 12 : name === "pincode" ? 6 : 16;
+      const maxLength =
+        name === "aadharNumber" ? 12 : name === "pincode" ? 6 : 16;
       const truncatedValue = numericValue.slice(0, maxLength);
-  
+
       // Update form data with the truncated value
       setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
     } else if (name === "age") {
       const ageValue = parseInt(value, 10);
-  
+
       // Check if the value is within the desired range (1 to 120)
       const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
-  
+
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: isValidAge ? "" : "Age must be between 1 and 120",
       }));
-  
+
       // Update form data with the validated value
       setFormData((prevData) => ({
         ...prevData,
@@ -163,35 +169,35 @@ const AddPatientDetails = () => {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
-  
- 
+
   const handleFamilyMemInputChange = (index, event) => {
     const { name, value } = event.target;
     const newFamilyMembers = [...familyMembers];
-    const ageValue = name === 'familyMemberAge' ? parseInt(value, 10) : value;
-  
+    const ageValue = name === "familyMemberAge" ? parseInt(value, 10) : value;
+
     // Validate age if the input is for familyMemberAge
-    if (name === 'familyMemberAge') {
+    if (name === "familyMemberAge") {
       const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
-  
+
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [`familyMemberAge${index}`]: isValidAge ? '' : 'Age must be between 1 and 120',
+        [`familyMemberAge${index}`]: isValidAge
+          ? ""
+          : "Age must be between 1 and 120",
       }));
-  
+
       // Update family members only if the age is valid
       if (!isValidAge) {
-        newFamilyMembers[index][name] = ''; // Clear the invalid age
+        newFamilyMembers[index][name] = ""; // Clear the invalid age
         setFamilyMembers(newFamilyMembers);
         return;
       }
     }
-  
+
     newFamilyMembers[index][name] = ageValue;
     setFamilyMembers(newFamilyMembers);
   };
-  
-  
+
   const handleAddMember = () => {
     setFamilyMembers((prevMembers) => [
       ...prevMembers,
@@ -220,7 +226,7 @@ const AddPatientDetails = () => {
       "state",
       "state",
       "district",
-      "pincode",
+      // "pincode",
       "fullAddress",
     ];
 
@@ -239,7 +245,7 @@ const AddPatientDetails = () => {
     });
     console.log("hasError", hasError);
     if (hasError) {
-      alert("Mandatory fields are required")
+      alert("Mandatory fields are required");
     }
     if (!hasError) {
       setStatus(status + 1);
@@ -280,7 +286,7 @@ const AddPatientDetails = () => {
 
     console.log("hasError", hasError);
     if (hasError) {
-      alert("Mandatory fields are required")
+      alert("Mandatory fields are required");
     }
     if (!hasError) {
       setStatus(status + 1);
@@ -302,7 +308,7 @@ const AddPatientDetails = () => {
       }
     });
     if (hasError) {
-      alert("Mandatory fields are required")
+      alert("Mandatory fields are required");
     }
     if (!hasError) {
       setStatus(status + 1);
@@ -330,14 +336,12 @@ const AddPatientDetails = () => {
       }
     });
     if (hasError) {
-      alert("Mandatory fields are required")
+      alert("Mandatory fields are required");
     }
     if (!hasError) {
       handleSubmit();
     }
   };
-
-
 
   const handleSubmit = async () => {
     // e.preventDefault();
@@ -345,6 +349,7 @@ const AddPatientDetails = () => {
       return; // If the form has already been submitted, exit the function
     }
     setLoading(true);
+    
 
     try {
       const patientDetails = {
@@ -359,8 +364,7 @@ const AddPatientDetails = () => {
         district: formData.district,
         state: formData.state,
         maritalstatus: formData.maritalStatus,
-
-        rationCardNo: formData.rationCardNo,
+        rationcardnumber: formData.rationcardnumber,
       };
       const familyDetails = familyMembers.map((member, index) => ({
         id: index + 1,
@@ -411,22 +415,22 @@ const AddPatientDetails = () => {
       ) {
         toast.success("Patient Created Successfully");
 
-         setTimeout(() => {
-        storedUserType === "Operator"
-          ? navigate("/opRegistered-patients")
-          : navigate("/registered-patients");
-      }, 3000);
-      setFormSubmitted(true);
-    } else {
-      toast.error("Error While Creating Patient...");
+        setTimeout(() => {
+          storedUserType === "Operator"
+            ? navigate("/opRegistered-patients")
+            : navigate("/registered-patients");
+        }, 800);
+        setFormSubmitted(true);
+      } else {
+        toast.error("Error While Creating Patient...");
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+      // notifyError();
+    } finally {
+      setLoading(false); // Set loading back to false after the request is completed
     }
-  } catch (error) {
-    console.error("API call error:", error);
-    // notifyError();
-  } finally {
-    setLoading(false); // Set loading back to false after the request is completed
-  }
-};
+  };
 
   const renderProgressBar = () => {
     const steps = [
@@ -453,6 +457,14 @@ const AddPatientDetails = () => {
   };
 
   return (
+    <>
+     {loading && (
+  <div className="loader-overlay">
+    <div className="spinner-container">
+      <div className="spinner"></div>
+    </div>
+  </div>
+)}
     <div>
       <ToastContainer
         position="top-right"
@@ -534,7 +546,7 @@ const AddPatientDetails = () => {
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="aadhar_number">Aadhar Number</span>
-             </div>
+                </div>
                 <input
                   type="number"
                   className="form-input"
@@ -552,11 +564,11 @@ const AddPatientDetails = () => {
                   {/* <span className="error-message">⁕</span> */}
                 </div>
                 <input
-                  type="number"
+                  type="text"
                   className="form-input"
                   placeholder="Ration Card Number"
-                  name="rationCardNo"
-                  value={formData.rationCardNo}
+                  name="rationcardnumber"
+                  value={formData.rationcardnumber}
                   onChange={handleInputChange}
                 />
                 {/* <div className="error-message">{errors.rationCardNo}</div> */}
@@ -674,13 +686,13 @@ const AddPatientDetails = () => {
                   value={formData.taluka}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.taluka}</div>
+                {/* <div className="error-message">{errors.taluka}</div> */}
               </div>
 
               <div className="form-div">
                 <div style={{ display: "flex", margin: "0px" }}>
                   <span for="Pincode">Pincode</span>
-                  <span className="error-message">⁕</span>
+                  {/* <span className="error-message">⁕</span> */}
                 </div>
                 <input
                   type="number"
@@ -690,7 +702,7 @@ const AddPatientDetails = () => {
                   value={formData.pincode}
                   onChange={handleInputChange}
                 />
-                <div className="error-message">{errors.pincode}</div>
+                {/* <div className="error-message">{errors.pincode}</div> */}
               </div>
 
               <div className="form-div">
@@ -1120,11 +1132,11 @@ const AddPatientDetails = () => {
                   Previous
                 </button>
                 <button
-                    disabled={formSubmitted}
+                  disabled={formSubmitted}
                   className="nextBtn form-input"
                   onClick={handleNext4}
                 >
-                   {loading ? "Submitting..." : "Submit"}
+                  {loading ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </>
@@ -1134,6 +1146,7 @@ const AddPatientDetails = () => {
         </form>
       </div>
     </div>
+  </>
   );
 };
 

@@ -45,6 +45,8 @@ const RegisteredPatients = () => {
   const [statusColor, setStatusColor] = useState("");
   const { cardStatus } = useParams();
   const doc = new jsPDF();
+  const [loading, setLoading] = useState(false);
+
 
   const pdfRefs = data.map(() => React.createRef());
   const baseURL = "https://mmh-jajh.onrender.com/patient/getpatient";
@@ -146,6 +148,9 @@ const RegisteredPatients = () => {
   const handleDeletePatient = async (patientId) => {
     // Display a confirmation dialog
     const isConfirmed = window.confirm("⚠️Are you sure you want to delete this patient?");
+   setTimeout(()=>{
+    setLoading(false);
+   },1000)
   
     // Check if the user confirmed the deletion
     if (isConfirmed) {
@@ -154,6 +159,7 @@ const RegisteredPatients = () => {
         const response = await axios.delete(
           `https://mmh-jajh.onrender.com/patient/${patientId}`
         );
+       
   
         // Log the response or handle it based on your requirements
         console.log("Delete Patient Response:", response.data);
@@ -187,6 +193,13 @@ const RegisteredPatients = () => {
 
   return (
     <>
+     {loading && (
+  <div className="loader-overlay">
+    <div className="spinner-container">
+      <div className="spinner"></div>
+    </div>
+  </div>
+)}
       <div className="img-main"></div>
       <div className="search-bar group">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
@@ -246,7 +259,7 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <td style={{ border: "none", width: "25%" }}>
-                          Patient ID: {item.patientID}
+                          Patient ID: <span className="diseaseName">{item.patientID}</span>
                         </td>
                         <td style={{ border: "none", width: "25%" }}></td>
                         <td style={{ border: "none", width: "25%" }}>
@@ -371,17 +384,18 @@ const RegisteredPatients = () => {
                     item.status !== "Closed-MJPJA" &&
                     item.status !== "Closed-Other" && (
                       <>
-                        <button
-                          className="btn-register-status"
-                          onClick={() => handleShowStatus(index)}
-                        >
-                          Close Application
-                        </button>
+                       
                         <button
                           className="btn-register-status"
                           onClick={() => handleShowDocument(index)}
                         >
                           Upload Documents
+                        </button>
+                        <button
+                          className="btn-register-status"
+                          onClick={() => handleShowStatus(index)}
+                        >
+                          Close Application
                         </button>
                       </>
                     )}
@@ -428,6 +442,10 @@ const RegisteredPatients = () => {
                       <tr>
                         <td>Aadhar No.</td>
                         <td>{item.patientDetails.aadhar} </td>
+                      </tr>
+                      <tr>
+                        <td>RationCard No.</td>
+                        <td> <h6 className="diseaseName">{item.patientDetails.rationcardnumber} </h6></td>
                       </tr>
                       <tr>
                         <td>Residencial Address</td>

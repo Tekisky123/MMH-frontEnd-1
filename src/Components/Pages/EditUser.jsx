@@ -125,7 +125,7 @@ const EditData = () => {
         toast.success("Data Successfully Updated");
         setTimeout(() => {
           navigate("/user");
-        }, 2000);
+        }, 800);
       } catch (err) {
         console.log(err);
       }

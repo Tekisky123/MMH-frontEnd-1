@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import "../Assets/Styles/RegisteredPatients.css"
 
 const ViewMMH = ({ currentItem }) => {
   const navigate =useNavigate()
@@ -10,6 +11,8 @@ const ViewMMH = ({ currentItem }) => {
   const [adviceByMhh, setAdviceByMhh] = useState("");
   const [proposeHelpByMhh, setProposeHelpByMhh] = useState("");
   const storedUserType = localStorage.getItem("userType");
+  const [loading, setLoading] = useState(false); // State to manage loading
+
   const [errors, setErrors] = useState({
     schemeName: "",
     hospital: "",
@@ -21,6 +24,7 @@ const ViewMMH = ({ currentItem }) => {
   // Function to send data to the API using Axios
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
+    setLoading(true);
 
     try {
       const data = {
@@ -75,10 +79,21 @@ const ViewMMH = ({ currentItem }) => {
       {(storedUserType === "Operator" ? (<>{navigate("/opRegistered-patients")}</>): (<>{navigate("/registered-patients")}</>))}
     } catch (error) {
       console.error("Error sending data to API:", error);
+    }finally {
+      setLoading(false); // Set loading to false after API call, whether successful or not
     }
+
   };
 
   return (
+    <>
+   {loading && (
+  <div className="loader-overlay">
+    <div className="spinner-container">
+      <div className="spinner"></div>
+    </div>
+  </div>
+)}
     <form onSubmit={handleSubmit}>
       <div>
         <h2 className="table-heading">Scheme/Hospital/MMH Guidance Plan</h2>
@@ -167,6 +182,7 @@ const ViewMMH = ({ currentItem }) => {
         <button type="submit"  className="btn-register-status submit">Submit</button>
       </div>
     </form>
+    </>
   );
 };
 

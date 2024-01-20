@@ -49,6 +49,19 @@
   font-size: 20px;
   margin-bottom: 10px;
 }
+.smallheading{
+  font-size: 17px;
+}
+.operator-info{
+  font-size: 18px;
+  font-weight: 500;
+}
+.operator-info span {
+  color: black;
+}
+.operator-info p {
+  color: #91b02e;
+}
 .pending-cases{
   border: 2px solid red;
   color: red;
@@ -74,6 +87,9 @@
   font-weight: bold;
   text-decoration: none;
   /* color: #a4c639; */
+}
+.smallvalue{
+  font-size: 45px;
 }
 .OPcard-value {
   font-size: 54px;

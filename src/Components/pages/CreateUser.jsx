@@ -112,7 +112,7 @@ const CreateUser = () => {
               setShowSuccessAnimation(false);
               navigate("/user");
               // Optionally, reset form state here if needed
-            }, 2000);
+            }, 800);
           }
         });
     }

@@ -25,6 +25,8 @@ const UploadDocuments = ({ currentItem, onClose }) => {
   const [isAddSuccess, setAddSuccess] = useState(false);
   const [refresh, setRefresh]= useState(false)
   const storedUserType = localStorage.getItem("userType");
+  const [loading, setLoading] = useState(false); // State to manage loading
+
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
   };
@@ -100,7 +102,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+    setLoading(true);
     
     
     const updateUrl = "https://mmh-jajh.onrender.com/patient/" + currentItem;
@@ -138,7 +140,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
           showToast("Document uploaded successfully!", "success")
           onClose();
           window.location.reload();
-        }, 1000); // Adjust the delay time as needed
+        }, 800); // Adjust the delay time as needed
   
         handleSidebarClose();
         // onClose();
@@ -160,6 +162,14 @@ const UploadDocuments = ({ currentItem, onClose }) => {
   };
 
   return (
+    <>
+     {loading && (
+  <div className="loader-overlay">
+    <div className="spinner-container">
+      <div className="spinner"></div>
+    </div>
+  </div>
+)}
     <div>
       {files.length > 0 ? (
         <div className="file-upload-or-not">
@@ -275,6 +285,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
       </form>
       <ToastContainer autoClose={3000} />
     </div>
+    </>
   );
 };
 

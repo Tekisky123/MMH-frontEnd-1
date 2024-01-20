@@ -22,11 +22,13 @@ const Dashboard = () => {
 
   const [startDate, setStartDate] = useState(null);
   const [selectedOperator, setSelectedOperator] = useState(null);
+  const [monthsAmountSavedDetails, setMonthsAmountSavedDetails] = useState(0);
 
   const [endDate, setEndDate] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [operatorDetails, setOperatorDetails] = useState([]); // Declare operatorDetails state
+  const [operatorDetails, setOperatorDetails] = useState([]);
+  const [operatorAmount, setOperatorAmount] = useState([]);
 
   const [data, setData] = useState({
     totalAmountSaved: 0,
@@ -46,13 +48,10 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       try {
-        // Fetch data from the main dashboard API
         const dashboardApiResponse = await axios.get(
           "https://mmh-jajh.onrender.com/mmh/dashboard"
         );
         const json = dashboardApiResponse.data;
-
-        // Handle empty string case and parse numbers
         setData({
           totalAmountSaved: parseFloat(json.totalAmountSaved) || 0,
           monthlyAmountSaved: parseFloat(json.monthAmountSaved) || 0,
@@ -69,7 +68,6 @@ const Dashboard = () => {
             parseInt(json.hospitalAndSchemeDetails) || 0,
         });
 
-        // Fetch data from the operator API
         const operatorsApiResponse = await axios.get(
           "https://mmh-jajh.onrender.com/user/getuser"
         );
@@ -82,11 +80,9 @@ const Dashboard = () => {
           mobile: operator.mobile,
         }));
 
-        // Update state with operator details
         setOperatorDetails(operatorDetails);
         setLoading(false);
 
-        // Fetch additional data for each operator
         const fetchDataForOperators = async () => {
           try {
             const promises = operatorDetails.map(async (operator) => {
@@ -96,25 +92,33 @@ const Dashboard = () => {
                   `https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=${operator.mobile}`
                 );
                 const additionalData = operatorApiResponse.data.details;
+                const amountData =
+                  operatorApiResponse.data.monthsAmountSavedDetails;
+                console.log("data amount", amountData);
                 console.log(
                   `Data received for operator: ${operator.mobile}`,
                   additionalData
                 );
-                return { ...operator, additionalData };
+                return { ...operator, additionalData, amountData };
               } catch (error) {
                 console.error(
                   `Error fetching data for operator: ${operator.mobile}`,
                   error
                 );
-                return { ...operator, additionalData: null };
+                return { ...operator, additionalData: null, amountData: null };
               }
             });
 
             const updatedFilteredData = await Promise.all(promises);
+            setFilteredData(updatedFilteredData);
 
-            // Check if the component is still mounted before updating the state
+            // Modify the structure of operatorAmount
+            const updatedOperatorAmount = updatedFilteredData.map(
+              (operator) => operator.amountData || 0
+            );
+            setOperatorAmount(updatedOperatorAmount);
+
             if (isMounted) {
-              setFilteredData(updatedFilteredData);
               setLoading(false);
             }
           } catch (error) {
@@ -122,7 +126,6 @@ const Dashboard = () => {
           }
         };
 
-        // Call the fetchDataForOperators only when filteredData changes
         if (loading && operatorDetails.length > 0) {
           fetchDataForOperators();
         }
@@ -131,15 +134,12 @@ const Dashboard = () => {
       }
     };
 
-    fetchData(); // Call the fetchData function when the component mounts
-
+    fetchData();
 
     return () => {
-      // Set isMounted to false when the component is unmounted
       isMounted = false;
     };
-  }, []);
-
+  }, [loading, operatorDetails]);
 
   return (
     <>
@@ -223,26 +223,38 @@ const Dashboard = () => {
         </div>
 
         {filteredData.map((operator, index) => {
-            console.log("Operator data:", operator);
+          console.log("Operator data:", operator);
+          console.log("Additional Data:", operator?.additionalData);
+
+          // Log the relevant data
+          console.log(
+            "Monthly Amount Saved Details:",
+            operator?.monthsAmountSavedDetails || 0
+          );
 
           return (
             <div key={index} className="dashboard-big-card">
               {/* Display operator name and mobile number */}
               <div className="dashboard-card operator-info">
                 <p>
-                  Name: {operator.firstName} {operator.lastName}
+                  <span> Name:</span> {operator.firstName} {operator.lastName}
                 </p>
-                <p>Mobile: {operator.mobile}</p>
+                <hr />
+                <p>
+                  <span>Mobile: </span>
+                  {operator.mobile}
+                </p>
               </div>
 
               {/* Display operator data in cards */}
+              {/* {operatorAmount.map(item,index)=>re */}
               <div className="dashboard-card amount">
-                <h1 className="monthly-amount-heading">Monthly Amount Saved</h1>
-                <p className="card-value">
-  ₹ {formatAmount(
-    operator?.additionalData?.allDataResponse?.[0]?.amountSaved || 0
-  )}
-</p>
+                <h1 className="total-amount-heading">
+                  Monthly Amount Saved Details
+                </h1>
+                <p className="card-value smallvalue">
+                  ₹ {formatAmount(operator.amountData || 0)}
+                </p>
               </div>
 
               <div className="dashboard-card pending-cases">
@@ -264,17 +276,25 @@ const Dashboard = () => {
               </div>
 
               <div className="dashboard-card cards">
-                <h1 className="total-approach-heading">
+                <h1 className="total-approach-heading smallheading">
                   Total Number of Approaches In This Month
                 </h1>
                 <p className="card-value">
-                  {operator?.additionalData?.allDataResponse?.length ||
-                    0}
+                  {operator?.additionalData?.allDataResponse?.length || 0}
                 </p>
               </div>
             </div>
           );
         })}
+        {/* {operatorAmount.map((operatorAmount, index)=>{
+              <div className="dashboard-card amount">
+              <h1 className="total-amount-heading">Monthly Amount Saved Details</h1>
+              <p className="card-value">
+                ₹ {formatAmount(operatorAmount || 0)}
+              </p>
+            </div>
+            
+        })} */}
       </div>
     </>
   );
