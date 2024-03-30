@@ -17,7 +17,7 @@ const EditPatientDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://mmh-jajh.onrender.com/patient/${Id}`
+          `https://mmhbackendrailway-production.up.railway.app/patient/${Id}`
         );
 
         if (response?.status === 200) {
@@ -472,7 +472,7 @@ const EditPatientDetails = () => {
         status: "Patient Registered",
         referredBy: formData.referredBy,
       };
-      const url = "https://mmh-jajh.onrender.com/patient/"+ Id;
+      const url = "https://mmhbackendrailway-production.up.railway.app/patient/"+ Id;
       const response = await axios.put(url, payload);
 
       if (

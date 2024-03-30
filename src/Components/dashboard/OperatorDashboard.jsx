@@ -26,7 +26,7 @@ const OperatorDashboard = () => {
 
   // useEffect(() => {
   //   // Dummy API URL (Replace this with your actual API endpoint)
-  //   const apiUrl = "https://mmh-jajh.onrender.com/mmh/dashboard";
+  //   const apiUrl = "https://mmhbackendrailway-production.up.railway.app/mmh/dashboard";
 
   //   // Fetch data from the API
   //   fetch(apiUrl)
@@ -54,7 +54,7 @@ const OperatorDashboard = () => {
     try {
       const mobilenumber = localStorage.getItem("mobileNumber");
       const url =
-        "https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=";
+        "https://mmhbackendrailway-production.up.railway.app/mmh/dashboard/operator?phoneNumber=";
       const response = await axios.get(url + mobilenumber);
 
       console.log("response: ", response.data);

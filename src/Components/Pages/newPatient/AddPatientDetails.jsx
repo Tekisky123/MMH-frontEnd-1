@@ -135,8 +135,8 @@ const AddPatientDetails = () => {
       }));
     } else if (
       name === "aadharNumber" ||
-      name === "pincode" ||
-      name === "rationcardnumber"
+      name === "pincode" 
+      // name === "rationcardnumber"
     ) {
       // Remove any non-digit characters
       const numericValue = value.replace(/[^0-9]/g, "");
@@ -148,23 +148,25 @@ const AddPatientDetails = () => {
 
       // Update form data with the truncated value
       setFormData((prevData) => ({ ...prevData, [name]: truncatedValue }));
-    } else if (name === "age") {
-      const ageValue = parseInt(value, 10);
+    } 
+    // else if (name === "age") {
+    //   const ageValue = parseInt(value, 10);
 
-      // Check if the value is within the desired range (1 to 120)
-      const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
+    //   // Check if the value is within the desired range (1 to 120)
+    //   const isValidAge = !isNaN(ageValue) && ageValue >= 1 && ageValue <= 120;
 
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: isValidAge ? "" : "Age must be between 1 and 120",
-      }));
+    //   setErrors((prevErrors) => ({
+    //     ...prevErrors,
+    //     [name]: isValidAge ? "" : "Age must be between 1 and 120",
+    //   }));
 
-      // Update form data with the validated value
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: isValidAge ? ageValue : "",
-      }));
-    } else {
+    //   // Update form data with the validated value
+    //   setFormData((prevData) => ({
+    //     ...prevData,
+    //     [name]: isValidAge ? ageValue : "",
+    //   }));
+    // }
+     else {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -406,7 +408,7 @@ const AddPatientDetails = () => {
         status: "Patient Registered",
         referredBy: formData.referredBy,
       };
-      const url = "https://mmh-jajh.onrender.com/patient/create";
+      const url = "https://mmhbackendrailway-production.up.railway.app/patient/create";
       const response = await axios.post(url, payload);
 
       if (
@@ -515,13 +517,20 @@ const AddPatientDetails = () => {
                 </div>
 
                 <input
-                  type="text"
-                  className="form-input"
-                  placeholder="First Name"
-                  name="full_name"
-                  value={formData.full_name}
-                  onChange={handleInputChange}
-                />
+  type="text"
+  className="form-input"
+  placeholder="First Name"
+  name="full_name"
+  value={formData.full_name}
+  onChange={handleInputChange}
+  onKeyDown={(e) => {
+    const regex = /^[a-zA-Z\s]*$/; // Regular expression to allow only letters and spaces
+    if (!regex.test(e.key) && e.key !== "Backspace" && e.key !== "Delete") {
+      e.preventDefault();
+    }
+  }}
+/>
+
                 <div className="error-message">{errors.full_name}</div>
               </div>
 
@@ -600,7 +609,7 @@ const AddPatientDetails = () => {
                   <span className="error-message">⁕</span>
                 </div>
                 <input
-                  type="number"
+                  type="text"
                   className="form-input"
                   placeholder="Age"
                   min="1"
@@ -739,7 +748,7 @@ const AddPatientDetails = () => {
                       <div class="family-item">
                         <div style={{ display: "flex", margin: "0px" }}>
                           <span for="full_name">Full Name</span>
-                          <span className="error-message">⁕</span>
+                          {/* <span className="error-message">⁕</span> */}
                         </div>
                         <input
                           type="text"
@@ -756,7 +765,7 @@ const AddPatientDetails = () => {
                       <div class="family-item">
                         <div style={{ display: "flex", margin: "0px" }}>
                           <span for="full_name">Relation</span>
-                          <span className="error-message">⁕</span>
+                          {/* <span className="error-message">⁕</span> */}
                         </div>
                         <input
                           type="text"
@@ -773,7 +782,7 @@ const AddPatientDetails = () => {
                       <div class="family-item">
                         <div style={{ display: "flex", margin: "0px" }}>
                           <span for="full_name">Age</span>
-                          <span className="error-message">⁕</span>
+                          {/* <span className="error-message">⁕</span> */}
                         </div>
                         <input
                           type="number"
@@ -790,7 +799,7 @@ const AddPatientDetails = () => {
                       <div class="family-item">
                         <div style={{ display: "flex", margin: "0px" }}>
                           <span for="full_name">Occupation</span>
-                          <span className="error-message">⁕</span>
+                          {/* <span className="error-message">⁕</span> */}
                         </div>
                         <input
                           type="text"
@@ -805,7 +814,7 @@ const AddPatientDetails = () => {
                       <div class="family-item">
                         <div style={{ display: "flex", margin: "0px" }}>
                           <span for="full_name">Monthly Income</span>
-                          <span className="error-message">⁕</span>
+                          {/* <span className="error-message">⁕</span> */}
                         </div>
                         <input
                           type="number"

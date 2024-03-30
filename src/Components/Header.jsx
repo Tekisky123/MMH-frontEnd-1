@@ -9,6 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const auth = useAuth()
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const openLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -25,22 +26,38 @@ const Header = () => {
     setShowLogoutModal(false);
     navigate("/")
   };
+    // Function to handle toggling menu
+    const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
+  
+    // Function to close menu
+    const closeMenu = () => {
+      setIsMenuOpen(false);
+    };
+  
 
   return (
     <nav className="navbar">
       <div className="navbar-container container">
-        <input type="checkbox" name="" id="" />
-        <div className="hamburger-lines">
+      <input
+          type="checkbox"
+          id="menu-toggle"
+          checked={isMenuOpen}
+          onChange={() => setIsMenuOpen(!isMenuOpen)}
+        />
+          <label htmlFor="menu-toggle" className="hamburger-lines" onClick={toggleMenu}>
           <span className="line line1"></span>
           <span className="line line2"></span>
           <span className="line line3"></span>
-        </div>
+        </label>
         <ul className="menu-items">
           <li>
           <h1 className="logo-main"><img className="logo-main" src={logo} alt="" /></h1>
 
             
             <NavLink
+            onClick={closeMenu}
             
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
@@ -57,6 +74,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink
+            onClick={closeMenu}
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
@@ -72,6 +90,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink
+            onClick={closeMenu}
                style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
@@ -87,6 +106,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink
+            onClick={closeMenu}
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
@@ -117,6 +137,7 @@ const Header = () => {
           </li> */}
           <li>
             <NavLink
+            onClick={closeMenu}
              style={({ isActive }) => ({
               color: isActive ? "#a4c639" : "",
               backgroundColor: isActive ? "white" : "",
@@ -132,6 +153,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink
+            onClick={closeMenu}
              style={({ isActive }) => ({
               color: isActive ? "#a4c639" : "",
               backgroundColor: isActive ? "white" : "",
@@ -147,6 +169,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink
+            onClick={closeMenu}
              style={({ isActive }) => ({
               color: isActive ? "#a4c639" : "",
               backgroundColor: isActive ? "white" : "",

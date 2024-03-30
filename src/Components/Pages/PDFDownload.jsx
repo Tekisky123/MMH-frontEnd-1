@@ -187,9 +187,9 @@ const PDFDownload = ({ item }) => {
 
   return (
     <>
-      <button className="pdf-download-btn" onClick={generatePdf} style={{}} title="Download MMH Form">
-        <FaFileDownload />
-      </button>
+      <div onClick={generatePdf} style={{}} title="Download MMH Form">
+       PDF Download
+      </div>
     </>
   );
 };

@@ -105,7 +105,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
     setLoading(true);
     
     
-    const updateUrl = "https://mmh-jajh.onrender.com/patient/" + currentItem;
+    const updateUrl = "https://mmhbackendrailway-production.up.railway.app/patient/" + currentItem;
 
     try {
       const formData = new FormData();

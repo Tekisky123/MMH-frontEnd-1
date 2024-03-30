@@ -8,7 +8,7 @@ const EditData = () => {
   const navigate = useNavigate();
   const { _id } = useParams();
 
-  const baseURL = `https://mmh-jajh.onrender.com/user/updateuser`;
+  const baseURL = `https://mmhbackendrailway-production.up.railway.app/user/updateuser`;
 
   const [data, setData] = useState({
     firstName: "",
@@ -29,7 +29,7 @@ const EditData = () => {
 
   const getData = async () => {
     try {
-      const result = await axios.get(`https://mmh-jajh.onrender.com/user/${_id}`);
+      const result = await axios.get(`https://mmhbackendrailway-production.up.railway.app/user/${_id}`);
       console.log(result);
 
       const { firstName, lastName, email, password, mobile, userType } =

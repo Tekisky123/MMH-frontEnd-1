@@ -49,7 +49,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const dashboardApiResponse = await axios.get(
-          "https://mmh-jajh.onrender.com/mmh/dashboard"
+          "https://mmhbackendrailway-production.up.railway.app/mmh/dashboard"
         );
         const json = dashboardApiResponse.data;
         setData({
@@ -69,7 +69,7 @@ const Dashboard = () => {
         });
 
         const operatorsApiResponse = await axios.get(
-          "https://mmh-jajh.onrender.com/user/getuser"
+          "https://mmhbackendrailway-production.up.railway.app/user/getuser"
         );
         const operators = operatorsApiResponse.data.data.filter(
           (user) => user.userType === "Operator"
@@ -89,7 +89,7 @@ const Dashboard = () => {
               console.log(`Fetching data for operator: ${operator.mobile}`);
               try {
                 const operatorApiResponse = await axios.get(
-                  `https://mmh-jajh.onrender.com/mmh/dashboard/operator?phoneNumber=${operator.mobile}`
+                  `https://mmhbackendrailway-production.up.railway.app/mmh/dashboard/operator?phoneNumber=${operator.mobile}`
                 );
                 const additionalData = operatorApiResponse.data.details;
                 const amountData =

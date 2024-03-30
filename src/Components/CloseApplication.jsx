@@ -30,7 +30,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
       return; // User canceled submission
     }
 
-    const updateUrl = "https://mmh-jajh.onrender.com/patient/" + currentItem;
+    const updateUrl = "https://mmhbackendrailway-production.up.railway.app/patient/" + currentItem;
 
     try {
       const formDataWithImage = new FormData();

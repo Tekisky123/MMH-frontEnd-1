@@ -100,7 +100,7 @@ const CreateUser = () => {
     if (validateForm()) {
       // Make API call to register a new user
       axios
-        .post("https://mmh-jajh.onrender.com/user/register", formData)
+        .post("https://mmhbackendrailway-production.up.railway.app/user/register", formData)
         .then((response) => {
           // Handle success response
           if (response.status === 200) {

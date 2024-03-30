@@ -16,7 +16,7 @@ const User = ({ location }) => {
 
   // Delete user data by ID
   const DeleteData = async (id) => {
-    await axios.get(`https://mmh-jajh.onrender.com/user/deleteuser/${id}`);
+    await axios.get(`https://mmhbackendrailway-production.up.railway.app/user/deleteuser/${id}`);
     getData();
   };
 
@@ -24,7 +24,7 @@ const User = ({ location }) => {
   const getData = async () => {
     try {
       setLoader(true);
-      const result = await axios.get("https://mmh-jajh.onrender.com/user/getuser");
+      const result = await axios.get("https://mmhbackendrailway-production.up.railway.app/user/getuser");
 
       setData(result.data.data); // Use result.data.data to access the array of users
     } catch (err) {

@@ -14,23 +14,21 @@
   background-attachment: fixed; /* This ensures that the background remains fixed */
 }
 
-
 .patient-card {
   border-radius: 8px;
   /* margin: 20px 0px; */
   padding: 15px 30px;
-   /* Use full width on smaller screens */ /* Limit max width for larger screens */
+  /* Use full width on smaller screens */ /* Limit max width for larger screens */
   box-shadow: 1px 1px 8px black;
   background-color: #ffffffee;
   width: 80%;
 }
 
-.patient-table{
+.patient-table {
   font-size: 20px;
   width: 100%;
   /* margin: 10px 20px; */
   position: relative;
-  
 }
 
 .patient-data {
@@ -39,7 +37,7 @@
 
 .file-upload-or-not {
   display: flex;
-  align-items: center;  
+  align-items: center;
 }
 
 .file-upload-logo {
@@ -53,8 +51,6 @@
 .file-upload,
 .file-not-found {
   font-weight: bold;
-  
-  
 }
 .card-file-upload,
 .card-file-not-found {
@@ -91,10 +87,11 @@
   margin: 4px 0; /* Adjusted margin for smaller screens */
   cursor: pointer;
 }
-.btn-patient-delete{
-  background-color: #DC4C64;
+.btn-patient-delete {
+  background-color: #dc4c64;
 }
-.btn-register-more:hover, .btn-register-status:hover{
+.btn-register-more:hover,
+.btn-register-status:hover {
   background-color: #a4c639;
 }
 
@@ -106,17 +103,17 @@
   /* Additional styles for the "Status" button when active */
 }
 
-.btn-close-submit{
+.btn-close-submit {
   margin-top: 20px;
 }
 
-.btn-register-edit{
+.btn-register-edit {
   /* background-color: #ff0000;
   border-radius: 10px;
   color: white;
   border: none;*/
   /* width: 5%; */
- /* padding: 8px 16px;
+  /* padding: 8px 16px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -126,21 +123,31 @@
   position: absolute;
   top: 0%;
   right: 8%;
-  
 }
 
-.btn-register-edit img{
+.btn-register-edit img {
   width: 30px;
   position: absolute;
   right: 3%;
 }
+.status-bar {
+  display: flex;
+
+}
+.patient-id {
+  display: flex;
+  align-items: baseline;
+}
+.patientid {
+  color: #a4c639;
+  font-size: 20px;
+  font-weight: 600;
+}
 
 .btn-register-status {
   background-color: #a4c639;
-  
-  
 }
-.submit{
+.submit {
   margin-top: 50px;
   position: relative;
   left: 450px;
@@ -162,11 +169,10 @@
 } */
 
 .patient-details-sidebar,
-.patient-status-sidebar{
+.patient-status-sidebar {
   width: 100%;
   position: relative;
 }
-
 
 .close-icon {
   cursor: pointer;
@@ -185,14 +191,14 @@ table {
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
-border-radius: 20px;
+  border-radius: 20px;
 }
-tr td, tr th{
+tr td,
+tr th {
   border: 1px solid black;
-
 }
 
-tr td{
+tr td {
   /* border: 1px solid #a4c639 ; */
 }
 
@@ -209,56 +215,52 @@ th {
   padding: 8px;
   text-align: left;
 }
-thead{
+thead {
   border: 1px solid black;
 }
 
-.sign-maincontainer{
+.sign-maincontainer {
   display: flex;
   /* border: 2px solid black; */
 }
 
-.sign-container{
+.sign-container {
   border: 1px solid black;
   height: 100px;
   width: 250px;
   position: relative;
-  
 }
 
-.sign-heading{
+.sign-heading {
   border: 1px solid black;
   text-align: center;
   width: 100%;
   position: absolute;
   top: 68px;
   padding: 5px;
-  
 }
 
-.instructions-container{
+.instructions-container {
   border: 1px solid black;
   padding: 10px;
   margin-top: 10px;
-  
 }
-.patient-sign{
+.patient-sign {
   border: none;
 }
 
 .DiseseaNameHighLight {
   /* position: relative;
   left: 45%; */
-  white-space: nowrap;
-
+  /* white-space: nowrap; */
 }
 
-.cardStatus{
+.cardStatus {
   white-space: nowrap;
 }
 /* Additional styles for responsiveness */
 
-.btn-download-pdf{
+.btn-download-pdf {
   background-color: #a4c639;
   border-radius: 10px;
   color: white;
@@ -273,15 +275,11 @@ thead{
   cursor: pointer;
 }
 
-
 .group {
   display: flex;
-  line-height: 28px;
+
   align-items: center;
-  position: relative;
-  max-width: 700px;
-  margin-top: 80px;
-  margin-bottom: 50px;
+  margin: 30px;
 }
 
 .input {
@@ -303,8 +301,7 @@ thead{
   color: #8e8e97;
 }
 
-.pdf-download{
-  
+.pdf-download {
 }
 
 .input:focus,
@@ -322,32 +319,32 @@ thead{
   width: 1rem;
   height: 1rem;
 }
-.diseaseName,.careTakerNum{
+.diseaseName,
+.careTakerNum {
   font-size: 25px;
   margin-left: 5px;
   color: #a4c639;
   font-weight: bold;
 }
-.uploadedDocuments{
+.uploadedDocuments {
   width: 300px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.icon-btns{
+.icon-btns {
   display: flex;
-
 }
-.pdf-download-btn{
- background-color: transparent;
- color: #a4c639;
- position: relative;
+.pdf-download-btn {
+  background-color: transparent;
+  color: #a4c639;
+  position: relative;
   left: 1070px;
- bottom: 200px;
- font-size: 40px;
- border: none;
+  bottom: 200px;
+  font-size: 40px;
+  border: none;
 }
-.dots{
+.dots {
   /* position: relative;
   right: -1070px;
   display: flex;
@@ -358,14 +355,14 @@ thead{
  border: none; */
 }
 
-.droupdown{
+.droupdown {
   position: relative;
   right: -1070px;
- bottom: 200px;
- font-size: 40px;
- border: none;
+  bottom: 200px;
+  font-size: 40px;
+  border: none;
 }
-.droupdown-main{
+.droupdown-main {
   color: black;
   font-size: 20px;
 }
@@ -376,7 +373,12 @@ thead{
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for blur effect */
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Semi-transparent black background for blur effect */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -396,8 +398,7 @@ thead{
   box-shadow: 28px 0px 0 0 rgba(164, 198, 57, 0.2),
     22.7px 16.5px 0 0 rgba(164, 198, 57, 0.4),
     8.68px 26.6px 0 0 rgba(164, 198, 57, 0.6),
-    -8.68px 26.6px 0 0 rgba(164, 198, 57, 0.8),
-    -22.7px 16.5px 0 0 #a4c639;
+    -8.68px 26.6px 0 0 rgba(164, 198, 57, 0.8), -22.7px 16.5px 0 0 #a4c639;
   animation: spinner-b87k6z 1s infinite linear;
 }
 
@@ -407,62 +408,64 @@ thead{
   }
 }
 
-
-
-
-
-
 @media only screen and (max-width: 600px) {
-
-  .file-upload-logo , .card-file-not-found ,.card-file-upload{
+  .file-upload-logo,
+  .card-file-not-found,
+  .card-file-upload {
     right: 0px;
   }
 
-  .maincontainer{
+  .maincontainer {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  .btn-download-pdf , .btn-register-status ,.btn-register-more{
-    padding: 5px!important;
-    font-size: 10px!important;
+  .btn-download-pdf,
+  .btn-register-status,
+  .btn-register-more {
+    padding: 5px !important;
+    font-size: 10px !important;
   }
-  .patient-table{
+  .patient-table {
     margin: 0px;
   }
-.patient-card{
-  padding: 15px;
-}
-  .cardStatus{
+  .patient-card {
+    padding: 15px;
+  }
+  .cardStatus {
     white-space: wrap;
   }
-  .pdf-download-btn{
+  .pdf-download-btn {
     left: 290px;
     top: -150px;
     font-size: 30px;
   }
 
-  .DiseseaNameHighLight span , .careTakerNum{
+  .DiseseaNameHighLight span,
+  .careTakerNum {
     font-size: 15px;
   }
 
-  tr td, tr ,th{
+  tr td,
+  tr,
+  th {
     font-size: 10px;
   }
-  .form-input{
+  .form-input {
     width: 280px;
   }
   .submit {
     left: 270px;
   }
-  .uploadedDocuments{
+  .uploadedDocuments {
     width: 180px;
     display: flex;
     align-items: center;
   }
-  .uploadedDocuments a ,.uploadedDocuments img{
-   margin: 0px;
+  .uploadedDocuments a,
+  .uploadedDocuments img {
+    margin: 0px;
   }
   .btn-register-more,
   .btn-register-status {
@@ -476,15 +479,17 @@ thead{
   }
 }
 @media only screen and (max-width: 768px) {
-  .pdf-download-btn{
+  .pdf-download-btn {
     left: 650px;
   }
+  
 }
 
 /* Add responsive adjustments for larger screens */
 @media screen and (min-width: 768px) {
-  .card-file-upload, .card-file-not-found {
-    right:200px;
+  .card-file-upload,
+  .card-file-not-found {
+    right: 200px;
   }
 
   .patient-card {
@@ -494,19 +499,18 @@ thead{
   .patient-card .patient-details-sidebar {
     left: 0; /* Bring sidebar back to the screen for larger screens */
   }
+ 
 }
 
 /* Add additional styles for responsiveness as needed */
 
 @media only screen and (max-width: 900px) {
-  .card-file-upload, .card-file-not-found {
+  .card-file-upload,
+  .card-file-not-found {
     right: 0px;
   }
   .patient-card {
-    min-width: 100%;
-
+    min-width: 95%;
   }
-  .pdf-download-btn{
-    left: 300px;
-  }
+ 
 }

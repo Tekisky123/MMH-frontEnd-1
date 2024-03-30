@@ -2,7 +2,7 @@ import axios from 'axios'
 import React from 'react'
 
 const DeletePatient = ({currentItem}) => {
-  const deleteUrl = "https://mmh-jajh.onrender.com/patient/"+currentItem
+  const deleteUrl = "https://mmhbackendrailway-production.up.railway.app/patient/"+currentItem
 
   const handleDelete = async () => {
     try {
