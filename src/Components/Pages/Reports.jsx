@@ -3,68 +3,55 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import "../../Components/dashboard/Dashboard.css";
 import countries from "../../common/CommonObj";
+import BaseURL from "../../common/Api";
 
 const Reports = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [filteredData, setFilteredData] = useState([]);
 
   const fetchData = async () => {
     try {
-      // Replace 'your_api_endpoint' with the actual API endpoint you are using
-      const apiEndpoint = "https://mmhbackendrailway-production.up.railway.app/patient/getpatient";
+      const apiEndpoint = `${BaseURL}/patient/getpatient`;
       const response = await axios.get(apiEndpoint);
-
-      // Check if the API request was successful (status code 200)
+  
       if (response.status === 200) {
-        const entries = response.data.result; // Replace 'entries' with the actual key containing your data
-
-        // Filter data based on the date range
-        const filteredEntries = filterDataByDateRange(
-          entries,
-          startDate,
-          endDate
-        );
-
-        // Add a 'Sr.No.' column and extract other desired fields from each entry
+        const entries = response.data.result;
+  
+        // Filter data by date range
+        const filteredEntries = filterDataByDateRange(entries, startDate, endDate);
+  
+        // Format data for Excel
         const formattedEntries = filteredEntries.map((entry, index) => ({
           "SR.NO.": index + 1,
-          "REGISTERED DATE5": entry.registeredDate,
+          "REGISTERED DATE": formatDate(entry.registeredDate),
           "NAME OF PATIENT": entry.patientDetails.name,
           AGE: entry.patientDetails.age,
           GENDER: entry.patientDetails.sex,
           ADDRESS: entry.patientDetails.address,
           TALUKA: entry.patientDetails.talukha,
           DISTRICT: entry.patientDetails.district,
-          STATE: getStateName(entry.patientDetails.state),
+          // STATE: getStateName(entry.patientDetails.state),
           "CONTACT NO.": entry.patientDetails.mobile,
           INVESTIGATION: entry.diseaseDetail.investigationDone1,
-          DISEASE: entry.disease,
+          DISEASE: entry.diseaseDetail.name,
           "REFERRED BY": entry.referredBy,
-          "OPD/IPD": "",
-          HOSPITAL: "",
-          "TASK COMPLETED PENDING": "",
-          REMARK: "",
-          "RATION CARD": entry.patientDetails.rationcardnumber,
+          "OPD/IPD": entry.diseaseDetail.opd || entry.diseaseDetail.ipd || "",
+          HOSPITAL: entry.diseaseDetail.currentHospitalName,
+          "TASK STATUS": entry.status,
+          REMARK: entry.comments || "",
+          "RATION CARD": entry.patientDetails.rationcardnumber || "N/A",
         }));
-
+  
         // Create a worksheet
         const ws = XLSX.utils.json_to_sheet(formattedEntries);
-
-        // Make the heading row bold
-        const boldHeaderStyle = { font: { bold: true } };
-        Object.keys(formattedEntries[0]).forEach((key, colIndex) => {
-          const headerCell = XLSX.utils.encode_cell({ r: 0, c: colIndex });
-          ws[headerCell] = { ...ws[headerCell], ...boldHeaderStyle };
-        });
-
-        // Create a workbook
+  
+        // Create a workbook and append the worksheet
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
-
-        // Save the workbook to an Excel file
-        XLSX.writeFile(wb, "patient_data.xlsx");
-        console.log("Data has been exported to patient_data.xlsx");
+        XLSX.utils.book_append_sheet(wb, ws, "Registered Patients");
+  
+        // Save the workbook as an Excel file
+        XLSX.writeFile(wb, "Registered_Patients_Report.xlsx");
+        console.log("Data has been exported to Registered_Patients_Report.xlsx");
       } else {
         console.error(
           `Error: Unable to fetch data from the API. Status code: ${response.status}`
@@ -74,6 +61,13 @@ const Reports = () => {
       console.error("Error:", error);
     }
   };
+  
+  // Utility function to format date
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+  
 
   // Function to filter data based on date range
   const filterDataByDateRange = (data, startDate, endDate) => {

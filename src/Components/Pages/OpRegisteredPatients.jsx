@@ -22,6 +22,7 @@ import PDFDownload from "./PDFDownload";
 import countries from "../../common/CommonObj";
 import { Dropdown } from "react-bootstrap";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import BaseURL from "../../common/Api";
 
 const OpRegisteredPatients = () => {
   const [files, setFiles] = useState([]);
@@ -46,7 +47,7 @@ const OpRegisteredPatients = () => {
   const pdfRefs = data.map(() => React.createRef());
   const mobileNum = localStorage.getItem("mobileNumber");
   const baseURL =
-    "https://mmhbackendrailway-production.up.railway.app/mmh/dashboard/operator?phoneNumber=";
+    `${BaseURL}/mmh/dashboard/operator?phoneNumber=`;
 
   const pdfRef = useRef();
   const options = {
@@ -246,7 +247,7 @@ const OpRegisteredPatients = () => {
       try {
         // Make an HTTP request to delete the patient
         const response = await axios.delete(
-          `https://mmhbackendrailway-production.up.railway.app/patient/${patientId}`
+          `${BaseURL}/patient/${patientId}`
         );
 
         // Log the response or handle it based on your requirements
@@ -289,7 +290,6 @@ const OpRegisteredPatients = () => {
   return (
     <>
       <div className="search-bar group">
-        
         <input
           type="text"
           placeholder="Search patient"
@@ -341,23 +341,22 @@ const OpRegisteredPatients = () => {
                   <table className="patient-table" style={{ border: "none" }}>
                     <tbody>
                       <tr>
-                      <div className="patient-id">
-                          Patient ID: <br /><br /><span className="diseaseName">{item.patientID}</span>
+                        <div className="patient-id">
+                          Patient ID: <br />
+                          <br />
+                          <span className="diseaseName">{item.patientID}</span>
                         </div>
                         <div className="status-bar">
-                        <div>
-                          Status:
-                        </div>
-                        <div
-                          className="cardStatus"
-                          style={{
-                         
-                            color: statusColor,
-                            fontWeight: statusText,
-                          }}
-                        >
-                          {item.status}
-                        </div>
+                          <div>Status:</div>
+                          <div
+                            className="cardStatus"
+                            style={{
+                              color: statusColor,
+                              fontWeight: statusText,
+                            }}
+                          >
+                            {item.status}
+                          </div>
                         </div>
                       </tr>
 
@@ -447,16 +446,13 @@ const OpRegisteredPatients = () => {
                       >
                         Edit Patient
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        
-                        >
-                         <PDFDownload item={item} />
-                        
-                        </Dropdown.Item>
+                      <Dropdown.Item>
+                        <PDFDownload item={item} />
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
-                <PDFDownload item={item} />
+                
                 <div className="data-btn">
                   <button
                     className="btn-register-more"
@@ -532,7 +528,12 @@ const OpRegisteredPatients = () => {
                       </tr>
                       <tr>
                         <td>RationCard No.</td>
-                        <td> <h6 className="diseaseName">{item.patientDetails.rationcardnumber} </h6></td>
+                        <td>
+                          {" "}
+                          <h6 className="diseaseName">
+                            {item.patientDetails.rationcardnumber}{" "}
+                          </h6>
+                        </td>
                       </tr>
                       <tr>
                         <td>Residencial Address</td>

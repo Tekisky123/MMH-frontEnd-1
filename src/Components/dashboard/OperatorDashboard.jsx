@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import "../../Components/dashboard/Dashboard.css";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
+import BaseURL from "../../common/Api";
 
 const OperatorDashboard = () => {
   const { number } = useParams();
@@ -26,7 +27,7 @@ const OperatorDashboard = () => {
 
   // useEffect(() => {
   //   // Dummy API URL (Replace this with your actual API endpoint)
-  //   const apiUrl = "https://mmhbackendrailway-production.up.railway.app/mmh/dashboard";
+  //   const apiUrl = "https://mmhbackendrailwa-production.up.railway.app/mmh/dashboard";
 
   //   // Fetch data from the API
   //   fetch(apiUrl)
@@ -54,7 +55,7 @@ const OperatorDashboard = () => {
     try {
       const mobilenumber = localStorage.getItem("mobileNumber");
       const url =
-        "https://mmhbackendrailway-production.up.railway.app/mmh/dashboard/operator?phoneNumber=";
+        `${BaseURL}/mmh/dashboard/operator?phoneNumber=`;
       const response = await axios.get(url + mobilenumber);
 
       console.log("response: ", response.data);

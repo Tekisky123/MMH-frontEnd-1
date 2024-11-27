@@ -5,6 +5,7 @@ import "../Assets/Styles/UploadDocuments.css";
 import check from "../Assets/Images/check.png";
 import error from "../Assets/Images/error.png";
 import { useNavigate } from "react-router-dom";
+import BaseURL from "../common/Api";
 
 const UploadDocuments = ({ currentItem, onClose }) => {
 
@@ -105,7 +106,7 @@ const UploadDocuments = ({ currentItem, onClose }) => {
     setLoading(true);
     
     
-    const updateUrl = "https://mmhbackendrailway-production.up.railway.app/patient/" + currentItem;
+    const updateUrl = `${BaseURL}/patient/` + currentItem;
 
     try {
       const formData = new FormData();

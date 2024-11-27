@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BaseURL from "../common/Api";
 
 const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
   const [files, setFiles] = useState(null);
@@ -30,7 +31,7 @@ const CloseApplication = ({ handleSidebarClose, currentItem, index }) => {
       return; // User canceled submission
     }
 
-    const updateUrl = "https://mmhbackendrailway-production.up.railway.app/patient/" + currentItem;
+    const updateUrl = `${BaseURL}/patient/` + currentItem;
 
     try {
       const formDataWithImage = new FormData();

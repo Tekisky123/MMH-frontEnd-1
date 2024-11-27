@@ -1,61 +1,41 @@
 import React, { useState, useEffect, useRef } from "react";
-import ReactToPdf from "react-to-pdf";
 import "../../Assets/Styles/RegisteredPatients.css";
-import check from "../../Assets/Images/check.png";
-import error from "../../Assets/Images/error.png";
+
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
-import editlogo from "../../Assets/Images/icons8-edit-text-file-50.png";
+import {  useParams } from "react-router-dom";
 import UploadDocuments from "../UploadDocuments";
 import ViewMMH from "../ViewMMH";
-import { MdDelete } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-import { Document, Page, pdfjs } from "react-pdf";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
-import generatePDF from "react-to-pdf";
-import html2pdf from "html2pdf.js";
-import html2canvas from "html2canvas";
 import MMH from "../MMH";
 import CloseApplication from "../CloseApplication";
-import DeletePatient from "../DeletePatient";
 import PDFDownload from "./PDFDownload";
 
 import countries from "../../common/CommonObj";
 import { Dropdown } from "react-bootstrap";
+import BaseURL from "../../common/Api";
 
 const RegisteredPatients = () => {
-  const [files, setFiles] = useState([]);
-  const [document, setDocument] = useState([]);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  // const [showDetails, setShowDetails] = useState(false);
+
   const [showStatus, setShowStatus] = useState(false);
   const [data, setData] = useState([]);
   const [activePatientId, setActivePatientId] = useState(false);
   const [activeStatusId, setActiveStatusId] = useState(false);
   const [activeDocumentId, setActiveDocumentId] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
-  const [refToDownload, setRefToDownload] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [imgView, setImgView] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [statusColor, setStatusColor] = useState("");
   const { cardStatus } = useParams();
-  const doc = new jsPDF();
   const [loading, setLoading] = useState(false);
 
-
   const pdfRefs = data.map(() => React.createRef());
-  const baseURL = "https://mmhbackendrailway-production.up.railway.app/patient/getpatient";
+  const baseURL =
+    `${BaseURL}/patient/getpatient`;
 
   const pdfRef = useRef();
-  const options = {
-    orientation: "portrait",
-    // Add other options as needed
-  };
+
   useEffect(() => {
     let isMounted = true;
 
@@ -70,7 +50,7 @@ const RegisteredPatients = () => {
     return () => {
       isMounted = false;
     };
-  }, [cardStatus]); // Include cardStatus as a dependency
+  }, [cardStatus]);
 
   useEffect(() => {
     // Set the initial search term based on the condition (params)
@@ -147,28 +127,29 @@ const RegisteredPatients = () => {
   //delete patient logic
   const handleDeletePatient = async (patientId) => {
     // Display a confirmation dialog
-    const isConfirmed = window.confirm("⚠️Are you sure you want to delete this patient?");
-   setTimeout(()=>{
-    setLoading(false);
-   },1000)
-  
+    const isConfirmed = window.confirm(
+      "⚠️Are you sure you want to delete this patient?"
+    );
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
     // Check if the user confirmed the deletion
     if (isConfirmed) {
       try {
         // Make an HTTP request to delete the patient
         const response = await axios.delete(
-          `https://mmhbackendrailway-production.up.railway.app/patient/${patientId}`
+          `${BaseURL}/patient/${patientId}`
         );
-       
-  
+
         // Log the response or handle it based on your requirements
         console.log("Delete Patient Response:", response.data);
-  
+
         // After successful deletion, update the state without making another request
         setData((prevData) =>
           prevData.filter((patient) => patient._id !== patientId)
         );
-  
+
         // Optionally, you can also update the filtered data
         setFilteredData((prevFilteredData) =>
           prevFilteredData.filter((patient) => patient._id !== patientId)
@@ -182,7 +163,7 @@ const RegisteredPatients = () => {
       console.log("Deletion canceled");
     }
   };
-  
+
   console.log(data);
 
   const handleEditPatient = (patientId) => {
@@ -193,16 +174,15 @@ const RegisteredPatients = () => {
 
   return (
     <>
-     {loading && (
-  <div className="loader-overlay">
-    <div className="spinner-container">
-      <div className="spinner"></div>
-    </div>
-  </div>
-)}
+      {loading && (
+        <div className="loader-overlay">
+          <div className="spinner-container">
+            <div className="spinner"></div>
+          </div>
+        </div>
+      )}
       <div className="img-main"></div>
       <div className="search-bar group">
-       
         <input
           type="text"
           placeholder="Search patient"
@@ -255,23 +235,23 @@ const RegisteredPatients = () => {
                     <tbody>
                       <tr>
                         <div className="patient-id">
-                          Patient ID: <br /><br /><span className="patientid">{item.patientID}</span>
+                          Patient ID: <br />
+                          <br />
+                          <span className="patientid">{item.patientID}</span>
                         </div>
-                        
+
                         <div className="status-bar">
-                        <>
-                          Status:
-                        </>
-                        <div
-                          className="cardStatus"
-                          style={{
-                           fontSize: "16px",
-                            color: statusColor,
-                            fontWeight: statusText,
-                          }}
-                        >
-                          {item.status}
-                        </div>
+                          <>Status:</>
+                          <div
+                            className="cardStatus"
+                            style={{
+                              fontSize: "16px",
+                              color: statusColor,
+                              fontWeight: statusText,
+                            }}
+                          >
+                            {item.status}
+                          </div>
                         </div>
                       </tr>
 
@@ -362,16 +342,13 @@ const RegisteredPatients = () => {
                       >
                         Edit Patient
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        
-                      >
-                       <PDFDownload item={item} />
-                      
+                      <Dropdown.Item>
+                        <PDFDownload item={item} />
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
-                
+
                 <div className="data-btn">
                   <button
                     className="btn-register-more"
@@ -387,7 +364,6 @@ const RegisteredPatients = () => {
                     item.status !== "Closed-MJPJA" &&
                     item.status !== "Closed-Other" && (
                       <>
-                       
                         <button
                           className="btn-register-status"
                           onClick={() => handleShowDocument(index)}
@@ -448,7 +424,12 @@ const RegisteredPatients = () => {
                       </tr>
                       <tr>
                         <td>RationCard No.</td>
-                        <td> <h6 className="diseaseName">{item.patientDetails.rationcardnumber} </h6></td>
+                        <td>
+                          {" "}
+                          <h6 className="diseaseName">
+                            {item.patientDetails.rationcardnumber}{" "}
+                          </h6>
+                        </td>
                       </tr>
                       <tr>
                         <td>Residencial Address</td>

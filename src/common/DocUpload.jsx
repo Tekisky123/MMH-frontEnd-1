@@ -23,7 +23,6 @@ const UploadDocument = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Process the document data as needed
     console.log(document);
   };
 

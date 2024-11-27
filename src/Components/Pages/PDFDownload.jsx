@@ -187,7 +187,7 @@ const PDFDownload = ({ item }) => {
 
   return (
     <>
-      <div onClick={generatePdf} style={{}} title="Download MMH Form">
+      <div onClick={generatePdf}  title="Download MMH Form">
        PDF Download
       </div>
     </>

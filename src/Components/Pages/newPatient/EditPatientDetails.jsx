@@ -8,6 +8,7 @@ import "../../../Assets/Styles/NewPatient.css";
 import countries from "../../../common/CommonObj";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import BaseURL from "../../../common/Api";
 
 const EditPatientDetails = () => {
   const [loading, setLoading] = useState(false); // State to manage loading
@@ -17,7 +18,7 @@ const EditPatientDetails = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://mmhbackendrailway-production.up.railway.app/patient/${Id}`
+          `${BaseURL}/patient/${Id}`
         );
 
         if (response?.status === 200) {
@@ -472,7 +473,7 @@ const EditPatientDetails = () => {
         status: "Patient Registered",
         referredBy: formData.referredBy,
       };
-      const url = "https://mmhbackendrailway-production.up.railway.app/patient/"+ Id;
+      const url = `${BaseURL}/patient/`+ Id;
       const response = await axios.put(url, payload);
 
       if (

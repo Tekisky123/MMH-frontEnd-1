@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import "../Assets/Styles/RegisteredPatients.css"
+import BaseURL from "../common/Api";
 
 const ViewMMH = ({ currentItem }) => {
   const navigate =useNavigate()
@@ -68,7 +69,7 @@ const ViewMMH = ({ currentItem }) => {
 
         // Assuming you have an API endpoint, replace 'yourApiEndpoint' with the actual endpoint
         const response = await axios.put(
-          "https://mmhbackendrailway-production.up.railway.app/patient/" + currentItem,
+          `${BaseURL}/patient/` + currentItem,
           data
         );
 

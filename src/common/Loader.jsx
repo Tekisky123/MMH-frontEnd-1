@@ -1,7 +1,7 @@
 // Loader.js
 
-import React, { useState, useEffect } from 'react';
-import "../common/Loader.css"
+import React, { useState, useEffect } from "react";
+import "../common/Loader.css";
 
 const Loader = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,11 @@ const Loader = ({ children }) => {
     <>
       {loading && (
         <div className="loader">
-          <div className="justify-content-center jimu-primary-loading"></div><br /><br /><br /><br />
+          <div className="justify-content-center jimu-primary-loading"></div>
+          <br />
+          <br />
+          <br />
+          <br />
           <h1>loading...</h1>
         </div>
       )}

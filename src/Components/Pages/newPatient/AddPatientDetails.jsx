@@ -8,6 +8,7 @@ import "../../../Assets/Styles/NewPatient.css";
 import countries from "../../../common/CommonObj";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BaseURL from "../../../common/Api";
 
 const AddPatientDetails = () => {
   //   const updateData = useData();
@@ -408,7 +409,7 @@ const AddPatientDetails = () => {
         status: "Patient Registered",
         referredBy: formData.referredBy,
       };
-      const url = "https://mmhbackendrailway-production.up.railway.app/patient/create";
+      const url = `${BaseURL}/patient/create`;
       const response = await axios.post(url, payload);
 
       if (

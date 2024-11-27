@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "../../Assets/Styles/Signup.css";
+import BaseURL from "../../common/Api";
 
 const EditData = () => {
   const navigate = useNavigate();
   const { _id } = useParams();
 
-  const baseURL = `https://mmhbackendrailway-production.up.railway.app/user/updateuser`;
+  const baseURL = `${BaseURL}/user/updateuser`;
 
   const [data, setData] = useState({
     firstName: "",
@@ -29,7 +30,7 @@ const EditData = () => {
 
   const getData = async () => {
     try {
-      const result = await axios.get(`https://mmhbackendrailway-production.up.railway.app/user/${_id}`);
+      const result = await axios.get(`${BaseURL}/user/${_id}`);
       console.log(result);
 
       const { firstName, lastName, email, password, mobile, userType } =

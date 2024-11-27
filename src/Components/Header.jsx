@@ -1,71 +1,76 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "../Assets/Styles/Header.css";
-import logo from "../Assets/Images/logo-main.png"
-import Modal from "react-modal";
+import logo from "../Assets/Images/logo-main.png";
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { useAuth } from "./Auth";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const auth = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const openLogoutModal = () => {
-    setShowLogoutModal(true);
+  const auth = useAuth();
+
+  // Function to handle toggling menu
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  const closeLogoutModal = () => {
-    setShowLogoutModal(false);
+  // Function to close menu
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   const handleLogout = () => {
-
-    // auth.logout();
+    // Clear local storage and update login status
     localStorage.clear();
-    localStorage.setItem("login",false)
-    setShowLogoutModal(false);
-    navigate("/")
+    localStorage.setItem("login", false);
+    navigate("/");
   };
-    // Function to handle toggling menu
-    const toggleMenu = () => {
-      setIsMenuOpen(!isMenuOpen);
-    };
-  
-    // Function to close menu
-    const closeMenu = () => {
-      setIsMenuOpen(false);
-    };
-  
+
+  const confirmLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleLogout();
+      }
+    });
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-container container">
-      <input
+        <input
           type="checkbox"
           id="menu-toggle"
           checked={isMenuOpen}
           onChange={() => setIsMenuOpen(!isMenuOpen)}
         />
-          <label htmlFor="menu-toggle" className="hamburger-lines" onClick={toggleMenu}>
+        <label htmlFor="menu-toggle" className="hamburger-lines" onClick={toggleMenu}>
           <span className="line line1"></span>
           <span className="line line2"></span>
           <span className="line line3"></span>
         </label>
         <ul className="menu-items">
           <li>
-          <h1 className="logo-main"><img className="logo-main" src={logo} alt="" /></h1>
-
-            
+            <h1 className="logo-main">
+              <img className="logo-main" src={logo} alt="Logo" />
+            </h1>
+          </li>
+          <li>
             <NavLink
-            onClick={closeMenu}
-            
+              onClick={closeMenu}
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
                 textDecoration: isActive ? "" : "",
-                // border: isActive ? "1px solid black" : "",
-                padding: isActive ? "8px" : "", // Add padding style here
-                borderRadius: isActive ? "10px" : "", // Add border radius style here
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
               })}
               to="/home"
             >
@@ -74,14 +79,13 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-            onClick={closeMenu}
+              onClick={closeMenu}
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
                 textDecoration: isActive ? "" : "",
-                // border: isActive ? "1px solid black" : "",
-                padding: isActive ? "8px" : "", // Add padding style here
-                borderRadius: isActive ? "10px" : "", // Add border radius style here
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
               })}
               to="/yojna"
             >
@@ -90,14 +94,13 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-            onClick={closeMenu}
-               style={({ isActive }) => ({
+              onClick={closeMenu}
+              style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
                 textDecoration: isActive ? "" : "",
-                // border: isActive ? "1px solid black" : "",
-                padding: isActive ? "8px" : "", // Add padding style here
-                borderRadius: isActive ? "10px" : "", // Add border radius style here
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
               })}
               to="/addPatient"
             >
@@ -106,46 +109,29 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-            onClick={closeMenu}
+              onClick={closeMenu}
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
                 textDecoration: isActive ? "" : "",
-                // border: isActive ? "1px solid black" : "",
-                padding: isActive ? "8px" : "", // Add padding style here
-                borderRadius: isActive ? "10px" : "", // Add border radius style here
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
               })}
               to="/registered-patients"
             >
               Registered Patients
             </NavLink>
           </li>
-          {/* <li>
+          <li>
             <NavLink
+              onClick={closeMenu}
               style={({ isActive }) => ({
                 color: isActive ? "#a4c639" : "",
                 backgroundColor: isActive ? "white" : "",
                 textDecoration: isActive ? "" : "",
-                // border: isActive ? "1px solid black" : "",
-                padding: isActive ? "8px" : "", // Add padding style here
-                borderRadius: isActive ? "10px" : "", // Add border radius style here
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
               })}
-              to="/networkHospitals"
-            >
-              Network Hospitals
-            </NavLink>
-          </li> */}
-          <li>
-            <NavLink
-            onClick={closeMenu}
-             style={({ isActive }) => ({
-              color: isActive ? "#a4c639" : "",
-              backgroundColor: isActive ? "white" : "",
-              textDecoration: isActive ? "" : "",
-              // border: isActive ? "1px solid black" : "",
-              padding: isActive ? "8px" : "", // Add padding style here
-              borderRadius: isActive ? "10px" : "", // Add border radius style here
-            })}
               to="/user"
             >
               User
@@ -153,15 +139,14 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-            onClick={closeMenu}
-             style={({ isActive }) => ({
-              color: isActive ? "#a4c639" : "",
-              backgroundColor: isActive ? "white" : "",
-              textDecoration: isActive ? "" : "",
-              // border: isActive ? "1px solid black" : "",
-              padding: isActive ? "8px" : "", // Add padding style here
-              borderRadius: isActive ? "10px" : "", // Add border radius style here
-            })}
+              onClick={closeMenu}
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
+              })}
               to="/dashboard"
             >
               Dashboard
@@ -169,58 +154,24 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-            onClick={closeMenu}
-             style={({ isActive }) => ({
-              color: isActive ? "#a4c639" : "",
-              backgroundColor: isActive ? "white" : "",
-              textDecoration: isActive ? "" : "",
-              // border: isActive ? "1px solid black" : "",
-              padding: isActive ? "8px" : "", // Add padding style here
-              borderRadius: isActive ? "10px" : "", // Add border radius style here
-            })}
+              onClick={closeMenu}
+              style={({ isActive }) => ({
+                color: isActive ? "#a4c639" : "",
+                backgroundColor: isActive ? "white" : "",
+                textDecoration: isActive ? "" : "",
+                padding: isActive ? "8px" : "",
+                borderRadius: isActive ? "10px" : "",
+              })}
               to="/reports"
             >
               Reports
             </NavLink>
           </li>
           <li className="logout-li">
-            <a onClick={openLogoutModal}>
-              Logout
-            </a>
+            <Link onClick={confirmLogout}>Logout</Link>
           </li>
-
-   
         </ul>
-        <h1 className="logo">{/* <img src={logo} alt="" /> */}</h1>
       </div>
-      <Modal
-                  isOpen={showLogoutModal}
-                  onRequestClose={closeLogoutModal}
-                  contentLabel="Contact Admin Modal"
-                  ariaHideApp={false}
-                  className="custom-modal"
-                  overlayClassName="custom-overlay" 
-                >
-                  <div className="modal-content">
-                    <p>
-                       Are you sure you want to Logout ?
-                    </p>
-                    <button
-                      className="btn-login"
-                      onClick={handleLogout}
-                    >
-                      Yes
-                    </button>
-                    <button
-                    style={{margin:"10px 0px"}}
-                      className="btn-login"
-                      onClick={closeLogoutModal}
-                    >
-                      No
-                    </button>
-            
-                  </div>
-                </Modal>
     </nav>
   );
 };

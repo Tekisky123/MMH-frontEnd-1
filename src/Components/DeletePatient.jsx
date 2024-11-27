@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React from 'react'
+import BaseURL from '../common/Api';
 
 const DeletePatient = ({currentItem}) => {
-  const deleteUrl = "https://mmhbackendrailway-production.up.railway.app/patient/"+currentItem
+  const deleteUrl = `${BaseURL}/patient/`+currentItem
 
   const handleDelete = async () => {
     try {

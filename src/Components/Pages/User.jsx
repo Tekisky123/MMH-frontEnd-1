@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../Assets/Styles/User.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import BaseURL from "../../common/Api";
 
 // User component to display and manage user data
 const User = ({ location }) => {
@@ -16,7 +17,7 @@ const User = ({ location }) => {
 
   // Delete user data by ID
   const DeleteData = async (id) => {
-    await axios.get(`https://mmhbackendrailway-production.up.railway.app/user/deleteuser/${id}`);
+    await axios.get(`${BaseURL}/user/deleteuser/${id}`);
     getData();
   };
 
@@ -24,7 +25,7 @@ const User = ({ location }) => {
   const getData = async () => {
     try {
       setLoader(true);
-      const result = await axios.get("https://mmhbackendrailway-production.up.railway.app/user/getuser");
+      const result = await axios.get(`${BaseURL}/user/getuser`);
 
       setData(result.data.data); // Use result.data.data to access the array of users
     } catch (err) {

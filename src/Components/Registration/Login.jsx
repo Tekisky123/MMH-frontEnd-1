@@ -1,207 +1,147 @@
-// Import necessary dependencies
-import { Link, useNavigate } from "react-router-dom";
-import "../../Assets/Styles/Login.css";
-import logo from "../../Assets/Images/logo-main.png";
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 import { IoEyeSharp } from "react-icons/io5";
 import { BsEyeSlashFill } from "react-icons/bs";
-import axios from "axios";
-import Modal from "react-modal";
-import { useAuth } from "../Auth";
 import Spinner from "react-bootstrap/Spinner";
+import "../../Assets/Styles/Login.css";
+import logo from "../../Assets/Images/logo-main.png";
+import BaseURL from "../../common/Api";
 
-// Placeholder for LoaderComponent (adjust as needed)
-
-// Functional component for the Login page
 const Login = ({ setUserType }) => {
-  const auth = useAuth();
-  const [showContactAdminModal, setShowContactAdminModal] = useState(false);
-  const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
-  const [isloading, setLoading] = useState(false); // New state for loader
-  const [isPassShow, setIsPassShow] = useState(false);
-  const openContactAdminModal = () => {
-    setShowContactAdminModal(true);
-  };
-
-  // Function to handle closing the contact admin modal
-  const closeContactAdminModal = () => {
-    setShowContactAdminModal(false);
-  };
-
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const notifyError = () => toast("Invalid Number or Password");
+  // SweetAlert2 for Error messages
+  const notifyError = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: message,
+    });
+  };
 
-  const [MobileNumber, setMobileNumber] = useState("");
-  const [Password, setPassword] = useState("");
-  const [userType, setuserType] = useState("");
+  // SweetAlert2 for Success messages
+  const notifySuccess = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: message,
+    });
+  };
 
-  const mobileNumberRegex = /^[0-9]{10}$/;
-
-  useEffect(() => {
-    let login = localStorage.getItem("login");
-    navigate("/");
-    if (!login) {
-      navigate("/");
-    }
-  }, [navigate]);
-
-  const SubmitData = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    const mobileRegex = /^[0-9]{10}$/;
 
-    if (!mobileNumberRegex.test(MobileNumber)) {
-      toast.error("Invalid mobile number format");
+    if (!mobileRegex.test(mobileNumber)) {
+      notifyError("Invalid mobile number format");
       return;
     }
 
     try {
-      setLoading(true); // Show loader while making API call
-
-      const response = await axios.post(
-        "https://mmhbackendrailway-production.up.railway.app/user/login",
-        {
-          mobile: MobileNumber,
-          password: Password,
-          userType: userType,
-        }
-      );
-
-      setLoading(false); // Hide loader after API call
+      setLoading(true);
+      const response = await axios.post(`${BaseURL}/user/login`, {
+        mobile: mobileNumber,
+        password,
+      });
+      setLoading(false);
 
       if (response.status === 200) {
-        localStorage.setItem("userType", response.data.data.userType);
-        localStorage.setItem("mobileNumber", response.data.data.mobile);
-        localStorage.setItem("accessToken", response?.data?.token);
-        localStorage.setItem("login", true);
-        setUserType(response.data.data.userType);
-
-        toast.success("Login successful!");
-        setTimeout(() => {
-          response.data.data.userType === "Operator"
-            ? navigate("/dashboard/:number")
-            : navigate("/home");
-        }, 800);
+        localStorage.setItem("accessToken", response.data.token);
+        setUserType(response.data.userType);
+        notifySuccess("Login successful! Redirecting to dashboard...");
+        navigate("/dashboard");
       } else {
-        setFailedLoginAttempts((prevAttempts) => prevAttempts + 1);
-        notifyError();
-        console.log("Error occurred");
-        console.log(notifyError);
-        console.log("fault here");
+        notifyError("Invalid login credentials");
       }
     } catch (error) {
-      console.error("API call error:", error.message);
-      notifyError();
+      setLoading(false);
+      notifyError("Error during login");
     }
   };
 
   return (
-    <div className="Main-container">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <section className="section">
-        <div className="logo">
-          <img src={logo} className="logo" alt="" />
-        </div>
-        <div className="form-box">
-          <div className="form-value">
-            <form onSubmit={SubmitData}>
-              <h2 className="heading">Login</h2>
-              <div className="input-box">
-                <input
-                  type="text"
-                  pattern="[0-9]{10}"
-                  required
-                  value={MobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
-                  maxLength={10}
-                  title="Mobile number must be 10 digits"
-                />
-                <label>Mobile Number</label>
-              </div>
-
-              <div className="input-box">
-                
-                <input
-                  type={isPassShow ? "text" : "password"}
-                  required
-                  value={Password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <label>Password</label>
-               
-              </div>
-              <button className="show-hide"
-                  type="button"
-                  onClick={() => setIsPassShow(!isPassShow)}
-                >
-                  {isPassShow ? <IoEyeSharp /> : <BsEyeSlashFill />}
-                </button>
-
-              <button type="submit" className="btn-login">
-                {isloading && (
-                  <Spinner
-                    className="me-2"
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                )}
-                Log in
+    <div className="main-container">
+      <div className="left-section">
+        <img src={logo} alt="Logo" />
+      </div>
+      <div className="right-section">
+        <div className="login-form-container">
+          <form onSubmit={handleLogin}>
+            <h2 className="login-heading">Login</h2>
+            <div className="input-group">
+              <input
+                type="text"
+                required
+                value={mobileNumber}
+                placeholder="Mobile Number"
+                maxLength={10}
+                onChange={(e) =>
+                  setMobileNumber(e.target.value.replace(/\D/g, ""))
+                }
+                pattern="[0-9]{10}"
+                title="Enter a valid 10-digit mobile number"
+              />
+            </div>
+            <div className="input-group">
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setPasswordVisible(!isPasswordVisible)}
+              >
+                {isPasswordVisible ? <IoEyeSharp /> : <BsEyeSlashFill />}
               </button>
-              {/* Loader component */}
-              <div className="register">
-                <p>
-                  Don't have an account{" "}
-                  <Link onClick={openContactAdminModal}>Contact Admins</Link>
-                </p>
-                <Modal
-                  isOpen={showContactAdminModal}
-                  onRequestClose={closeContactAdminModal}
-                  contentLabel="Contact Admin Modal"
-                  ariaHideApp={false}
-                  className="custom-modal"
-                  overlayClassName="custom-overlay"
-                >
-                  <div className="modal-content">
-                    <h2>Contact Admins</h2>
-                    <p>
-                      Admin Name:{" "}
-                      <span>
-                        {" "}
-                        Advocate Talha ,<br /> Mohammad Siddiqui
-                      </span>
-                    </p>
-                    <p>
-                      Mobile Number: <span>9923472806, 9011304885</span>
-                    </p>
-                    <button
-                      className="btn-login"
-                      onClick={closeContactAdminModal}
-                    >
-                      {" "}
-                      Close
-                    </button>
-                  </div>
-                </Modal>
-              </div>
-            </form>
-          </div>
+            </div>
+            <button type="submit" className="login-btn">
+              {isLoading ? <Spinner size="sm" animation="border" /> : "Login"}
+            </button>
+            <div className="register-text">
+              <p>
+                Don't have an account?{" "}
+                <Link onClick={() => setShowModal(true)}>Contact Admin</Link>
+              </p>
+            </div>
+          </form>
         </div>
-      </section>
+      </div>
+      {showModal && (
+        <>
+          <div
+            className="login-modal-overlay"
+            onClick={() => setShowModal(false)}
+          />
+          <div className="login-modal-container">
+            <div className="login-modal-content">
+              <h2>Contact Admin</h2>
+              <p>
+                Name: <span>Advocate Talha, Mohammad Siddiqui</span>
+              </p>
+              <p>
+                Phone: <span>9923472806, 9011304885</span>
+              </p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="login-modal-close-btn"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

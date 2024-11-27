@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../Assets/Styles/Signup.css";
+import BaseURL from "../../common/Api";
 
 // Functional component for creating a user
 const CreateUser = () => {
@@ -100,7 +101,7 @@ const CreateUser = () => {
     if (validateForm()) {
       // Make API call to register a new user
       axios
-        .post("https://mmhbackendrailway-production.up.railway.app/user/register", formData)
+        .post(`${BaseURL}/user/register`, formData)
         .then((response) => {
           // Handle success response
           if (response.status === 200) {
