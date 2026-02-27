@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "../../Assets/Styles/Signup.css";
+import "../../Assets/Styles/AdminForms.css";
+import { MdPerson, MdEmail, MdLockOutline, MdPhone, MdBadge, MdCheckCircle } from "react-icons/md";
 import BaseURL from "../../common/Api";
 
 const EditData = () => {
@@ -43,24 +44,24 @@ const EditData = () => {
   };
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  // Apply validation only if the input is for the mobile field
-  if (name === "mobile") {
-    // Remove non-digit characters and limit the input to 10 digits
-    const truncatedValue = value.replace(/\D/g, '').slice(0, 10);
+    // Apply validation only if the input is for the mobile field
+    if (name === "mobile") {
+      // Remove non-digit characters and limit the input to 10 digits
+      const truncatedValue = value.replace(/\D/g, '').slice(0, 10);
 
-    setData((prevData) => ({ ...prevData, [name]: truncatedValue }));
+      setData((prevData) => ({ ...prevData, [name]: truncatedValue }));
 
-    // Validate mobile number
-    const isValidMobile = /^\d{10}$/.test(truncatedValue);
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: isValidMobile ? "" : "Enter a valid 10-digit mobile number" }));
-  } else {
-    // For other fields, simply update the form data
-    setData((prevData) => ({ ...prevData, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-  }
-};
+      // Validate mobile number
+      const isValidMobile = /^\d{10}$/.test(truncatedValue);
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: isValidMobile ? "" : "Enter a valid 10-digit mobile number" }));
+    } else {
+      // For other fields, simply update the form data
+      setData((prevData) => ({ ...prevData, [name]: value }));
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    }
+  };
   const validationRegex = {
     name: /^[a-zA-Z\s]+$/,
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -136,183 +137,155 @@ const EditData = () => {
   };
 
   return (
-    <div className="Main-container ">
-      <section className="section ">
-        <div className="form-box-user edit ">
-          <div className="form-value ">
-            <form onSubmit={handleSubmit}>
-              <h2 className="heading">Edit User</h2>
-              {/* Input fields for user details */}
+    <div className="npt-root">
+      <div className="npt-wrapper">
+        <div className="npt-card">
+          <div className="npt-card-header">
+            <h2 className="npt-card-title">Edit User</h2>
+            <p className="npt-card-subtitle">Update details for an existing operator or admin.</p>
+          </div>
 
-              <div className="names">
-                <div className="inputbox name">
+          <form onSubmit={handleSubmit} className="npt-form-body">
+            <div className="npt-grid-2">
+              {/* First Name */}
+              <div className="npt-field">
+                <label className="npt-label">First Name {errors.firstName && <span className="npt-req">*</span>}</label>
+                <div className="npt-input-wrap">
+                  <MdPerson className="npt-input-icon" />
                   <input
                     type="text"
-                    required
+                    className="npt-input npt-input--has-icon"
                     name="firstName"
+                    placeholder="Enter first name"
                     value={data.firstName}
                     onChange={handleChange}
+                    required
                   />
-                  <label>
-                    First Name{" "}
-                    <span className="error-message">
-                      {errors.firstName ? "⁕" : ""}
-                    </span>
-                  </label>
-                  {errors.firstName && (
-                    <span className="error" style={{ color: "red" }}>
-                      {errors.firstName}
-                    </span>
-                  )}
                 </div>
-                <div className="inputbox name">
+                {errors.firstName && <span className="npt-error" style={{ color: 'red', fontSize: '12px' }}>{errors.firstName}</span>}
+              </div>
+
+              {/* Last Name */}
+              <div className="npt-field">
+                <label className="npt-label">Last Name {errors.lastName && <span className="npt-req">*</span>}</label>
+                <div className="npt-input-wrap">
+                  <MdPerson className="npt-input-icon" />
                   <input
                     type="text"
-                    required
+                    className="npt-input npt-input--has-icon"
                     name="lastName"
+                    placeholder="Enter last name"
                     value={data.lastName}
                     onChange={handleChange}
+                    required
                   />
-                  <label>
-                    Last Name{" "}
-                    <span className="error-message">
-                      {errors.lastName ? "⁕" : ""}
-                    </span>
-                  </label>
-                  {errors.lastName && (
-                    <span className="error" style={{ color: "red" }}>
-                      {errors.lastName}
-                    </span>
-                  )}
                 </div>
+                {errors.lastName && <span className="npt-error" style={{ color: 'red', fontSize: '12px' }}>{errors.lastName}</span>}
               </div>
 
-              <div className="inputbox second-section">
-                <input
-                  type="email"
-                  required
-                  name="email"
-                  value={data.email}
-                  onChange={handleChange}
-                />
-                <label>
-                  Email{" "}
-                  <span className="error-message">
-                    {errors.email ? "⁕" : ""}
-                  </span>
-                </label>
-                {errors.email && (
-                  <span className="error" style={{ color: "red" }}>
-                    {errors.email}
-                  </span>
-                )}
+              {/* Email */}
+              <div className="npt-field">
+                <label className="npt-label">Email Address {errors.email && <span className="npt-req">*</span>}</label>
+                <div className="npt-input-wrap">
+                  <MdEmail className="npt-input-icon" />
+                  <input
+                    type="email"
+                    className="npt-input npt-input--has-icon"
+                    name="email"
+                    placeholder="Enter email address"
+                    value={data.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                {errors.email && <span className="npt-error" style={{ color: 'red', fontSize: '12px' }}>{errors.email}</span>}
               </div>
 
-              <div className="inputbox second-section">
-                <input
-                  type="password"
-                  required
-                  name="password"
-                  value={data.password}
-                  onChange={handleChange}
-                />
-                <label>
-                  Password{" "}
-                  <span className="error-message">
-                    {errors.password ? "⁕" : ""}
-                  </span>
-                </label>
-                {errors.password && (
-                  <span className="error" style={{ color: "red" }}>
-                    {errors.password}
-                  </span>
-                )}
+              {/* Password */}
+              <div className="npt-field">
+                <label className="npt-label">Password {errors.password && <span className="npt-req">*</span>}</label>
+                <div className="npt-input-wrap">
+                  <MdLockOutline className="npt-input-icon" />
+                  <input
+                    type="password"
+                    className="npt-input npt-input--has-icon"
+                    name="password"
+                    placeholder="Enter password"
+                    value={data.password}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                {errors.password && <span className="npt-error" style={{ color: 'red', fontSize: '12px' }}>{errors.password}</span>}
               </div>
 
-              <div className="inputbox second-section">
-                <input
-                  type="number"
-                  required
-                  name="mobile"
-                  value={data.mobile}
-                  onChange={handleChange}
-                  maxLength="10"
-                />
-                <label>
-                  Mobile Number{" "}
-                  <span className="error-message">
-                    {errors.mobile ? "⁕" : ""}
-                  </span>
-                </label>
-                {errors.mobile && (
-                  <span className="error" style={{ color: "red" }}>
-                    {errors.mobile}
-                  </span>
-                )}
+              {/* Mobile Number */}
+              <div className="npt-field">
+                <label className="npt-label">Mobile Number {errors.mobile && <span className="npt-req">*</span>}</label>
+                <div className="npt-input-wrap">
+                  <MdPhone className="npt-input-icon" />
+                  <input
+                    type="number"
+                    className="npt-input npt-input--has-icon"
+                    name="mobile"
+                    placeholder="Enter 10-digit mobile"
+                    value={data.mobile}
+                    onChange={handleChange}
+                    maxLength="10"
+                    required
+                  />
+                </div>
+                {errors.mobile && <span className="npt-error" style={{ color: 'red', fontSize: '12px' }}>{errors.mobile}</span>}
               </div>
 
-              <div className="role-type">
-                <label htmlFor="">
-                  User Type{" "}
-                  <span className="error-message">
-                    {errors.userType ? "⁕" : ""}
-                  </span>
-                </label>
-                <select
-                  name="userType"
-                  value={data.userType}
-                  onChange={handleChange}
-                >
-                  <option>Please Select Role</option>
-                  <option value="Admin">Admin</option>
-                  <option value="SuperAdmin">Super Admin</option>
-                  <option value="Operator">Operator</option>
-                </select>
-                {errors.userType && (
-                  <span className="error" style={{ color: "red" }}>
-                    {errors.userType}
-                  </span>
-                )}
+              {/* User Type */}
+              <div className="npt-field">
+                <label className="npt-label">User Type {errors.userType && <span className="npt-req">*</span>}</label>
+                <div className="npt-input-wrap">
+                  <MdBadge className="npt-input-icon" />
+                  <select
+                    className="npt-input npt-select npt-input--has-icon"
+                    name="userType"
+                    value={data.userType}
+                    onChange={handleChange}
+                  >
+                    <option value="Please Select Role">Please Select Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="SuperAdmin">Super Admin</option>
+                    <option value="Operator">Operator</option>
+                  </select>
+                </div>
+                {errors.userType && <span className="npt-error" style={{ color: 'red', fontSize: '12px' }}>{errors.userType}</span>}
               </div>
+            </div>
 
-              {/* ... (Previous code remains unchanged) */}
-
-              <button className="create btn-login" type="submit">
+            <div className="npt-actions" style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
+              <button className="npt-btn npt-btn--primary" type="submit">
                 Update User
               </button>
-              {/* Success Animation */}
-            </form>
-          </div>
-        </div>
-        {/* Blur background during success animation */}
-
-        <div className={` ${showSuccessAnimation ? "blur-background" : ""}`}>
-          {showSuccessAnimation && (
-            <div className="success-animation">
-              {/* Checkmark SVG for success animation */}
-              <svg
-                className="checkmark"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 52 52"
-              >
-                <circle
-                  className="checkmark__circle"
-                  cx="26"
-                  cy="26"
-                  r="25"
-                  fill="none"
-                />
-                <path
-                  className="checkmark__check"
-                  fill="none"
-                  d="M14.1 27.2l7.1 7.2 16.7-16.8"
-                />
-              </svg>
             </div>
-          )}
-          {/* Your existing content goes here */}
+          </form>
         </div>
-      </section>
+
+        {/* Success Modal Overlay */}
+        {showSuccessAnimation && (
+          <div style={{
+            position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+            background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 9999
+          }}>
+            <div style={{
+              background: "#fff", padding: "40px", borderRadius: "16px", textAlign: "center",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: "16px",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+            }}>
+              <MdCheckCircle style={{ fontSize: "4rem", color: "#16a34a" }} />
+              <h3 style={{ fontSize: "1.5rem", color: "#1e293b", margin: 0 }}>User Updated!</h3>
+              <p style={{ color: "#64748b", margin: 0 }}>Redirecting to user directory...</p>
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 };

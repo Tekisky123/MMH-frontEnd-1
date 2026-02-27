@@ -1,129 +1,183 @@
-/* Dashboard.css */
+/* Modernized Dashboard CSS */
+.npt-dashboard-container {
+  padding: 84px 24px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f4f6f9;
+  box-sizing: border-box;
+}
 
-.dashbord-main {
+.npt-dashboard-section {
+  margin-bottom: 40px;
+}
+
+.npt-dashboard-title {
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.npt-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.npt-dash-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 20px;
-  /* background-image: url(../../Assets/Images//mainbodylogo.jpeg); */
-  background-color: rgba(255, 255, 255, 0.5);
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* height: 100vh; */
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.dashboard-card,
-.dashboard-big-card {
-  background: #ffffffef;
-  border: 1.5px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 10px;
+.npt-dash-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
 }
 
-.dashboard-card {
-  width: 300px;
-  height: 200px;
-  margin-top: 30px;
-  
-}
-.amount{
-  border: 2px solid #198754;
-  box-shadow: 2px 2px 20px #198754;
-  color: #198754;
-}
-
-.dashboard-big-card {
-  width: 1300px;
-  /* margin-top: 50px; */
+.npt-dash-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
 }
 
-.monthly-amount-heading,
-.total-closed-cases-heading,
-.total-approach-heading,
-.pending-cases-heading,
-.total-amount-heading {
-  font-size: 20px;
-  margin-bottom: 10px;
+.npt-dash-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-.smallheading{
-  font-size: 17px;
-}
-.operator-info{
-  font-size: 18px;
+
+.npt-dash-label {
+  color: #64748b;
+  font-size: 0.875rem;
   font-weight: 500;
-}
-.operator-info span {
-  color: black;
-}
-.operator-info p {
-  color: #91b02e;
-}
-.pending-cases{
-  border: 2px solid red;
-  color: red;
-  text-align: center;
-  box-shadow: 1px 1px 15px rgba(255, 0, 0, 0.603);
-}
-.total-closed-cases{
-  border: 2px solid #a4c639;
-  box-shadow: 1px 3px 20px #a4c639;
-  text-align: center;
-  
-}
-.cards{
-  border: 2px solid #a4c639;
-  box-shadow: 1px 3px 20px #a4c639;
-  color: #a4c639;
-  text-align: center;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.card-value {
-  font-size: 54px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  /* color: #a4c639; */
-}
-.smallvalue{
-  font-size: 45px;
-}
-.OPcard-value {
-  font-size: 54px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  color: #a4c639;
-}
-.card-pending-value {
-  font-size: 54px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  color: red;
+.npt-dash-value {
+  color: #0f172a;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
 }
 
+/* Color Variants */
+.npt-card-green .npt-dash-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
 
-.operaterCards{
+.npt-card-blue .npt-dash-icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.npt-card-purple .npt-dash-icon {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.npt-card-orange .npt-dash-icon {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+/* Operator Cards */
+.npt-operator-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.npt-op-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.npt-op-header {
   display: flex;
-  justify-content:space-between;
-  width: 80%;
-}
-.operaterCards2{
-  display: flex;
-  justify-content:space-between;
-  width: 80%;
-}
-.status-Section{
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.Download-excel{
+.npt-op-avatar {
+  background: #f1f5f9;
+  color: #64748b;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.npt-op-details h4 {
+  margin: 0 0 4px 0;
+  color: #0f172a;
+  font-size: 1.1rem;
+}
+
+.npt-op-details p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.npt-op-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.npt-op-stat {
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.npt-op-stat span {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.npt-op-stat strong {
+  font-size: 1.125rem;
+  color: #1e293b;
+}
+
+.npt-text-danger {
+  color: #dc2626 !important;
+}
+
+.Download-excel {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -131,36 +185,41 @@
   height: 70vh;
   gap: 20px;
 }
-.Download-excel button{
+
+.Download-excel button {
   background-color: rgb(164, 198, 57);
-    color: white;
-    padding: 7px;
-    border-radius: 8px;
-    border: none;
-    margin-top: 4px;
-    font-size: 25px;
-    height: fit-content;
-    width: 50vw;
-    cursor: pointer;
+  color: white;
+  padding: 7px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 4px;
+  font-size: 25px;
+  height: fit-content;
+  width: 50vw;
+  cursor: pointer;
 }
-.Download-excel button:disabled{
+
+.Download-excel button:disabled {
   background-color: lightgray;
 }
-.Download-excel .inputDiv{
+
+.Download-excel .inputDiv {
   padding: 5px;
-    margin: 10px;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 5px;
-    width: 61%;
-    font-weight: bold;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+  width: 61%;
+  font-weight: bold;
 }
-.Download-excel .inputDiv label{
- margin: 0px;
- font-size: 25px;
- width: 50%;
+
+.Download-excel .inputDiv label {
+  margin: 0px;
+  font-size: 25px;
+  width: 50%;
 }
-.Download-excel .inputDiv input{
+
+.Download-excel .inputDiv input {
   padding: 5px;
   border-radius: 5px;
   border: 2px solid #a4c639;
@@ -168,7 +227,8 @@
   font-size: 25px;
   width: 50%;
 }
-.dashboard-heading h3{
+
+.dashboard-heading h3 {
   margin: 50px 0px 0px 50px;
   color: #fff;
   background-color: #B2CF57;
@@ -176,37 +236,31 @@
   padding: 10px;
   border-radius: 5px;
 }
+
 @media only screen and (max-width: 768px) {
-  .operaterCards,
-  .operaterCards2,
-  .status-Section,
-  .Download-excel {
-    width: 100%; /* Adjust width for smaller screens */
+  .npt-dashboard-container {
+    padding: 16px;
+  }
+
+  .npt-op-stats {
+    grid-template-columns: 1fr;
   }
 
   .Download-excel .inputDiv {
-    width: 100%; /* Make inputDiv full width on smaller screens */
-  }
-
-  .dashboard-heading h3 {
-    margin: 20px 0 0 0; /* Adjust margin for smaller screens */
-  }
-}
-/* dkjfhvjdbvgskdgvdcvkjb */
-@media only screen and (max-width: 600px) {
-
-  .Download-excel .inputDiv{
     width: 100%;
     flex-direction: column;
+    gap: 8px;
   }
-  .Download-excel .inputDiv input ,.Download-excel .inputDiv label{
+
+  .Download-excel .inputDiv input,
+  .Download-excel .inputDiv label {
     width: 100%;
+    margin-bottom: 8px;
   }
-  .operaterCards{
-    display: block;
-    width: 100%;
-  }
-  .dashboard-big-card ,.status-Section{
-    display: block;
+}
+
+@media only screen and (max-width: 600px) {
+  .npt-dashboard-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -37,7 +37,7 @@ function App() {
   };
 
   // Define routes where the header should be hidden
- const routesToHideHeader = ["/", "/createuser", "/edituser/:_id"];
+ const routesToHideHeader = ["/"];
 
 
   // Retrieve the stored user type from local storage

@@ -1,635 +1,553 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../Assets/Styles/RegisteredPatients.css";
-
 import axios from "axios";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import UploadDocuments from "../UploadDocuments";
 import ViewMMH from "../ViewMMH";
-import { BsThreeDotsVertical } from "react-icons/bs";
-
-
 import MMH from "../MMH";
 import CloseApplication from "../CloseApplication";
 import PDFDownload from "./PDFDownload";
-
+import ConfirmModal from "../common/ConfirmModal";
 import countries from "../../common/CommonObj";
-import { Dropdown } from "react-bootstrap";
 import BaseURL from "../../common/Api";
+import {
+  MdSearch, MdPerson, MdPhone, MdLocalHospital, MdClose,
+  MdUpload, MdLockOpen, MdCalendarToday, MdBadge,
+  MdDeleteForever, MdEdit, MdPictureAsPdf, MdVisibility,
+  MdFamilyRestroom, MdMedicalServices, MdLocationOn,
+  MdOutlineInfo,
+} from "react-icons/md";
 
-const RegisteredPatients = () => {
+/* ── helpers ── */
+const isClosed = (status) =>
+  ["Closed-Patient Rejected", "Closed-Civil", "Closed-Civil Hospital",
+    "Closed-Ayushman Bharat", "Closed-Private", "Closed-MJPJA",
+    "Closed-Other", "Application Closed"].includes(status);
 
-  const [showStatus, setShowStatus] = useState(false);
-  const [data, setData] = useState([]);
-  const [activePatientId, setActivePatientId] = useState(false);
-  const [activeStatusId, setActiveStatusId] = useState(false);
-  const [activeDocumentId, setActiveDocumentId] = useState(false);
-  const [activeCardIndex, setActiveCardIndex] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-  const { cardStatus } = useParams();
-  const [loading, setLoading] = useState(false);
+const STATUS_MAP = {
+  "Documents Uploaded": { bg: "#e6f4ea", color: "#1e7e34", dot: "#1e7e34" },
+  "Scheme & Hospital Selected": { bg: "#e8f0fe", color: "#1a73e8", dot: "#1a73e8" },
+  "Patient Registered": { bg: "#fff8e6", color: "#e67e00", dot: "#e67e00" },
+  "Closed-MJPJA": { bg: "#fce8e6", color: "#c0392b", dot: "#c0392b" },
+  "Closed-Private": { bg: "#fce8e6", color: "#c0392b", dot: "#c0392b" },
+  "Closed-Patient Rejected": { bg: "#fce8e6", color: "#c0392b", dot: "#c0392b" },
+  "Closed-Civil Hospital": { bg: "#fce8e6", color: "#c0392b", dot: "#c0392b" },
+  "Closed-Ayushman Bharat": { bg: "#fce8e6", color: "#c0392b", dot: "#c0392b" },
+  "Closed-Other": { bg: "#fce8e6", color: "#c0392b", dot: "#c0392b" },
+};
+const DEFAULT_S = { bg: "#f0f0f0", color: "#555", dot: "#999" };
 
-  const pdfRefs = data.map(() => React.createRef());
-  const baseURL =
-    `${BaseURL}/patient/getpatient`;
+const getStateName = (index) => {
+  if (index >= 0 && index < countries.length) return countries[index].state;
+  return "";
+};
+const fmt = (d) => {
+  if (!d) return "—";
+  try { return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }); }
+  catch { return d; }
+};
 
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+const PatientModal = ({ item, onClose, onDelete, onEdit }) => {
+  const [tab, setTab] = useState("details"); // details | upload | close
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const s = STATUS_MAP[item.status] || DEFAULT_S;
   const pdfRef = useRef();
 
+  /* lock body scroll */
   useEffect(() => {
-    let isMounted = true;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
+  }, [onClose]);
 
-    axios.get(baseURL).then((response) => {
-      if (isMounted) {
-        console.log(response.data.result);
-        setData(response.data.result);
-        setFilteredData(response.data.result.reverse());
-      }
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [cardStatus]);
-
-  useEffect(() => {
-    // Set the initial search term based on the condition (params)
-    if (cardStatus === "documentsUploaded") {
-      setSearchTerm("Documents Uploaded");
-    } else if (cardStatus === "scheme&hospital") {
-      setSearchTerm("Scheme & Hospital Selected");
-    } else if (cardStatus === "pending") {
-      setSearchTerm("Patient Registered");
-    }
-  }, [cardStatus]);
-
-  useEffect(() => {
-    // Update filtered data when search term changes
-    const filteredResults = data.filter((item) => {
-      const searchTermLowerCase = searchTerm.toLowerCase();
-
-      return (
-        item.patientDetails.name.toLowerCase().includes(searchTermLowerCase) ||
-        item.patientID.toLowerCase().includes(searchTermLowerCase) ||
-        item.status.toLowerCase().includes(searchTermLowerCase)
-        // Add more fields to search if needed
-        // ...
-      );
-    });
-
-    setFilteredData(filteredResults);
-  }, [searchTerm, data]);
-
-  const handleShowDetails = (index) => {
-    console.log("Clicked More Info button for index:", index);
-    console.log("Patient ID:", filteredData[index].patientDetails._id);
-    // ... other relevant log statements
-
-    setShowStatus(false);
-    setActivePatientId(filteredData[index].patientDetails._id);
-    setActiveStatusId(null);
-    setActiveCardIndex(index);
-    setActiveDocumentId(null);
-  };
-
-  const handleShowStatus = (index) => {
-    setShowStatus(!showStatus);
-    // setShowDetails(false);
-    setActivePatientId(null);
-    setActiveStatusId(filteredData[index]._id);
-    setActiveDocumentId(null);
-    setActiveCardIndex(index);
-  };
-  const handleShowDocument = (index) => {
-    setShowStatus(!showStatus);
-    // setShowDetails(false);
-    setActivePatientId(null);
-    setActiveStatusId(null);
-    setActiveDocumentId(filteredData[index]._id);
-    setActiveCardIndex(index);
-  };
-
-  const handleSidebarClose = () => {
-    // setShowDetails(false);
-    setShowStatus(false);
-    setActivePatientId(false);
-    setActiveStatusId(false);
-    setActiveDocumentId(false);
-    setActiveCardIndex("");
-  };
-  const getStateName = (index) => {
-    if (index >= 0 && index < countries.length) {
-      return countries[index].state;
-    }
-    return ""; // Return an empty string or any default value if the index is out of bounds
-  };
-
-  //delete patient logic
-  const handleDeletePatient = async (patientId) => {
-    // Display a confirmation dialog
-    const isConfirmed = window.confirm(
-      "⚠️Are you sure you want to delete this patient?"
-    );
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    // Check if the user confirmed the deletion
-    if (isConfirmed) {
-      try {
-        // Make an HTTP request to delete the patient
-        const response = await axios.delete(
-          `${BaseURL}/patient/${patientId}`
-        );
-
-        // Log the response or handle it based on your requirements
-        console.log("Delete Patient Response:", response.data);
-
-        // After successful deletion, update the state without making another request
-        setData((prevData) =>
-          prevData.filter((patient) => patient._id !== patientId)
-        );
-
-        // Optionally, you can also update the filtered data
-        setFilteredData((prevFilteredData) =>
-          prevFilteredData.filter((patient) => patient._id !== patientId)
-        );
-      } catch (error) {
-        console.error("Error deleting patient:", error);
-        // Handle the error, show a message, etc.
-      }
-    } else {
-      // The user clicked "Cancel", do nothing or show a message
-      console.log("Deletion canceled");
-    }
-  };
-
-  console.log(data);
-
-  const handleEditPatient = (patientId) => {
-    // Handle edit patient logic (e.g., navigate to edit page)
-    console.log("Edit Patient ID:", patientId);
-    window.location.href = `/editPatient/${patientId}`;
-  };
+  const Row = ({ label, value }) => (
+    <div className="rpm-row">
+      <span className="rpm-row-key">{label}</span>
+      <span className="rpm-row-val">{value || "—"}</span>
+    </div>
+  );
 
   return (
-    <>
-      {loading && (
-        <div className="loader-overlay">
-          <div className="spinner-container">
-            <div className="spinner"></div>
+    <div className="rpm-overlay" onClick={onClose}>
+      <div className="rpm-modal" onClick={e => e.stopPropagation()}>
+
+        {/* ── Modal header ── */}
+        <div className="rpm-modal-head">
+          <div className="rpm-mh-left">
+            <div className="rpm-mh-id"><MdBadge /> {item.patientID}</div>
+            <h2 className="rpm-mh-name">{item.patientDetails.name}</h2>
+            <span className="rpm-mh-badge" style={{ background: s.bg, color: s.color }}>
+              <span className="rpm-dot" style={{ background: s.dot }} />
+              {item.status}
+            </span>
           </div>
+          <button className="rpm-close-btn" onClick={onClose}><MdClose /></button>
         </div>
-      )}
-      <div className="img-main"></div>
-      <div className="search-bar group">
-        <input
-          type="text"
-          placeholder="Search patient"
-          value={searchTerm}
-          className="input"
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-      {/* <img src={imgView} alt="" /> */}
-      <div className="maincontainer" ref={pdfRef}>
-        {filteredData.map((item, index) => {
-          const isDetailsActive = activePatientId === item.patientDetails._id;
-          const isCloseActive = activeStatusId === item._id;
-          const isDocumentActive = activeDocumentId === item._id;
-          const isCardActive = activeCardIndex === index;
-          const cardBackgroundColor = isCardActive ? "#transform" : "";
-          const cardBorder = isCardActive ? "3px solid #a4c639" : "";
-          console.log("isDetailsActive", isDetailsActive);
-          const statusColor =
-            item.status === "Documents Uploaded"
-              ? "green"
-              : "" ||
-                item.status === "Application Closed" ||
-                item.status === "Closed-Patient Rejected" ||
-                item.status === "Closed-Civil Hospital" ||
-                item.status === "Closed-Ayushman Bharat" ||
-                item.status === "Closed-Private" ||
-                item.status === "Closed-MJPJA" ||
-                item.status === "Closed-Other"
-              ? "red"
-              : "" || item.status === "Pending"
-              ? "orange"
-              : "" || item.status === "Active"
-              ? "green"
-              : "";
-          const statusText =
-            item.status === "Documents Uploaded" ? "bold" : "bold";
 
-          return (
-            <div
-              id={`card-${index + 1}`}
-              className="patient-card"
-              style={{ background: cardBackgroundColor, border: cardBorder }}
-              key={index}
-              ref={pdfRefs[index]}
-            >
-              <div className="patient-data">
-                <div class="table-wrapper">
-                  <table className="patient-table" style={{ border: "none" }}>
-                    <tbody>
-                      <tr>
-                        <div className="patient-id">
-                          Patient ID: <br />
-                          <br />
-                          <span className="patientid">{item.patientID}</span>
-                        </div>
+        {/* ── Action bar ── */}
+        <div className="rpm-action-bar">
+          <button className="rpm-act-btn rpm-act--edit" onClick={() => onEdit(item._id)}>
+            <MdEdit /> Edit
+          </button>
+          <button className="rpm-act-btn rpm-act--delete" onClick={() => setIsDeleteModalOpen(true)}>
+            <MdDeleteForever /> Delete
+          </button>
+          <span className="rpm-act-btn rpm-act--pdf">
+            <MdPictureAsPdf />
+            <PDFDownload item={item} />
+          </span>
+          {!isClosed(item.status) && (
+            <>
+              <button
+                className={`rpm-act-btn rpm-act--upload${tab === "upload" ? " rpm-act--active" : ""}`}
+                onClick={() => setTab(t => t === "upload" ? "details" : "upload")}
+              >
+                <MdUpload /> Upload Docs
+              </button>
+              <button
+                className={`rpm-act-btn rpm-act--close${tab === "close" ? " rpm-act--active" : ""}`}
+                onClick={() => setTab(t => t === "close" ? "details" : "close")}
+              >
+                <MdLockOpen /> Close App
+              </button>
+            </>
+          )}
+        </div>
 
-                        <div className="status-bar">
-                          <>Status:</>
-                          <div
-                            className="cardStatus"
-                            style={{
-                              fontSize: "16px",
-                              color: statusColor,
-                              fontWeight: statusText,
-                            }}
-                          >
-                            {item.status}
-                          </div>
-                        </div>
-                      </tr>
+        {/* ── Tab nav ── */}
+        <div className="rpm-tabs">
+          {["details", "upload", "close"]
+            .filter(t => t === "details" || (t !== "details" && !isClosed(item.status)))
+            .map(t => (
+              <button
+                key={t}
+                className={`rpm-tab${tab === t ? " rpm-tab--active" : ""}`}
+                onClick={() => setTab(t)}
+              >
+                {t === "details" && "📋 Details"}
+                {t === "upload" && "📁 Upload Documents"}
+                {t === "close" && "🔒 Close Application"}
+              </button>
+            ))}
+        </div>
 
-                      <tr>
-                        <td style={{ border: "none", width: "100%" }}>
-                          <div className="DiseseaNameHighLight">
-                            <span style={{ border: "none", margin: "0px" }}>
-                              Disease Name:
-                            </span>
-                            <span className="diseaseName">
-                              {item.diseaseDetail.name}
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ border: "none" }}>
-                          Patient Name: <span>{item.patientDetails.name}</span>
-                        </td>
+        {/* ── Tab body ── */}
+        <div className="rpm-modal-body">
 
-                        {/* <td style={{ border: "none" }}>
-                          
-                        </td> */}
-                      </tr>
-
-                      <tr>
-                        <td style={{ border: "none" }}>
-                          Care Taker Name: <span> {item.careTaker.name}</span>
-                        </td>
-                        <td style={{ border: "none" }}> </td>
-                      </tr>
-                      <tr>
-                        <td style={{ border: "none" }}>
-                          Care Taker Mobile No:{" "}
-                          <span className="careTakerNum">
-                            {item.careTaker.mobile1}
-                          </span>
-                        </td>
-                        <td style={{ border: "none" }}></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <p style={{ marginBottom: "0px" }}>
-                  {/* {files.length > 0 ? (
-                    <div className="file-upload-or-not">
-                      <img
-                        src={check}
-                        alt="Files Uploaded"
-                        className="file-upload-logo"
-                      />
-                      <span className="card-file-upload">
-                        {files.length}{" "}
-                        {files.length === 1 ? "Document" : "Documents"} uploaded
-                      </span>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="file-upload-or-not">
-                        <img
-                          src={error}
-                          alt="Files Not Uploaded"
-                          className="file-upload-logo"
-                        />
-                        <span className="card-file-not-found">
-                          Documents not uploaded
-                        </span>
-                      </div>
-                    </div>
-                  )} */}
-                </p>
-
-                <div className="dots">
-                  <Dropdown>
-                    <Dropdown.Toggle variant="light" id={`dropdown-${index}`}>
-                      <BsThreeDotsVertical className="droupdown-main" />
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => handleDeletePatient(item._id)}
-                      >
-                        Delete Patient
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => handleEditPatient(item._id)}
-                      >
-                        Edit Patient
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <PDFDownload item={item} />
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-
-                <div className="data-btn">
-                  <button
-                    className="btn-register-more"
-                    onClick={() => handleShowDetails(index)}
-                  >
-                    More Info
-                  </button>
-
-                  {item.status !== "Closed-Patient Rejected" &&
-                    item.status !== "Closed-Civil" &&
-                    item.status !== "Closed-Ayushman Bharat" &&
-                    item.status !== "Closed-Private" &&
-                    item.status !== "Closed-MJPJA" &&
-                    item.status !== "Closed-Other" && (
-                      <>
-                        <button
-                          className="btn-register-status"
-                          onClick={() => handleShowDocument(index)}
-                        >
-                          Upload Documents
-                        </button>
-                        <button
-                          className="btn-register-status"
-                          onClick={() => handleShowStatus(index)}
-                        >
-                          Close Application
-                        </button>
-                      </>
-                    )}
-
-                  {/* <button
-                    className="btn-download-pdf"
-                    onClick={() => handleDownloadPDF(index, item.patientID)}
-                  >
-                    Download MMH-Form
-                  </button> */}
-                  {/* <DeletePatient currentItem={item._id}/> */}
+          {tab === "details" && (
+            <>
+              {/* Patient */}
+              <div className="rpm-section">
+                <div className="rpm-section-head"><MdPerson /> Patient Details</div>
+                <div className="rpm-grid-2">
+                  <Row label="Full Name" value={item.patientDetails.name} />
+                  <Row label="Gender" value={item.patientDetails.sex} />
+                  <Row label="Age" value={`${item.patientDetails.age} yrs`} />
+                  <Row label="Mobile" value={item.patientDetails.mobile} />
+                  <Row label="Aadhar" value={item.patientDetails.aadhar} />
+                  <Row label="Ration Card" value={item.patientDetails.rationcardnumber} />
+                  <Row label="Marital" value={item.patientDetails.maritalstatus} />
+                  <Row label="Address" value={item.patientDetails.address} />
+                  <Row label="Taluka" value={item.patientDetails.talukha} />
+                  <Row label="District" value={item.patientDetails.district} />
+                  <Row label="State" value={getStateName(item.patientDetails.state)} />
+                  <Row label="Pincode" value={item.patientDetails.pin} />
                 </div>
               </div>
 
-              {isDetailsActive && (
-                <div className="patient-details-sidebar">
-                  <span className="close-icon" onClick={handleSidebarClose}>
-                    ❌
-                  </span>
-                  <h2 className="table-heading">
-                    Patient Details{" "}
-                    {/* <Link className="btn-register-edit">
-                      <img src={editlogo} alt="form edit" />
-                    </Link> */}
-                  </h2>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Patient Name</td>
-                        <td>{item.patientDetails.name} </td>
-                      </tr>
-                      <tr>
-                        <td>Gender</td>
-                        <td>{item.patientDetails.sex} </td>
-                      </tr>
-                      <tr>
-                        <td>Age</td>
-                        <td>{item.patientDetails.age} </td>
-                      </tr>
-                      <tr>
-                        <td>Mobile No.</td>
-                        <td>{item.patientDetails.mobile} </td>
-                      </tr>
-                      <tr>
-                        <td>Aadhar No.</td>
-                        <td>{item.patientDetails.aadhar} </td>
-                      </tr>
-                      <tr>
-                        <td>RationCard No.</td>
-                        <td>
-                          {" "}
-                          <h6 className="diseaseName">
-                            {item.patientDetails.rationcardnumber}{" "}
-                          </h6>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Residencial Address</td>
-                        <td>{item.patientDetails.address}</td>
-                      </tr>
-                      <tr>
-                        <td>Taluka</td>
-                        <td>{item.patientDetails.talukha}</td>
-                      </tr>
-                      <tr>
-                        <td>Dist</td>
-                        <td>{item.patientDetails.district}</td>
-                      </tr>
-                      <tr>
-                        <td>State</td>
-                        <td>{getStateName(item.patientDetails.state)}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <h2 className="table-heading">Family Details</h2>
-                  <table>
-                    <thead>
-                      <th style={{ border: "1px solid black" }}>Sr.No.</th>
-                      <th style={{ border: "1px solid black" }}>
-                        {" "}
-                        Family Member
-                      </th>
-                      <th style={{ border: "1px solid black" }}>Relation</th>
-                      <th style={{ border: "1px solid black" }}>Age</th>
-                      <th style={{ border: "1px solid black" }}>Occupation</th>
-                      <th style={{ border: "1px solid black" }}>
-                        Monthly Income
-                      </th>
-                    </thead>
-                    <tbody>
-                      {item.familyDetail.map((familyMember, familyIndex) => (
-                        <tr key={familyIndex}>
-                          <td>{familyIndex + 1}</td>
-                          <td>{familyMember.name}</td>
-                          <td>{familyMember.relation}</td>
-                          <td>{familyMember.age}</td>
-                          <td>{familyMember.occupation}</td>
-                          <td>{familyMember.monthlyIncome}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-
-                  <h2 className="table-heading">Care Taker</h2>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Name</td>
-                        <td>{item.careTaker.name} </td>
-                      </tr>
-                      <tr>
-                        <td>Mobile No.1</td>
-                        <td>{item.careTaker.mobile1}</td>
-                      </tr>
-                      <tr>
-                        <td> Mobile No.2</td>
-                        <td>{item.careTaker.mobile2}</td>
-                      </tr>
-                      <tr>
-                        <td>Particulars </td>
-                        <td>{item.careTaker.particulars}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <h2 className="table-heading">Disease Details</h2>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Disease Name</td>
-                        <td>{item.diseaseDetail.name}</td>
-                      </tr>
-                      <tr>
-                        <td>Diagnose Date </td>
-                        <td>{item.diseaseDetail.diagnoseDate} </td>
-                      </tr>
-                      <tr>
-                        <td>Diagnose by Dr</td>
-                        <td>{item.diseaseDetail.diagnoseBy}</td>
-                      </tr>
-                      <tr>
-                        <td>Investigation Done 1</td>
-                        <td>{item.diseaseDetail.investigationDone1}</td>
-                      </tr>
-                      <tr>
-                        <td>Investigation Done 2</td>
-                        <td>{item.diseaseDetail.investigationDone2}</td>
-                      </tr>
-                      <tr>
-                        <td>Investigation Done 3</td>
-                        <td>{item.diseaseDetail.investigationDone3}</td>
-                      </tr>
-                      <tr>
-                        <td>Current Hospital Name</td>
-                        <td>{item.diseaseDetail.currentHospitalName}</td>
-                      </tr>
-                      <tr>
-                        <td>Address</td>
-                        <td>{item.diseaseDetail.currentHospitalAddress}</td>
-                      </tr>
-                      <tr>
-                        <td>Contact No.</td>
-                        <td>{item.diseaseDetail.currentHospitalContactNo}</td>
-                      </tr>
-                      <tr>
-                        <td>Current Treatment Details </td>
-                        <td>{item.diseaseDetail.currentTreatmentDetail} </td>
-                      </tr>
-                      <tr>
-                        <td>Doctor’s advice for further process</td>
-                        <td>
-                          {item.diseaseDetail.doctorAdviceForFurtherProcess}{" "}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <h2 className="table-heading">Other Details</h2>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Registered Date</td>
-                        <td>{item.registeredDate}</td>
-                      </tr>
-                      <tr>
-                        <td>Created by </td>
-                        <td>{item.createdBy} </td>
-                      </tr>
-                      <tr>
-                        <td>Status</td>
-                        <td>{item.status}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  {item.documents.length > 0 && (
-                    <>
-                      <h2 className="table-heading">Documents</h2>
-                    </>
-                  )}
-                  <table>
-                    <tbody>
-                      {item.documents.map((document, documentIndex) => (
-                        <tr key={documentIndex}>
-                          <td>{document.imageName}</td>
-                          <td className="uploadedDocuments">
-                            <a href={document.imageUrl}>Download </a>
-                            <img
-                              src={document.imageUrl}
-                              alt=""
-                              style={{ width: "100px" }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {item.schemeName ? (
-                    <MMH
-                      item={item}
-                      isDownloading={isDownloading}
-                      pdfRef={pdfRef}
-                    />
-                  ) : (
-                    item.status !== "Closed-Patient Rejected" &&
-                    item.status !== "Closed-Civil" &&
-                    item.status !== "Closed-Ayushman Bharat" &&
-                    item.status !== "Closed-Private" &&
-                    item.status !== "Closed-MJPJA" &&
-                    item.status !== "Closed-Other" && (
-                      <ViewMMH currentItem={item._id} />
-                    )
-                  )}
+              {/* Family */}
+              {item.familyDetail?.length > 0 && (
+                <div className="rpm-section">
+                  <div className="rpm-section-head"><MdFamilyRestroom /> Family Details</div>
+                  <div className="rpm-table-wrap">
+                    <table className="rpm-table">
+                      <thead>
+                        <tr><th>#</th><th>Name</th><th>Relation</th><th>Age</th><th>Occupation</th><th>Income/mo</th></tr>
+                      </thead>
+                      <tbody>
+                        {item.familyDetail.map((f, i) => (
+                          <tr key={i}>
+                            <td>{i + 1}</td><td>{f.name}</td><td>{f.relation}</td>
+                            <td>{f.age}</td><td>{f.occupation}</td>
+                            <td>₹{Number(f.monthlyIncome).toLocaleString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
 
-              {isCloseActive && (
-                <CloseApplication
-                  handleSidebarClose={handleSidebarClose}
-                  currentItem={item._id}
-                  index={index}
-                />
+              {/* Care Taker */}
+              <div className="rpm-section">
+                <div className="rpm-section-head"><MdPhone /> Care Taker</div>
+                <div className="rpm-grid-2">
+                  <Row label="Name" value={item.careTaker.name} />
+                  <Row label="Mobile 1" value={item.careTaker.mobile1} />
+                  <Row label="Mobile 2" value={item.careTaker.mobile2} />
+                  <Row label="Particulars" value={item.careTaker.particulars} />
+                </div>
+              </div>
+
+              {/* Disease */}
+              <div className="rpm-section">
+                <div className="rpm-section-head"><MdMedicalServices /> Disease Details</div>
+                <div className="rpm-grid-2">
+                  <Row label="Disease" value={item.diseaseDetail.name} />
+                  <Row label="Diagnose Date" value={fmt(item.diseaseDetail.diagnoseDate)} />
+                  <Row label="Diagnosed By" value={item.diseaseDetail.diagnoseBy} />
+                  <Row label="Investigation 1" value={item.diseaseDetail.investigationDone1} />
+                  <Row label="Investigation 2" value={item.diseaseDetail.investigationDone2} />
+                  <Row label="Investigation 3" value={item.diseaseDetail.investigationDone3} />
+                  <Row label="Hospital" value={item.diseaseDetail.currentHospitalName} />
+                  <Row label="Hospital Addr" value={item.diseaseDetail.currentHospitalAddress} />
+                  <Row label="Hospital Tel" value={item.diseaseDetail.currentHospitalContactNo} />
+                  <Row label="Treatment" value={item.diseaseDetail.currentTreatmentDetail} />
+                  <Row label="Doctor's Advice" value={item.diseaseDetail.doctorAdviceForFurtherProcess} />
+                </div>
+              </div>
+
+              {/* Reg info */}
+              <div className="rpm-section">
+                <div className="rpm-section-head"><MdOutlineInfo /> Registration Info</div>
+                <div className="rpm-grid-2">
+                  <Row label="Patient ID" value={item.patientID} />
+                  <Row label="Referred By" value={item.referredBy} />
+                  <Row label="Created By" value={item.createdBy} />
+                  <Row label="Registered On" value={fmt(item.registeredDate)} />
+                </div>
+              </div>
+
+              {/* Documents */}
+              {item.documents?.length > 0 && (
+                <div className="rpm-section">
+                  <div className="rpm-section-head">📁 Documents</div>
+                  <div className="rpm-docs-list">
+                    {item.documents.map((doc, i) => (
+                      <a key={i} href={doc.imageUrl} target="_blank" rel="noreferrer" className="rpm-doc-link">
+                        📎 {doc.imageName ? doc.imageName.split("/").pop() : `Document ${i + 1}`}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               )}
 
-              {isDocumentActive && (
-                <UploadDocuments
-                  currentItem={item._id}
-                  onClose={handleSidebarClose}
-                />
-              )}
+              {/* MMH / ViewMMH */}
+              <div className="rpm-section">
+                {item.schemeName
+                  ? <MMH item={item} isDownloading={false} pdfRef={pdfRef} />
+                  : (!isClosed(item.status) && <ViewMMH currentItem={item._id} />)
+                }
+              </div>
+            </>
+          )}
+
+          {tab === "upload" && (
+            <div className="rpm-section">
+              <UploadDocuments currentItem={item._id} onClose={() => setTab("details")} />
             </div>
-          );
-        })}
+          )}
+
+          {tab === "close" && (
+            <div className="rpm-section">
+              <CloseApplication
+                handleSidebarClose={() => setTab("details")}
+                currentItem={item._id}
+                index={0}
+              />
+            </div>
+          )}
+        </div>
       </div>
-    </>
+
+      {/* Confirmation Modal for Patient Deletion (from Modal View) */}
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Confirm Patient Deletion"
+        message="Are you sure you want to permanently delete this patient record? This action cannot be easily undone."
+        confirmText="Yes, Delete Patient"
+        cancelText="Cancel"
+        onConfirm={() => {
+          setIsDeleteModalOpen(false);
+          onDelete(item._id);
+          onClose();
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════
+   MAIN  PAGE
+═══════════════════════════════════════ */
+const RegisteredPatients = () => {
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [activeItem, setActiveItem] = useState(null);
+  const [deleteId, setDeleteId] = useState(null); // 3. Add deleteId state
+  const { cardStatus } = useParams();
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const baseURL = `${BaseURL}/patient/getpatient`;
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    axios.get(baseURL).then(res => {
+      if (mounted) {
+        const list = [...res.data.result].reverse();
+        setData(list);
+        setFilteredData(list);
+      }
+    }).finally(() => setLoading(false));
+    return () => { mounted = false; };
+  }, [cardStatus]);
+
+  useEffect(() => {
+    if (cardStatus === "documentsUploaded") setSearchTerm("Documents Uploaded");
+    else if (cardStatus === "scheme&hospital") setSearchTerm("Scheme & Hospital Selected");
+    else if (cardStatus === "pending") setSearchTerm("Patient Registered");
+  }, [cardStatus]);
+
+  useEffect(() => {
+    const term = searchTerm.toLowerCase();
+    setFilteredData(data.filter(item =>
+      item.patientDetails.name.toLowerCase().includes(term) ||
+      item.patientID.toLowerCase().includes(term) ||
+      item.status.toLowerCase().includes(term)
+    ));
+    setCurrentPage(1); // Reset to first page on search
+  }, [searchTerm, data]);
+
+  const handleDelete = (id) => { // 3. Re-write handleDelete
+    setDeleteId(id);
+  };
+
+  const executeDelete = async () => { // 3. Add executeDelete
+    if (!deleteId) return;
+    try {
+      await axios.delete(`${BaseURL}/patient/${deleteId}`);
+      setData(p => p.filter(x => x._id !== deleteId));
+      setFilteredData(p => p.filter(x => x._id !== deleteId));
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setDeleteId(null);
+    }
+  };
+
+  const handleEdit = (id) => { window.location.href = `/editPatient/${id}`; };
+
+  // Pagination Logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  return (
+    <div className="rpt-root">
+      {loading && (
+        <div className="rpt-grid" style={{ marginTop: '24px' }}>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((skeleton) => (
+            <div key={skeleton} className="rpt-card skeleton-card">
+              <div className="rpt-card-top" style={{ paddingBottom: '16px' }}>
+                <div className="skeleton-line" style={{ width: '100px', height: '20px', background: '#e2e8f0', borderRadius: '4px' }}></div>
+                <div className="skeleton-pulse" style={{ width: '12px', height: '12px', background: '#cbd5e1', borderRadius: '50%' }}></div>
+              </div>
+
+              <div className="rpt-disease-row" style={{ padding: '0 0 16px' }}>
+                <div className="skeleton-pulse" style={{ width: '20px', height: '20px', background: '#e2e8f0', borderRadius: '4px', marginRight: '12px' }}></div>
+                <div className="skeleton-line" style={{ width: '70%', height: '20px', background: '#e2e8f0', borderRadius: '4px' }}></div>
+              </div>
+
+              <div className="rpt-divider" style={{ margin: '0 0 16px' }}></div>
+
+              <div className="rpt-info-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '16px' }}>
+                {[1, 2, 3, 4].map(idx => (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="skeleton-pulse" style={{ width: '16px', height: '16px', background: '#e2e8f0', borderRadius: '4px' }}></div>
+                    <div className="skeleton-line" style={{ width: '40px', height: '14px', background: '#f1f5f9', borderRadius: '4px' }}></div>
+                    <div className="skeleton-line" style={{ flex: 1, height: '14px', background: '#e2e8f0', borderRadius: '4px' }}></div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="skeleton-line" style={{ width: '120px', height: '26px', background: '#cbd5e1', borderRadius: '12px', marginBottom: '16px' }}></div>
+              <div className="skeleton-line" style={{ width: '100%', height: '40px', background: '#e2e8f0', borderRadius: '8px' }}></div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="rpt-page-header">
+        <div>
+          <h1 className="rpt-page-title">Registered Patients</h1>
+          <p className="rpt-page-sub">{filteredData.length} record{filteredData.length !== 1 ? "s" : ""}</p>
+        </div>
+        <div className="rpt-search-wrap">
+          <MdSearch className="rpt-search-icon" />
+          <input
+            className="rpt-search"
+            type="text"
+            placeholder="Search by name, ID or status…"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* Grid */}
+      {!loading && currentItems.length > 0 && (
+        <div className="rpt-grid">
+          {currentItems.map((item) => {
+            const s = STATUS_MAP[item.status] || DEFAULT_S;
+            return (
+              <div key={item._id} className="rpt-card">
+
+                {/* Top: ID + status dot */}
+                <div className="rpt-card-top">
+                  <span className="rpt-card-id"><MdBadge />{item.patientID}</span>
+                  <span className="rpt-card-dot" style={{ background: s.dot }} title={item.status} />
+                </div>
+
+                {/* Disease */}
+                <div className="rpt-disease-row">
+                  <MdMedicalServices className="rpt-disease-icon" />
+                  <span className="rpt-disease-name">{item.diseaseDetail.name}</span>
+                </div>
+
+                {/* Divider */}
+                <div className="rpt-divider" />
+
+                {/* Patient info rows */}
+                <div className="rpt-info-list">
+                  <div className="rpt-info-item">
+                    <MdPerson className="rpt-ii-icon" />
+                    <span className="rpt-ii-label">Patient</span>
+                    <span className="rpt-ii-val">{item.patientDetails.name}</span>
+                  </div>
+                  <div className="rpt-info-item">
+                    <MdPhone className="rpt-ii-icon" />
+                    <span className="rpt-ii-label">Mobile</span>
+                    <span className="rpt-ii-val">{item.patientDetails.mobile}</span>
+                  </div>
+                  <div className="rpt-info-item">
+                    <MdLocalHospital className="rpt-ii-icon" />
+                    <span className="rpt-ii-label">Hospital</span>
+                    <span className="rpt-ii-val">{item.diseaseDetail.currentHospitalName || "—"}</span>
+                  </div>
+                  <div className="rpt-info-item">
+                    <MdCalendarToday className="rpt-ii-icon" />
+                    <span className="rpt-ii-label">Registered</span>
+                    <span className="rpt-ii-val">{fmt(item.registeredDate)}</span>
+                  </div>
+                </div>
+
+                {/* Status badge */}
+                <span className="rpt-status-badge" style={{ background: s.bg, color: s.color }}>
+                  {item.status}
+                </span>
+
+                {/* Single action button */}
+                <button
+                  className="rpt-view-btn"
+                  onClick={() => setActiveItem(item)}
+                >
+                  <MdVisibility /> View Details
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Empty State (Search failed but data exists) */}
+      {!loading && data.length > 0 && filteredData.length === 0 && (
+        <div className="rpt-empty">
+          <span className="rpt-empty-icon">🔍</span>
+          <p>No patients match your search.</p>
+        </div>
+      )}
+
+      {/* Empty State (Database is completely empty) */}
+      {!loading && data.length === 0 && (
+        <div className="rpt-empty">
+          <span className="rpt-empty-icon">📄</span>
+          <p>No patients registered yet.</p>
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {
+        totalPages > 1 && (
+          <div className="rpt-pagination">
+            <button
+              className="rpt-page-btn"
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+
+            <div className="rpt-page-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+                <button
+                  key={number}
+                  className={`rpt-page-num ${currentPage === number ? 'rpt-page-num--active' : ''}`}
+                  onClick={() => paginate(number)}
+                >
+                  {number}
+                </button>
+              ))}
+            </div>
+
+            <button
+              className="rpt-page-btn"
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )
+      }
+
+      {/* Modal */}
+      {
+        activeItem && (
+          <PatientModal
+            item={activeItem}
+            onClose={() => setActiveItem(null)}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
+        )
+      }
+
+      {/* Confirmation Modal for Patient Deletion (from Grid View) */}
+      <ConfirmModal // 3. Render ConfirmModal at the bottom
+        isOpen={deleteId !== null}
+        title="Confirm Patient Deletion"
+        message="Are you sure you want to permanently delete this patient record? This action cannot be easily undone."
+        confirmText="Yes, Delete Patient"
+        cancelText="Cancel"
+        onConfirm={executeDelete}
+        onCancel={() => setDeleteId(null)}
+      />
+    </div >
   );
 };
 

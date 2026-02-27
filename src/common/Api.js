@@ -1,4 +1,4 @@
-const BaseURL = "https://mmhbackendrailway-production.up.railway.app"
+const BaseURL = "https://mmh-backend.vercel.app"
 
 
 export default BaseURL

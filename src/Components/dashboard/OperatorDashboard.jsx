@@ -5,6 +5,7 @@ import "../../Components/dashboard/Dashboard.css";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import BaseURL from "../../common/Api";
+import { MdOutlineUploadFile, MdAddHomeWork, MdCheckCircle, MdPendingActions } from "react-icons/md";
 
 const OperatorDashboard = () => {
   const { number } = useParams();
@@ -87,77 +88,63 @@ const OperatorDashboard = () => {
   };
 
   return (
-    <>
-      <div className="dashboard-heading">
-        <h3>Pending activities</h3>
-      </div>
-      <div className="dashbord-main">
-        <div className="operaterCards">
-          {/* <div className="dashboard-card cards">
-        <h1 className="total-approach-heading ">Register Patients</h1>
-        <NavLink to="/registered-patients" className="OPcard-value">{data.registerPatients ? data.registerPatients : 0}</NavLink>
-      </div> */}
+    <div className="npt-dashboard-container">
+      {/* SECTION: Pending Activities */}
+      <div className="npt-dashboard-section">
+        <h3 className="npt-dashboard-title">Pending Activities</h3>
+        <div className="npt-dashboard-grid">
 
-          <div className="dashboard-card cards">
-            <h1 className="total-approach-heading ">Document Uploaded</h1>
-            <NavLink
-              to="/opRegistered-patients/documentsUploaded"
-              className="OPcard-value"
-            >
-              {data.documentUploaded ? data.documentUploaded : 0}
-            </NavLink>
+          <div className="npt-dash-card npt-card-orange">
+            <div className="npt-dash-icon"><MdOutlineUploadFile /></div>
+            <div className="npt-dash-info">
+              <p className="npt-dash-label">Document Uploaded</p>
+              <NavLink to="/opRegistered-patients/documentsUploaded" className="npt-dash-value" style={{ textDecoration: 'none' }}>
+                {data.documentUploaded || 0}
+              </NavLink>
+            </div>
           </div>
 
-          <div className="dashboard-card cards">
-            <h1 className="total-approach-heading ">
-              Scheme and Hospital Selected
-            </h1>
-            <NavLink
-              to="/opRegistered-patients/scheme&hospital"
-              className="OPcard-value"
-            >
-              {data.schemeAndHospitalSelected
-                ? data.schemeAndHospitalSelected
-                : 0}
-            </NavLink>
+          <div className="npt-dash-card npt-card-purple">
+            <div className="npt-dash-icon"><MdAddHomeWork /></div>
+            <div className="npt-dash-info">
+              <p className="npt-dash-label">Scheme & Hospital Selected</p>
+              <NavLink to="/opRegistered-patients/scheme&hospital" className="npt-dash-value" style={{ textDecoration: 'none' }}>
+                {data.schemeAndHospitalSelected || 0}
+              </NavLink>
+            </div>
           </div>
 
-          <div className="dashboard-card pending-cases">
-            <h1 className="pending-cases-heading ">
-              Registered Patients
-            </h1>
-            <NavLink
-              to="/opRegistered-patients/pending"
-              className="card-pending-value"
-            >
-              {data.PendingCasesMoreThan5Days
-                ? data.PendingCasesMoreThan5Days
-                : 0}
-            </NavLink>
+          <div className="npt-dash-card npt-card-blue">
+            <div className="npt-dash-icon"><MdPendingActions /></div>
+            <div className="npt-dash-info">
+              <p className="npt-dash-label">Registered Patients</p>
+              <NavLink to="/opRegistered-patients/pending" className="npt-dash-value" style={{ textDecoration: 'none' }}>
+                {data.PendingCasesMoreThan5Days || 0}
+              </NavLink>
+            </div>
           </div>
+
         </div>
       </div>
-      <div className="dashboard-heading">
-        <h3>Cases Closed</h3>
-      </div>
-      <div className="dashbord-main">
-        <div className="operaterCards2">
-        <div className="dashboard-card pending-cases">
-            <h1 className="pending-cases-heading ">
-             Cases closed in this month
-            </h1>
-            <NavLink
-              to="/opRegistered-patients/closed"
-              className="card-pending-value"
-            >
-              {data.closePatientDetailsCount
-                ? data.closePatientDetailsCount
-                : 0}
-            </NavLink>
+
+      {/* SECTION: Cases Closed */}
+      <div className="npt-dashboard-section">
+        <h3 className="npt-dashboard-title">Cases Closed</h3>
+        <div className="npt-dashboard-grid">
+
+          <div className="npt-dash-card npt-card-green" style={{ maxWidth: '400px' }}>
+            <div className="npt-dash-icon"><MdCheckCircle /></div>
+            <div className="npt-dash-info">
+              <p className="npt-dash-label">Cases closed this month</p>
+              <NavLink to="/opRegistered-patients/closed" className="npt-dash-value" style={{ textDecoration: 'none' }}>
+                {data.closePatientDetailsCount || 0}
+              </NavLink>
+            </div>
           </div>
+
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

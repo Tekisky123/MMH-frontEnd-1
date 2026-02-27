@@ -1,98 +1,298 @@
-/* UserTable.css */
+/* ============================================================
+   USER DIRECTORY (usr- prefix)
+   ============================================================ */
 
-.user-table-container {
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+.usr-root {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ── Page Header ── */
+.usr-page-header {
+  background: linear-gradient(135deg, #1e4d26 0%, #3a8a3f 100%);
+  padding: 32px 32px 48px;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.usr-page-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.usr-page-sub {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.usr-btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #1e4d26;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.usr-btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background: #f8fafc;
+}
+
+/* ── Grid Layout ── */
+.usr-wrapper {
   max-width: 1400px;
-  margin: 20px auto;
-  overflow-x: auto; /* Add horizontal scrolling */
+  margin: -24px auto 60px;
+  padding: 0 24px;
 }
 
-.user-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+.usr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
 }
 
-.user-table th, .user-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-.user-table th {
-  background-color:#aed238;
-}
-
-.add-user-button {
-  background-color:#a4c639;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-
-.add-user-button:hover {
-  background-color: rgb(73, 172, 78);
-}
-
-.delete-button, .edit-button {
-  border: none;
-  color: white;
-  border-radius: 10px;
-  padding: 8px;
-  margin-right: 5px;
-  cursor: pointer;
-}
-
-.delete-button {
-  background-color: #DC4C64;
-  width: 70px;
-}
-
-.edit-button {
-  background-color: #a4c639;
-  width: 70px !important;
-  text-decoration: none;
-}
-
-.edit-button:hover, .delete-button:hover {
-  background-color: #aed238;
-}
-
-.error-message {
-  color: red;
-  margin: 0px;
-  font-size: 13px;
+/* ── User Card ── */
+.usr-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
-  bottom: 3px;
-  left: 3px;
+  overflow: hidden;
 }
 
-.fontBold {
-  font-weight: bold;
+.usr-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Responsive styles */
+/* Card Top: Gradient banner */
+.usr-card-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(46, 107, 56, 0.1), rgba(164, 198, 57, 0.15));
+  z-index: 0;
+}
 
-@media only screen and (max-width: 600px) {
-  .user-table th, .user-table td {
-    padding: 4px;
-    font-size: 8px;
-  }
+.usr-card-content {
+  position: relative;
+  z-index: 1;
+}
 
-  .add-user-button, .delete-button, .edit-button {
-    padding: 5px;
-    font-size: 8px;
-    margin-left: 20px;
-  }
-  .delete-button ,.edit-button{
-    width: 55px!important;
+.usr-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.usr-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #a4c639;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(164, 198, 57, 0.3);
+  border: 3px solid #fff;
+}
+
+.usr-name-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.usr-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.usr-role {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2e6b38;
+  background: #f0f7e6;
+  padding: 4px 10px;
+  border-radius: 50px;
+  display: inline-block;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(46, 107, 56, 0.15);
+}
+
+/* Info rows */
+.usr-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.usr-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.usr-ii-icon {
+  color: #9ca3af;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.usr-ii-val {
+  font-weight: 500;
+  color: #1a1a2e;
+  word-break: break-all;
+}
+
+/* Card Actions */
+.usr-card-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 20px;
+}
+
+.usr-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: unset;
+}
+
+.usr-btn--edit {
+  background: #f8fafc;
+  color: #2e6b38;
+  border: 1px solid #e2e8f0;
+}
+
+.usr-btn--edit:hover {
+  background: #f0f7e6;
+  border-color: #a4c639;
+  color: #2e6b38;
+}
+
+.usr-btn--delete {
+  background: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #fee2e2;
+}
+
+.usr-btn--delete:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+/* ── Loader & Empty ── */
+.usr-loader-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.usr-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #3a8a3f;
+  border-radius: 50%;
+  animation: usrSpin 0.8s linear infinite;
+}
+
+@keyframes usrSpin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media only screen and (max-width: 400px) {
-  .user-table-container {
-    overflow-x: scroll;
+.usr-empty {
+  grid-column: 1 / -1;
+  background: #fff;
+  border-radius: 20px;
+  padding: 60px 20px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.usr-empty-icon {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.usr-empty p {
+  margin: 0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .usr-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 24px 24px 44px;
+  }
+
+  .usr-btn-add {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .usr-wrapper {
+    padding: 0 16px;
+  }
+
+  .usr-grid {
+    grid-template-columns: 1fr;
   }
 }

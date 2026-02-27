@@ -1,253 +1,355 @@
-.navbar input[type="checkbox"],
-.navbar .hamburger-lines{
-    display: none;
+/* =========================================
+   NAVBAR — Professional & Responsive
+   ========================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* ── Base ── */
+.hdr-navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    background: linear-gradient(90deg, #2e6b38 0%, #a4c639 100%);
+    transition: box-shadow 0.25s ease;
+    font-family: "Inter", sans-serif;
 }
 
-.container{
-    max-width: 1200px;
-    width: 90%;
-    margin: auto;
-   
+.hdr-navbar.hdr-scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
 }
 
-
-.navbar{
-    /* box-shadow: 0px 5px 10px 0px #aaa; */
-    position: fixed;
-    width: 100%;
-    background: #a4c639;
-    /* color: #000; */
-    opacity: 0.85;
-    z-index: 100;
-    
-}
-
-.navbar-container{
+.hdr-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 64px;
     display: flex;
-    justify-content: space-between;
-    height: 60px;
-    
     align-items: center;
-}
-
-.menu-items{
-    order: 2;
-    display: flex;
     justify-content: space-between;
-    width: 100%;
-    /* border: 2px solid red; */
-
 }
 
-.menu-items li{
+/* ── Logo ── */
+.hdr-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.hdr-logo {
+    height: 52px;
+    width: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.18));
+}
+
+.hdr-brand-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* ── Desktop Links ── */
+.hdr-links {
     list-style: none;
-    margin-left: 40px;
-    margin-top: 10px;
-    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
 }
 
-.logout-li{
-    /* border: 1px solid #038cc4; */
-    padding: 6px;
-    /* border-radius: 17px; */
-    margin: 3px!important;
-    margin-left: 20px;
+.hdr-link,
+.hdr-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: "Inter", sans-serif;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease;
+    white-space: nowrap;
     cursor: pointer;
-}
-.logout-li a{
     border: none;
-    color: #038cc4!important;
     background: transparent;
 }
-.navbar a{
-    color: black;
-    text-decoration: none;
-    font-size: large;
+
+.hdr-link:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+}
+
+.hdr-link--active {
+    background: #fff !important;
+    color: #2e6b38 !important;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.hdr-link-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+/* ── Logout Button (desktop) ── */
+.hdr-logout-btn {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-left: 6px;
+}
+
+.hdr-logout-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+/* ── Hamburger (mobile only) ── */
+.hdr-hamburger {
+    display: none;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 1.6rem;
+    border-radius: 8px;
+    padding: 6px 8px;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.18s;
+}
+
+.hdr-hamburger:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Overlay ── */
+.hdr-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 600;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(2px);
+}
+
+.hdr-overlay--visible {
+    display: block;
+    opacity: 1;
+}
+
+/* ── Sidebar ── */
+.hdr-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    background: #fff;
+    z-index: 700;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+}
+
+.hdr-sidebar--open {
+    transform: translateX(0);
+}
+
+/* Sidebar header */
+.hdr-sidebar-head {
+    display: flex;
+    margin: 0;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 20px 18px;
+    background: linear-gradient(135deg, #2e6b38, #a4c639);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    min-height: 70px;
+}
+
+.hdr-sidebar-logo {
+    height: 38px;
+    width: auto;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+}
+
+.hdr-sidebar-brand {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    flex: 1;
+}
+
+.hdr-sidebar-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 1.3rem;
+    border-radius: 6px;
+    padding: 4px 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.18s;
+}
+
+.hdr-sidebar-close:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* Sidebar nav list */
+.hdr-sidebar-links {
+    padding: 16px 14px 12px;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: start;
+    gap: 2px;
+    width: 100%;
+}
+
+.hdr-sidebar-link-wrap {
+    width: 100%;
+    display: block;
+}
+
+.hdr-sidebar-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    gap: 14px;
+    padding: 13px 16px;
+    border-radius: 12px;
+    font-size: 0.97rem;
     font-weight: 500;
-    transition: color 0.3s ease-in-out;
-}
-.logo-main{
-   position: absolute;
-   top: 2px;
-   left: 20px;
-   height: 70px;
-   filter: drop-shadow(1px 2px 50px white);
+    color: #374151;
+    text-decoration: none;
+    width: 100%;
+    transition: background 0.18s, color 0.18s, transform 0.15s;
+    letter-spacing: 0.1px;
+    box-sizing: border-box;
 }
 
-.navbar a:hover{
-    color:black;
-    /* border: 1px solid black; */
-    text-decoration: underline;
-    /* border-radius: 10px; */
-    /* padding: 8px; */
-
+.hdr-sidebar-link:hover {
+    background: #f0f7e6;
+    color: #2e6b38;
+    transform: translateX(4px);
 }
 
-@media (max-width: 768px){
-    .navbar{
-        opacity: 1.95;
-    }
-
-    .navbar-container input[type="checkbox"],
-    .navbar-container .hamburger-lines{
-        display: block;
-    }
-    .logo-main{
-        left: 80px;
-    }
-
-    .navbar-container{
-        display: block;
-        position: relative;
-        height: 50px;
-    }
-
-    .navbar-container input[type="checkbox"]{
-        position: absolute;
-        display: block;
-        height: 32px;
-        width: 30px;
-        top: 20px;
-        left: 20px;
-        z-index: 5;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .navbar-container .hamburger-lines{
-        display: block;
-        height: 28px;
-        width: 35px;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .navbar-container .hamburger-lines .line{
-        display: block;
-        height: 4px;
-        width: 100%;
-        border-radius: 10px;
-        background: #333;
-    }
-    
-    .navbar-container .hamburger-lines .line1{
-        transform-origin: 0% 0%;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .navbar-container .hamburger-lines .line2{
-        transition: transform 0.2s ease-in-out;
-    }
-
-    .navbar-container .hamburger-lines .line3{
-        transform-origin: 0% 100%;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .navbar .menu-items{
-        padding-top: 100px;
-        background: #fff;
-        height: 100vh;
-        max-width: 950px;
-        transform: translate(-150%);
-        display: flex;
-        flex-direction: column;
-        margin-left: -40px;
-        padding-left: 40px;
-        transition: transform 0.5s ease-in-out;
-        box-shadow:  5px 0px 10px 0px #aaa;
-        overflow: scroll;
-    }
-    
-
-    .navbar .menu-items li{
-        margin-bottom: 1.8rem;
-        font-size: 1.1rem;
-        font-weight: 500;
-    }
-
- 
-    .navbar-container input[type="checkbox"]:checked ~ .menu-items{
-        transform: translateX(0);
-    }
-
-    .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line1{
-        transform: rotate(45deg);
-    }
-
-    .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line2{
-        transform: scaleY(0);
-    }
-
-    .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line3{
-        transform: rotate(-45deg);
-    }
-
+.hdr-sidebar-link--active {
+    background: linear-gradient(135deg, #2e6b38, #a4c639) !important;
+    color: #fff !important;
+    font-weight: 600;
+    box-shadow: 0 3px 12px rgba(164, 198, 57, 0.3);
+    transform: translateX(0) !important;
 }
 
-@media (max-width: 500px){
-    .navbar-container input[type="checkbox"]:checked ~ .logo{
+.hdr-sidebar-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+.hdr-sidebar-link--active .hdr-sidebar-icon {
+    opacity: 1;
+}
+
+/* Sidebar footer logout */
+.hdr-sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.hdr-sidebar-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 0;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.93rem;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    color: #e53e3e;
+    background: #fff5f5;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s;
+}
+
+.hdr-sidebar-logout:hover {
+    background: #ffe4e4;
+    border-color: #f87171;
+}
+
+/* ── Responsive breakpoints ── */
+
+/* Tablet: hide brand name to save space */
+@media (max-width: 1100px) {
+    .hdr-brand-name {
         display: none;
     }
-    .navbar a{
-      color: black;
+
+    .hdr-inner {
+        padding: 0 20px;
+    }
+
+    .hdr-link,
+    .hdr-logout-btn {
+        padding: 7px 9px;
+        font-size: 0.82rem;
+        gap: 4px;
     }
 }
 
-
-
-
-
-
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-    .menu-items{
-        justify-content: flex-start;
+/* Below 900px: switch to hamburger + sidebar */
+@media (max-width: 900px) {
+    .hdr-links {
+        display: none;
     }
-  }
-  
-  /* Small devices (portrait tablets and large phones, 600px and up) */
-  @media only screen and (min-width: 601px) and (max-width: 768px) {
-    .menu-items li{
-        list-style: none;
-        margin-left: 25px;
-        margin-top: 10px;
-        font-size: 12px;
-    }
-  }
-  
-  /* Medium devices (landscape tablets, 768px and up) */
-  @media only screen and (min-width: 769px) and (max-width: 992px) {
-    .navbar a {
-        font-size: 14px !important;
-    }
-    .container{
-        max-width: 100%!important;
-        padding-left: 70px!important;
-    }
-    .menu-items li{
-        list-style: none;
-        margin-left: 20px;
-        margin-top: 10px;
-        font-size: 15px;
-    }
-    .menu-items{
-        /* padding-left: 4rem!important; */
-    }
-  }
 
-  @media only screen and (min-width: 993px) and (max-width: 1199px) {
+    .hdr-hamburger {
+        display: flex;
+        align-items: center;
+    }
 
-  }
-  @media only screen and (min-width: 1200px) and (max-width: 1399px) {
+    .hdr-brand-name {
+        display: block;
+    }
+}
 
-  }
+/* Tiny phones */
+@media (max-width: 380px) {
+    .hdr-inner {
+        height: 56px;
+        padding: 0 14px;
+    }
 
-/* home page css here  */
+    .hdr-logo {
+        height: 36px;
+    }
 
+    .hdr-brand-name {
+        font-size: 0.92rem;
+    }
+}

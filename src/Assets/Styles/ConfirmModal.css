@@ -1,0 +1,144 @@
+/* ============================================================
+   CONFIRM MODAL COMPONENT (npt-confirm prefix)
+   ============================================================ */
+
+.npt-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: nptConfirmFadeIn 0.2s ease forwards;
+    padding: 20px;
+}
+
+@keyframes nptConfirmFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.npt-confirm-modal {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    transform: scale(0.95);
+    animation: nptConfirmSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes nptConfirmSlideUp {
+    from {
+        transform: scale(0.95) translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ── Header ── */
+.npt-confirm-header {
+    padding: 24px 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+}
+
+.npt-confirm-icon-wrap {
+    width: 56px;
+    height: 56px;
+    background: #fef2f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+    font-size: 28px;
+}
+
+.npt-confirm-title {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* ── Body ── */
+.npt-confirm-body {
+    padding: 0 24px 24px;
+    text-align: center;
+}
+
+.npt-confirm-message {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #64748b;
+}
+
+/* ── Actions ── */
+.npt-confirm-actions {
+    display: flex;
+    padding: 16px 24px 24px;
+    gap: 12px;
+}
+
+.npt-confirm-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.npt-confirm-btn--cancel {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.npt-confirm-btn--cancel:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.npt-confirm-btn--danger {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.npt-confirm-btn--danger:hover {
+    background: #dc2626;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+    transform: translateY(-1px);
+}
+
+.npt-confirm-btn--danger:active {
+    transform: translateY(0);
+}

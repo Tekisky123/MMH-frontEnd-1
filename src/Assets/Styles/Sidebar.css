@@ -1,0 +1,273 @@
+/* =============================================
+   MMH MOBILE SIDEBAR — Isolated Styles
+   All classes prefixed with mmh-sb- to prevent
+   any collision with global or component CSS.
+   ============================================= */
+
+/* ── Overlay (backdrop) ── */
+.mmh-sb-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: mmhSbFadeIn 0.22s ease forwards;
+}
+
+@keyframes mmhSbFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── Drawer ── */
+.mmh-sb-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 290px;
+    max-width: 88vw;
+    z-index: 1001;
+    background-color: #ffffff;
+    box-shadow: 6px 0 32px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Isolate from all inherited styles */
+    font-family: "Inter", "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    box-sizing: border-box;
+}
+
+.mmh-sb-drawer--open {
+    transform: translateX(0);
+}
+
+/* ── Sidebar Header ── */
+.mmh-sb-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 18px 16px;
+    background: linear-gradient(135deg, #2e6b38 0%, #a4c639 100%);
+    flex-shrink: 0;
+    min-height: 72px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.mmh-sb-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+}
+
+.mmh-sb-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+}
+
+.mmh-sb-brand-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mmh-sb-brand-sub {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mmh-sb-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background 0.18s;
+    padding: 0;
+    margin-left: auto;
+}
+
+.mmh-sb-close-btn:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+/* ── Section Label ── */
+.mmh-sb-section-label {
+    padding: 14px 18px 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* ── Nav Container ── */
+.mmh-sb-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    box-sizing: border-box;
+    /* Scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
+
+.mmh-sb-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.mmh-sb-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.mmh-sb-nav::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 4px;
+}
+
+/* ── Nav Item (each link) ── */
+.mmh-sb-nav-item {
+    /* Reset everything */
+    all: unset;
+    /* Rebuild cleanly */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 13px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #374151;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: inherit;
+    box-sizing: border-box;
+    width: 100%;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mmh-sb-nav-item:hover {
+    background-color: #f0f7e6;
+    color: #2e6b38;
+    transform: translateX(3px);
+}
+
+.mmh-sb-nav-item--active {
+    background: linear-gradient(135deg, #2e6b38, #a4c639) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 3px 12px rgba(164, 198, 57, 0.3);
+    transform: translateX(0) !important;
+}
+
+/* ── Nav Icon ── */
+.mmh-sb-nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    opacity: 0.8;
+    line-height: 1;
+}
+
+.mmh-sb-nav-item--active .mmh-sb-nav-icon {
+    opacity: 1;
+}
+
+/* ── Nav Label ── */
+.mmh-sb-nav-label {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Footer ── */
+.mmh-sb-footer {
+    padding: 14px 12px 18px;
+    border-top: 1px solid #f3f4f6;
+    flex-shrink: 0;
+}
+
+.mmh-sb-logout-btn {
+    /* Reset */
+    all: unset;
+    /* Rebuild */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1.5px solid #fecaca;
+    background-color: #fff5f5;
+    color: #dc2626;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.18s ease, border-color 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mmh-sb-logout-btn:hover {
+    background-color: #fee2e2;
+    border-color: #f87171;
+}
+
+.mmh-sb-logout-btn span {
+    text-align: center;
+}

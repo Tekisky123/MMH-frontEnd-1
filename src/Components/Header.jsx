@@ -1,27 +1,63 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../Assets/Styles/Header.css";
+import "../Assets/Styles/Sidebar.css";
 import logo from "../Assets/Images/logo-main.png";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
-import { useAuth } from "./Auth";
+import {
+  MdHome,
+  MdHealthAndSafety,
+  MdPersonAdd,
+  MdPeople,
+  MdPerson,
+  MdDashboard,
+  MdAssessment,
+  MdLogout,
+  MdClose,
+  MdMenu,
+} from "react-icons/md";
+
+const NAV_LINKS = [
+  { to: "/home", label: "Home", Icon: MdHome },
+  { to: "/yojna", label: "Yojna Details", Icon: MdHealthAndSafety },
+  { to: "/addPatient", label: "New Patient", Icon: MdPersonAdd },
+  { to: "/registered-patients", label: "Registered Patients", Icon: MdPeople },
+  { to: "/user", label: "User", Icon: MdPerson },
+  { to: "/dashboard", label: "Dashboard", Icon: MdDashboard },
+  { to: "/reports", label: "Reports", Icon: MdAssessment },
+];
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const auth = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const sidebarRef = useRef(null);
 
-  // Function to handle toggling menu
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  // Function to close menu
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handler = (e) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   const handleLogout = () => {
-    // Clear local storage and update login status
     localStorage.clear();
     localStorage.setItem("login", false);
     navigate("/");
@@ -29,150 +65,120 @@ const Header = () => {
 
   const confirmLogout = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to logout?",
+      title: "Logout?",
+      text: "Are you sure you want to logout?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
+      confirmButtonText: "Yes, logout",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#a4c639",
+      cancelButtonColor: "#e5e7eb",
     }).then((result) => {
-      if (result.isConfirmed) {
-        handleLogout();
-      }
+      if (result.isConfirmed) handleLogout();
     });
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container container">
-        <input
-          type="checkbox"
-          id="menu-toggle"
-          checked={isMenuOpen}
-          onChange={() => setIsMenuOpen(!isMenuOpen)}
-        />
-        <label htmlFor="menu-toggle" className="hamburger-lines" onClick={toggleMenu}>
-          <span className="line line1"></span>
-          <span className="line line2"></span>
-          <span className="line line3"></span>
-        </label>
-        <ul className="menu-items">
-          <li>
-            <h1 className="logo-main">
-              <img className="logo-main" src={logo} alt="Logo" />
-            </h1>
-          </li>
-          <li>
+    <>
+      {/* ── Top Navbar ── */}
+      <nav className={`hdr-navbar${scrolled ? " hdr-scrolled" : ""}`}>
+        <div className="hdr-inner">
+          <NavLink to="/home" className="hdr-logo-link" onClick={closeMenu}>
+            <img src={logo} alt="MMH Logo" className="hdr-logo" />
+            <span className="hdr-brand-name">MMH Portal</span>
+          </NavLink>
+
+          <ul className="hdr-links">
+            {NAV_LINKS.map(({ to, label, Icon }) => (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  className={({ isActive }) =>
+                    "hdr-link" + (isActive ? " hdr-link--active" : "")
+                  }
+                >
+                  <Icon className="hdr-link-icon" />
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+            <li>
+              <button className="hdr-logout-btn" onClick={confirmLogout}>
+                <MdLogout className="hdr-link-icon" />
+                Logout
+              </button>
+            </li>
+          </ul>
+
+          <button
+            className="hdr-hamburger"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open navigation menu"
+          >
+            <MdMenu />
+          </button>
+        </div>
+      </nav>
+
+      {/* ── Mobile Sidebar Overlay ── */}
+      {menuOpen && (
+        <div className="mmh-sb-overlay" onClick={closeMenu} aria-hidden="true" />
+      )}
+
+      {/* ── Mobile Sidebar ── */}
+      <aside
+        ref={sidebarRef}
+        className={`mmh-sb-drawer${menuOpen ? " mmh-sb-drawer--open" : ""}`}
+        aria-label="Navigation menu"
+      >
+        {/* Sidebar Header */}
+        <div className="mmh-sb-header">
+          <img src={logo} alt="MMH Logo" className="mmh-sb-logo" />
+          <div className="mmh-sb-brand">
+            <span className="mmh-sb-brand-name">MMH Portal</span>
+            <span className="mmh-sb-brand-sub">Maharashtra Medical Help</span>
+          </div>
+          <button
+            className="mmh-sb-close-btn"
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            <MdClose />
+          </button>
+        </div>
+
+        {/* Nav Label */}
+        <div className="mmh-sb-section-label">Navigation</div>
+
+        {/* Nav Links */}
+        <nav className="mmh-sb-nav">
+          {NAV_LINKS.map(({ to, label, Icon }) => (
             <NavLink
+              key={to}
+              to={to}
               onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/home"
+              className={({ isActive }) =>
+                "mmh-sb-nav-item" + (isActive ? " mmh-sb-nav-item--active" : "")
+              }
             >
-              Home
+              <span className="mmh-sb-nav-icon"><Icon /></span>
+              <span className="mmh-sb-nav-label">{label}</span>
             </NavLink>
-          </li>
-          <li>
-            <NavLink
-              onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/yojna"
-            >
-              Yojna Details
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/addPatient"
-            >
-              New Patient
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/registered-patients"
-            >
-              Registered Patients
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/user"
-            >
-              User
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/dashboard"
-            >
-              Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              onClick={closeMenu}
-              style={({ isActive }) => ({
-                color: isActive ? "#a4c639" : "",
-                backgroundColor: isActive ? "white" : "",
-                textDecoration: isActive ? "" : "",
-                padding: isActive ? "8px" : "",
-                borderRadius: isActive ? "10px" : "",
-              })}
-              to="/reports"
-            >
-              Reports
-            </NavLink>
-          </li>
-          <li className="logout-li">
-            <Link onClick={confirmLogout}>Logout</Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div className="mmh-sb-footer">
+          <button
+            className="mmh-sb-logout-btn"
+            onClick={() => { closeMenu(); confirmLogout(); }}
+          >
+            <MdLogout />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

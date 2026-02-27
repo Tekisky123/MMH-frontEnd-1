@@ -146,7 +146,7 @@ const PDFDownload = ({ item }) => {
       head: [["Instructions", ""]],
       body: [
         [
-          `1) Muslim Medical Help (MMH) is free of charge platform providing help and guidance to the patient on the request of'applicant.
+          `1) Maharashtra Medical Help (MMH) is free of charge platform providing help and guidance to the patient on the request of'applicant.
         `,
         ],
         [
