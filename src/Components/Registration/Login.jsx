@@ -94,7 +94,7 @@ const Login = ({ setUserType }) => {
       <div className="login-left-panel">
         <div className="login-brand">
           <img src={logo} alt="MMH Logo" className="login-logo" />
-          <h1 className="login-brand-title">MMH Portal</h1>
+          <h1 className="login-brand-title">Maharashtra Medical Help</h1>
           <p className="login-brand-subtitle">
             Empowering healthcare management with excellence
           </p>
@@ -108,6 +108,11 @@ const Login = ({ setUserType }) => {
 
       {/* Right form panel */}
       <div className="login-right-panel">
+        {/* Mobile brand heading — shown only on small screens */}
+        <div className="login-mobile-brand">
+          <h2 className="login-brand-title-mobile">Maharashtra Medical Help</h2>
+          <p className="login-mobile-subtitle">Empowering healthcare management with excellence</p>
+        </div>
         <div className="login-card">
           <div className="login-card-header">
             <h2 className="login-title">Sign In</h2>
